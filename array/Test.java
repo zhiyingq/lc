@@ -3,13 +3,20 @@ import java.util.Map;
 
 class Test {
 	public static void main(String[] args) {
-		Map<Integer, Integer> a = new HashMap<>();
-		a.put(1,1);
-		System.out.println(a.toString());
-		a.put(1,2);
-		System.out.println(a.toString());
-		a.put(2,2);
-		System.out.println(a.toString());
+		RemoveElement a = new RemoveElement();
+		// nums is passed in by reference. (i.e., without making a copy)
+		int[] nums = new int[] {4,2,0,1,3,4,5,1,2,2,2,2,2,2};
+		int val = 2;
+		int len = a.removeElement(nums, val);
+
+		// any modification to nums in your function would be known by the caller.
+		// using the length returned by your function, it prints the first len elements.
+		System.out.println("The len is: "+len);
+		System.out.println("The new array is: ");
+		for (int i = 0; i < len; i++) {
+    		System.out.print(nums[i]+" ");
+		}
+		System.out.println();
 	}
 
 }
