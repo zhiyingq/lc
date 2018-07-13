@@ -31,6 +31,8 @@ class TwoSumII {
 
 	}
 
+	// This is the improved method
+	// 使用了逼近法
 	public int[] twoSum2(int[] numbers, int target) {
 		if (numbers.length < 2) { throw new IllegalArgumentException();}
 		int low = 0; int high = numbers.length - 1;
@@ -51,7 +53,7 @@ class TwoSumII {
 
 	public static void main(String[] args) {
 		TwoSumII t = new TwoSumII();
-		int[] arr = t.twoSum(new int[] {2,7,11,15}, 13);
+		int[] arr = t.twoSum2(new int[] {2,7,11,15}, 13);
 		for (int i : arr) {
 			System.out.println(i);
 		}

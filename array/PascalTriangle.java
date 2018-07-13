@@ -23,6 +23,7 @@ class PascalTriangle {
 
 	}
 
+	// a recursion 
 	private List<Integer> getRows(int numRows, List<List<Integer>> rowList) {
 		List<Integer> row = new ArrayList<Integer>();
 		row.add(1); row.add(1);
