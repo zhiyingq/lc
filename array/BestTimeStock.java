@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 class BestTimeStock {
 	/*
 	public int maxProfit(int[] prices) {
@@ -12,7 +14,7 @@ class BestTimeStock {
 		}
 		return max;
 	}
-	*/
+	
 
 	public int maxProfit(int[] prices) {
 		// 把整个过程想想成一个折线图，首先我们需要确定一个目前最小的值
@@ -34,10 +36,22 @@ class BestTimeStock {
 		}
 		return maxP;
 	}
+	*/
 
+	public int maxProfit(int[] prices) {
+		int maxprofit = 0;
+		int minprice = Integer.MAX_VALUE;
+		for (int i = 0; i < prices.length; i++) {
+			// 对于每一个price而言， 每次都判断它是否是minprice
+			// 如果是，则更新minprice的值
+			minprice = Math.min(minprice, prices[i]);
+			// 对于已有的minprice, 对于每个值更新一下maxprofit
+			int profit = price - minprice;
+			maxprofit = Math.max(profit, maxprofit);
+		}
+		return maxprofit;
 
-
-
+	}
 
 	public static void main(String[] args) {
 		BestTimeStock b = new BestTimeStock();

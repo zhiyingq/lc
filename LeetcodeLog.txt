@@ -10,4 +10,8 @@
 	* 26和27都用了two-pointer的思想，设置一个pointer检查是否满足条件，而另一个pointer则是用来保存/更新数值
 	* 189 用reverse, reverse, reverse法来做，可以做到原地
 	* 121 折线图法，数值下降=更新最小值minprice，数值上升=（可能）更新最大利润maxprofit
+2018年07月14日11:50:19
+	53 Maximum Subarray, 122 Best Time to Buy and Sell Stock II, 
+	169 Majority Element, 219 Contains Duplicate II, 
 
+	* 53: Kadane Algorithm
