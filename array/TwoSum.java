@@ -50,14 +50,15 @@ class TwoSum {
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		// to put the key & value into the hashtable
 		for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i); }
-        
-		for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i); 
+   
             int remain = target - nums[i];
             if (map.containsKey(remain) && map.get(remain) != i) {
 				return new int[]{i, map.get(remain)};
-			}        
+			}
 		}
+			        
+		
 
 		// if no result, throw exception
 		throw new IllegalArgumentException("No two sum solution");
@@ -66,7 +67,7 @@ class TwoSum {
 	public static void main(String args[]) {
 		TwoSum a = new TwoSum();
 		// int[] as = a.twoSumBrute(new int[]{2,7,11,15}, 9);
-		int[] as = a.twoSumHash(new int[]{2,7,11,15}, 9);
+		int[] as = a.twoSumHash(new int[]{2,7,11,15,2,7}, 9);
 		for (int i:as) {
 			System.out.println(i);
 		}
