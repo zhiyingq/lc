@@ -8,6 +8,7 @@
 
 	* 167 和 11 都用了 “逼近法”的思想，即首尾部设置隔板逐渐逼近，可以在o(n)时间完成
 	* 26和27都用了two-pointer的思想，设置一个pointer检查是否满足条件，而另一个pointer则是用来保存/更新数值
+	* 26要take notice, 去掉重复项可以使用sort!
 	* 189 用reverse, reverse, reverse法来做，可以做到原地
 	* 121 折线图法，数值下降=更新最小值minprice，数值上升=（可能）更新最大利润maxprofit
 2018年07月14日11:50:19
@@ -19,6 +20,11 @@
 	* 219: 用hashmap就可以，有一个good idea: map.put(key, value)可以返回之前的previous value
 	* 268: 1. XOR异或运算 2. 用(long)0-n求和-所有数，再转换为int得到最后数，防止overflow
 2018年07月15日12:26:12
-	283 Move Zeroes
+	283 Move Zeroes, 326 Power of Three, 15 3Sum, 18 4Sum
 
 	* 283 本来很简单的一道题，就是在array中用后面的值覆盖前面的值，想得太复杂了，和27的Remove Element是同一个方法。
+	* 326 while-loop，或者找到integer.MAX_VALUE最近的那个3的幂，直接除
+	* 15 Three Sum 主要思想是1.先排序，2.采用LC167的sorted two-sum的思想 3.考虑重复项
+	* 18 Four Sum 主要思路根据3-sum 1.排序 2.筛检重复项 3.ThreeSum
+	其中注意很多时候可以省去工作量，比如nums[i]开始4个连续数是否已经大于target/threetarget
+	关于为什么要筛选重复项，因为到第一个数的时候，后面凡是含有这个数（比如1）的所有组合已经遍历了，因此后续已经没有必要继续考虑该数，因此可直接跳过。而后面的3-sum也是一样。

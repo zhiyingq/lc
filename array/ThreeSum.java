@@ -76,6 +76,7 @@ class ThreeSum {
 					// 这里如果k+1写成k-1的话
 					// k+1的作用是，到达重复的最后一个数字
 					// k-1的作用是，到达重复的第一个数字，这样的话如果需要用到两个重复的该数字，就无法得到答案了
+					// j-1同样
 					while (j < k && nums[k] == nums[k + 1]) { k--; }
 				}
 				else if (nums[j] + nums[k] < target) { j++; }
