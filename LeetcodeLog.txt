@@ -12,6 +12,13 @@
 	* 121 折线图法，数值下降=更新最小值minprice，数值上升=（可能）更新最大利润maxprofit
 2018年07月14日11:50:19
 	53 Maximum Subarray, 122 Best Time to Buy and Sell Stock II, 
-	169 Majority Element, 219 Contains Duplicate II, 
+	169 Majority Element, 219 Contains Duplicate II, 217 Contains Duplicate
+	268 Missing Number
 
-	* 53: Kadane Algorithm
+	* 53: Kadane Algorithm 
+	* 219: 用hashmap就可以，有一个good idea: map.put(key, value)可以返回之前的previous value
+	* 268: 1. XOR异或运算 2. 用(long)0-n求和-所有数，再转换为int得到最后数，防止overflow
+2018年07月15日12:26:12
+	283 Move Zeroes
+
+	* 283 本来很简单的一道题，就是在array中用后面的值覆盖前面的值，想得太复杂了，和27的Remove Element是同一个方法。

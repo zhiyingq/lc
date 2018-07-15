@@ -21,9 +21,8 @@ class Test {
 		}
 		System.out.println();
 		*/
-		int rowIndex = 10;
-		ArrayList<Integer> arr = new ArrayList<Integer>(10);
-		arr.add(5 - 1, 1);
+		int a = 3 ^ 1 ^ 0;
+		System.out.println(a);
 	}
 
 }
