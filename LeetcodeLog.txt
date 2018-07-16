@@ -16,7 +16,8 @@
 	169 Majority Element, 219 Contains Duplicate II, 217 Contains Duplicate
 	268 Missing Number
 
-	* 53: Kadane Algorithm 
+	* 53: Kadane Algorithm: divide and conquor
+	语法：(maxCurrentSum > 0 ? maxCurrentSum : 0)
 	* 219: 用hashmap就可以，有一个good idea: map.put(key, value)可以返回之前的previous value
 	* 268: 1. XOR异或运算 2. 用(long)0-n求和-所有数，再转换为int得到最后数，防止overflow
 2018年07月15日12:26:12
@@ -28,3 +29,31 @@
 	* 18 Four Sum 主要思路根据3-sum 1.排序 2.筛检重复项 3.ThreeSum
 	其中注意很多时候可以省去工作量，比如nums[i]开始4个连续数是否已经大于target/threetarget
 	关于为什么要筛选重复项，因为到第一个数的时候，后面凡是含有这个数（比如1）的所有组合已经遍历了，因此后续已经没有必要继续考虑该数，因此可直接跳过。而后面的3-sum也是一样。
+2018年07月16日15:54:12
+	438 Find All Anagrams in a String, 406 Queue Reconstruction by Height
+	316 Remove Duplicate Letters
+
+	* 438: method: 
+		1. HashMap.getOrDefault(key, 0) + 1
+		2. String.toCharArray()
+		3. Sliding Window的思想
+	* 406: 先按一定规则排序，后swap,关于Comparator的使用：
+		Arrays.sort(people, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return xxx;
+            }   });
+    * 316: Stack; arrays that can count the appearing times; 
+    then we can check the times when they appear again, to make ensure whether the number is still remained or satisfied. *字符串计数器 *Stack的应用
+
+
+
+
+
+
+
+
+
+
+
+
+
