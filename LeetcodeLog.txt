@@ -29,6 +29,7 @@
 	* 18 Four Sum 主要思路根据3-sum 1.排序 2.筛检重复项 3.ThreeSum
 	其中注意很多时候可以省去工作量，比如nums[i]开始4个连续数是否已经大于target/threetarget
 	关于为什么要筛选重复项，因为到第一个数的时候，后面凡是含有这个数（比如1）的所有组合已经遍历了，因此后续已经没有必要继续考虑该数，因此可直接跳过。而后面的3-sum也是一样。
+	
 2018年07月16日15:54:12
 	438 Find All Anagrams in a String, 406 Queue Reconstruction by Height
 	316 Remove Duplicate Letters
@@ -45,7 +46,11 @@
     * 316: Stack; arrays that can count the appearing times; 
     then we can check the times when they appear again, to make ensure whether the number is still remained or satisfied. *字符串计数器 *Stack的应用
 
+2018年07月17日12:51:31:
+    141. Linked List Cycle, 142. Linked List Cycle II
 
+    * 141: 判断linked list是否存在cycle: 用两个指针，一个速度为1的slow和一个速度为2的fast，当他们重合的时候即说明存在circle.
+    * 142: 判断起点在哪里, 当slow和fast重合时，从起点出发速度为1，从slow出发速度为1，当两者重合时即为出发点。
 
 
 
