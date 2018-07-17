@@ -21,8 +21,8 @@ class Test {
 		}
 		System.out.println();
 		*/
-		int a = 3 ^ 1 ^ 0;
-		System.out.println(a);
+		int[] a = new int[] {1,2,3,4,5,6};
+		System.out.println(a[-2]);
 	}
 
 }

@@ -29,7 +29,7 @@
 	* 18 Four Sum 主要思路根据3-sum 1.排序 2.筛检重复项 3.ThreeSum
 	其中注意很多时候可以省去工作量，比如nums[i]开始4个连续数是否已经大于target/threetarget
 	关于为什么要筛选重复项，因为到第一个数的时候，后面凡是含有这个数（比如1）的所有组合已经遍历了，因此后续已经没有必要继续考虑该数，因此可直接跳过。而后面的3-sum也是一样。
-	
+
 2018年07月16日15:54:12
 	438 Find All Anagrams in a String, 406 Queue Reconstruction by Height
 	316 Remove Duplicate Letters
@@ -47,10 +47,15 @@
     then we can check the times when they appear again, to make ensure whether the number is still remained or satisfied. *字符串计数器 *Stack的应用
 
 2018年07月17日12:51:31:
-    141. Linked List Cycle, 142. Linked List Cycle II
+    141. Linked List Cycle, 142. Linked List Cycle II, 16. 3Sum Closest
+    31. Next Permutation 33. Search in Rotated Sorted Array
 
     * 141: 判断linked list是否存在cycle: 用两个指针，一个速度为1的slow和一个速度为2的fast，当他们重合的时候即说明存在circle.
     * 142: 判断起点在哪里, 当slow和fast重合时，从起点出发速度为1，从slow出发速度为1，当两者重合时即为出发点。
+    * 16: 主要思想还是排序+把3sum分割成2sum,随后根据2sum和twotarget的差找到最合适的值并返回。
+    * 31: 还是要多考虑一下原因，找出合适的规律然后写程序
+    * 33: 分情况讨论, 比如Pivot在左边还是右边，同样的如果落在左边，那么右边则是递增数列，target如果落在右边的话就好处理了，如果落在左边就移动high，进入下一个循环（divide and conquor)；同理，如果pivot落在哟变，那么左边递增，target如果落在左边很好处理，*注意范围！，如果落在右边的话就继续进入下一循环。
+
 
 
 
