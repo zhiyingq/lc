@@ -56,7 +56,11 @@
     * 31: 还是要多考虑一下原因，找出合适的规律然后写程序
     * 33: 分情况讨论, 比如Pivot在左边还是右边，同样的如果落在左边，那么右边则是递增数列，target如果落在右边的话就好处理了，如果落在左边就移动high，进入下一个循环（divide and conquor)；同理，如果pivot落在哟变，那么左边递增，target如果落在左边很好处理，*注意范围！，如果落在右边的话就继续进入下一循环。
 
+2018年07月18日10:28:09:
+	2. Add Two Numbers 3. Longest Substring Without Repeating Characters
 
+	* 2: 主要考察了Linkedlist的知识，要注意起点和终点，是否等于null 或者next等于null的情况。
+	* 3: Sliding Window, 要注意边缘情况，同时应该在no duplicate的时候更新，这样可以减少代码量
 
 
 
