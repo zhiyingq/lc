@@ -57,10 +57,14 @@
     * 33: 分情况讨论, 比如Pivot在左边还是右边，同样的如果落在左边，那么右边则是递增数列，target如果落在右边的话就好处理了，如果落在左边就移动high，进入下一个循环（divide and conquor)；同理，如果pivot落在哟变，那么左边递增，target如果落在左边很好处理，*注意范围！，如果落在右边的话就继续进入下一循环。
 
 2018年07月18日10:28:09:
-	2. Add Two Numbers 3. Longest Substring Without Repeating Characters
+	2. Add Two Numbers, 3. Longest Substring Without Repeating Characters, 43. Multiply Strings, 134. Gas Station, 387. First Unique Character in a String
 
 	* 2: 主要考察了Linkedlist的知识，要注意起点和终点，是否等于null 或者next等于null的情况。
 	* 3: Sliding Window, 要注意边缘情况，同时应该在no duplicate的时候更新，这样可以减少代码量
+	* 43: 字符串乘法，可以分解成每个char的乘法，然后用数组保存起来，之后再进行进位运算等操作。
+	* 134: 采用了差数列求和大于0的思想+求得最大整数和片段
+	用了kadane算法但作了一点修改，比如头尾相接（复制数组放到后面）以及从后往前确定start point等。
+	* 134: char[26]保存各个字母的次数，然后再次遍历string s来看首次出现1的，如果全程未出现就返回-1，非常简单
 
 
 
