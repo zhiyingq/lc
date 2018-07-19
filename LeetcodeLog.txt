@@ -68,15 +68,17 @@
 
 2018年07月19日09:42:57:
 	219. Contains Duplicate II [2], 102. Binary Tree Level Order Traversal,
-	93. Restore IP Addresses, 
+	93. Restore IP Addresses, 34. Find First and Last Position of Element in Sorted Array, 39. Combination Sum
 
 	* 102的主要思想: 
 	1. 用DFS遍历
-	2. * 用另一个变量height来控制层数，使得相应的node加入相应的list
-	3. * 用tree.get(height)来调用之前已经存过的list，这是之前没有想到的。一直不知道怎么调用之前已经创建的list，
+	2. √ 用另一个变量height来控制层数，使得相应的node加入相应的list
+	3. √ 用tree.get(height)来调用之前已经存过的list，这是之前没有想到的。一直不知道怎么调用之前已经创建的list，
 	其实原来还可以用这个方法！
 	* 93主要是遍历，找到所有的可能性,整体思路还是比较简单的。复杂度应该是3*3*3*3,constant?
-	
+	* 34就是用简单的二分法，找到第一个满足的就用[mid,mid]保存，之后因为是连续的只要不断更新上下限的值就可以了。
+	* 39: backtracking questions, 明日再看. 今天的主要思想就是先排序，然后递归，从整除的开始算起。
+
 	
 
 
