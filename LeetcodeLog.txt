@@ -66,6 +66,15 @@
 	用了kadane算法但作了一点修改，比如头尾相接（复制数组放到后面）以及从后往前确定start point等。
 	* 134: char[26]保存各个字母的次数，然后再次遍历string s来看首次出现1的，如果全程未出现就返回-1，非常简单
 
+2018年07月19日09:42:57:
+	219. Contains Duplicate II [2], 102. Binary Tree Level Order Traversal,
+
+	* 102的主要思想: 
+	1. 用DFS遍历
+	2. * 用另一个变量height来控制层数，使得相应的node加入相应的list
+	3. * 用tree.get(height)来调用之前已经存过的list，这是之前没有想到的。一直不知道怎么调用之前已经创建的list，
+	其实原来还可以用这个方法！
+	
 
 
 
