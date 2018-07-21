@@ -45,7 +45,7 @@ class SpiralMatrix054 {
 	}
 
 	public static void main(String[] args) {
-
+		
 	}
 
 

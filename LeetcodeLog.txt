@@ -81,6 +81,7 @@
 
 2018年07月20日13:53:14:
 	54. Spiral Matrix, 289. Game of Life, 240. Search a 2D Matrix II
+	48. Rotate Image, 55. Jump Game, 56. Merge Intervals
 
 	* 289: 
 	1. 九种情况的另一种表达方法
@@ -101,8 +102,17 @@
     1. Integers in each row are sorted in ascending from left to right.
     2. Integers in each column are sorted in ascending from top to bottom.
     This is called Young Tableau. Just start from the right upper corner. If the target is larger, then just go down. Else if the target is smaller, then just go left. Since every element on the lower right is larger, and every element on the upper left is smaller, you just need to go DOWN or go LEFT. And the time complexity is O(m + n).
+    * 48: 四个四个轮换, 注意矩阵下标转换时相对坐标和绝对坐标的关系
+    * 55: backward的思想
+    * 56: 注意interval.end要取一个max来保存, 其他就是用了sort和一些corner case
 
-	
+2018年07月21日10:52:44:
+	49. Group Anagrams, 
+
+	* 49: 用Map<String, List>存储结构
+		1. 对于anagrams，可以用char[], 可以用Map<Character, Integer>，也可以分成char[]后排序检查string是否一致
+		2. 关于Collection, Collections的用法 
+		3. 尽量避免重复代码, 关于Map新建ArrayList并赋值, 可以先Map.put(key, new ArrayList<>())再Map.get(key).add(value)l
 
 
 
