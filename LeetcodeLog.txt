@@ -107,12 +107,23 @@
     * 56: 注意interval.end要取一个max来保存, 其他就是用了sort和一些corner case
 
 2018年07月21日10:52:44:
-	49. Group Anagrams, 
+	49. Group Anagrams, 456. 132 Pattern, 209. Minimum Size Subarray Sum
+	38. Count and Say, 58. Length of Last Word
 
 	* 49: 用Map<String, List>存储结构
 		1. 对于anagrams，可以用char[], 可以用Map<Character, Integer>，也可以分成char[]后排序检查string是否一致
 		2. 关于Collection, Collections的用法 
 		3. 尽量避免重复代码, 关于Map新建ArrayList并赋值, 可以先Map.put(key, new ArrayList<>())再Map.get(key).add(value)l
+	* 456: 比较难的优化问题，留到以后解决，目前最佳用的是O(n2)的算法
+	* 209: 整体思路很简单，还是two-point + slidng window的思想。目标是要求找到sum >= s的最短长度，那么可以设置start和end，用two-point的方法。设置end为：从start开始，每次到end的和sum都是刚好>=s的。然后跳出循环，在start的循环中，设定条件while(sum >= s)，每次更新length的长度，并且增加一个start直到sum < s为止。这样不断的后移end,后移start，就可以得到值啦！
+	* 38: 简单的递归
+
+2018年07月22日13:22:42:
+	136. Single Number, 260. Single Number III, 210. Course Schedule II
+
+	* 136: 位运算！位运算！位运算！用XOR来做
+	* 260: XOR + 二进制正负 位运算！
+	* 210: 终极graph + dfs + topological
 
 
 
