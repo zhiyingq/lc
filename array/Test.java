@@ -2,27 +2,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 class Test {
 	public static void main(String[] args) {
-		/*
-		RemoveElement a = new RemoveElement();
-		// nums is passed in by reference. (i.e., without making a copy)
-		int[] nums = new int[] {4,2,0,1,3,4,5,1,2,2,2,2,2,2};
-		int val = 2;
-		int len = a.removeElement(nums, val);
-
-		// any modification to nums in your function would be known by the caller.
-		// using the length returned by your function, it prints the first len elements.
-		System.out.println("The len is: "+len);
-		System.out.println("The new array is: ");
-		for (int i = 0; i < len; i++) {
-    		System.out.print(nums[i]+" ");
+		Stack<Integer> s = new Stack<Integer>();
+		for (int i = 0; i < 10; i++) { s.push(i); }
+		for (int i : s) {
+			System.out.print(i+" ");
 		}
-		System.out.println();
-		*/
-		int[] a = new int[] {1,2,3,4,5,6};
-		System.out.println(a[-2]);
 	}
 
 }

@@ -126,13 +126,25 @@
 	* 210: 终极graph + dfs + topological
 
 2018年07月23日16:19:20:
-	445. Add Two Numbers II, 454. 4Sum II
+	445. Add Two Numbers II, 454. 4Sum II, 留守: 542. 01 Matrix
 
 	* 445: 用stack来存储linkedlist里面的数并进行运算，主要是因为要把它颠倒过来，共用3个stack。
 	注意加法容易遗漏的点：即所有位数已经加完但是进位还不为0的情况，这时候要把进位加上去。
 	* 454: 考虑到即使值相同，index也有可能不同，那么就把4-sum问题转换为2-sum。即，对于A和B中的每个元素进行相加，得到n^2个组合，同理，将C和D中的每个元素相加，得到n^2个组合。那么再看AB中的值是否对应CD中的值，这样可以遍历所有可能的情况。
 	但是AB的值可以存储在数组中，也可以不存储，而CD的值则存储在HashMap中，其中第二个参数为值出现的个数，这是因为要考虑到不同的组合的缘故。最后在O(n^2)的time complexity和space中就可以进行求解。
-	
+
+2018年07月24日15:48:04:
+	284. Peeking Iterator, 345. Reverse Vowels of a String, 341. Flatten Nested List Iterator
+
+	* 284: The basic idea is, before you call next() or peek() or hasNext(), we have already recorded the number: end, peak
+	* 345: 看到reverse的话可以考虑一下Two-pointer, 同时也用了stack的解法,two-pointer考虑的情况要多一些
+	* 341: 
+		1. There is a Stack to save the NestedInteger s to keep the order
+		2. ALWAYS keep the fact that the top of the stack is an integer (see method "stackMaintain()")
+		3. If we call next(), the top integer will be taken, and the remaining stack will be maintained, to make sure that the Condition 2 is satisfied.
+		3. If we call hasNext(), we will change NOTHING to the stack, just returning the fact whether we still have some integers left in the stack.
+
+
 
 
 
