@@ -144,6 +144,17 @@
 		3. If we call next(), the top integer will be taken, and the remaining stack will be maintained, to make sure that the Condition 2 is satisfied.
 		3. If we call hasNext(), we will change NOTHING to the stack, just returning the fact whether we still have some integers left in the stack.
 
+2018年07月26日16:43:04:
+	684. Redundant Connection, 13. Roman to Integer
+
+	* 684: 
+		1. Union-Find的思想，对于n个从0到n-1的数，用一个长度为n的数组来保存，其内容是每一个点的parent. 同时，每一个点都有一个root，就是当id[i] == i的时候。那么当两个点root相同的时候，可以认为两个点在同一个component里面。
+		2. Union: 把root(p)的id设为root(q)，即完成了两个点的连线。
+		3. Find: 判断是否root(p) == root(q)。
+		4. Optimize: 每次把size更小的那个root的id设为size更大的那个root的id.
+		5. Optimize: 每次更新root的时候，把id[i]设置为id[id[i]]来缩小树的长度。
+		6. ****重要！判断一个无向图是否具有circle，只需要判断一条边的两点是否在同一个component里面，如果是，那么加上了这条边之后就会生成circle。
+
 
 
 
