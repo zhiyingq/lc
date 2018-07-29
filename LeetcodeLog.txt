@@ -155,8 +155,13 @@
 		5. Optimize: 每次更新root的时候，把id[i]设置为id[id[i]]来缩小树的长度。
 		6. ****重要！判断一个无向图是否具有circle，只需要判断一条边的两点是否在同一个component里面，如果是，那么加上了这条边之后就会生成circle。
 
+2018年07月29日22:22:35:
+	017. Letter Combinations of a Phone Number, 535. Encode and Decode TinyURL
 
-
+	* 017: 一道非常典型的dfs的题，主要是看对于整个过程的理解，“加了再删”法。
+	* 535: 一道编码和解码题，最简单的，把url保存到List<String>中，缩减的编号就是在List中的位置，然后根据输入的字符串数字访问List下标即可得到Url.
+	String -> Integer: Integer.parseInt(String s)
+	Integer -> String: String.valueOf(int a)
 
 
 
