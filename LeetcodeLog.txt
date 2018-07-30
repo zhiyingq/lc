@@ -156,14 +156,18 @@
 		6. ****重要！判断一个无向图是否具有circle，只需要判断一条边的两点是否在同一个component里面，如果是，那么加上了这条边之后就会生成circle。
 
 2018年07月29日22:22:35:
-	017. Letter Combinations of a Phone Number, 535. Encode and Decode TinyURL
+	017. Letter Combinations of a Phone Number, 535. Encode and Decode TinyURL, 657. Judge Route Circle
 
 	* 017: 一道非常典型的dfs的题，主要是看对于整个过程的理解，“加了再删”法。
 	* 535: 一道编码和解码题，最简单的，把url保存到List<String>中，缩减的编号就是在List中的位置，然后根据输入的字符串数字访问List下标即可得到Url.
 	String -> Integer: Integer.parseInt(String s)
 	Integer -> String: String.valueOf(int a)
 
+2018年07月30日16:10:49:
+	70. Climbing Stairs
 
+	* 70: 一道非常重要的dynamic programming &  fibonacci数列的问题,主要是要了解爬梯子前后的联系，比如f(n) = f(n - 1) + f(n - 2)之类的，及其互斥的关系等。同时要注意很多题目用数学的方法做很容易出错。要转换一下思路。
+	
 
 
 
