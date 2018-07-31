@@ -164,10 +164,28 @@
 	Integer -> String: String.valueOf(int a)
 
 2018年07月30日16:10:49:
-	70. Climbing Stairs
+	70. Climbing Stairs, 475. Heaters
 
-	* 70: 一道非常重要的dynamic programming &  fibonacci数列的问题,主要是要了解爬梯子前后的联系，比如f(n) = f(n - 1) + f(n - 2)之类的，及其互斥的关系等。同时要注意很多题目用数学的方法做很容易出错。要转换一下思路。
-	
+	* 70: 一道非常重要的dynamic programming &  fibonacci数列的问题,主要是要了解爬梯子前后的联系，比如f(n) = f(n - 1) + f(n - 2)之类的，及其互斥的关系等。同时要注意很多题目用数学的方法做很容易出错。要转换一下思路
+	* 475: 应该就是纯思路的问题，可以根据house找最近的heater，从而判断最短的路线。
+	其中有一点，Math.abs(house - heaters[index]) >= Math.abs(house - heaters[index + 1])), 其中>=的使用是由于heaters有可能存在重复项，所以如果仅仅使用>，很有可能卡在重复项上，而使用>=可以很好地避开这一bug！
+
+2018年07月31日09:00:07:
+	91. Decode Ways, 96. Unique Binary Search Trees, 95. Unique Binary Search Trees II, 95. Unique Binary Search Trees II, 69. Sqrt(x)
+
+	* 91: 考虑的因素太多，主要是几个因素： 
+		1. 第一个0 
+		2. 连续的0 
+		3. 后面有0 （导致只能捆绑）
+		4. 0导致的无效code
+	但最后做的解还不是最好的解，实在太复杂了。主要是动态规划的题目做的太少，编程前没有想清楚，导致方向不对，做了很多无用功！
+	* 96: Dynamic Programming非常好的题！逐步分解+推导
+	* 95: 用了96的想法，把G(n)拆分成∑F(i, n)的形式, 而对于F(i, n), 可以新建一个TreeNode(i)作为root, 然后取G(i - 1)中各点作为左子树，对于G(n - i)中的各点，需要用一个private recursion复制各个root及其子树的关系，并将它们的值加上i，这样就可以得到更新后的从i+1开始的右子树。直接使root的右子树等于它就完成了。
+	* 69: Newton Method:
+	求解平方根,首先假设方程f(x) = R - x2; 转换成f(x) = 0求x
+	即: x_n+1 = x_n - f(x) / f'(x) 
+	然后只要设置初值x = R, x = x - (R - x2) / 2x 迭代求解即可
+	另外，考虑到Int的上限，通常如果a, b是int，那么(a + b) / 2 可写为: b + (a - b) / 2
 
 
 

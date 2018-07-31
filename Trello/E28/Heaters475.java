@@ -4,7 +4,7 @@ class Heaters475 {
 	/*
 	1. sort the houses array
 	2. sort the heaters array
-
+	
 	*/
 	public int findRadius(int[] houses, int[] heaters) {
 		Arrays.sort(houses);
@@ -14,6 +14,9 @@ class Heaters475 {
 		for (int house : houses) {
 			while (index < heaters.length - 1 &&
 				Math.abs(house - heaters[index]) >= Math.abs(house - heaters[index + 1])) {
+				if (Math.abs(house - heaters[index]) == Math.abs(house - heaters[index + 1])) {
+					System.out.println(house + " " + heaters[index] + " " + heaters[index + 1]);
+				}
 				index++;
 			}
 			minR = Math.max(minR, Math.abs(house - heaters[index]));
@@ -27,7 +30,7 @@ class Heaters475 {
     public static void main(String[] args) {
     	Heaters475 h = new Heaters475();
     	int[] houses = new int[] {1,2,3,20,17,14,8,30,27,29,31,33};
-    	int[] heaters = new int[] {1,4,15,26,28,33,40};
+    	int[] heaters = new int[] {1,3,3,3,3,3,3,4,20,17,14,8,30,27,29,31,33};
     	System.out.println(h.findRadius(houses, heaters));
 
     }
