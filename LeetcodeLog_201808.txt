@@ -1,0 +1,6 @@
+2018年08月01日15:18:54:
+	274. H-Index, 
+
+	* 274: According to the definition of h-index on Wikipedia: "A scientist has index h if h of his/her N papers have at least h citations each, and the other N − h papers have no more than h citations each."
+	H-index: 正好有x个大于x的数。首先思路想到是排序，然后从后往前倒，直到出现第一个citations[i] <= i的情况，就可以返回。但是排序的时间是O(nlgn)。
+	第二种方法，使用count sorting, 即生成0，1，2，...,n的一个数组，每一个位存放大于等于这个index又小于index+1的数的个数，那么最后一位就是大于等于而没有上限。然后逆序往回，通常来说，等>=index的个数 >= index了，就说明我们的h有一个下限是index。对于index而言，肯定至少有Index个数>=它，这是利用了count的特性，即index对应的数只能是Index（除了最后一个),而其他的数都小于等于它，此时返回即可。由于是count sorting，时间是O(n).

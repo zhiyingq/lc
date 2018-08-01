@@ -13,6 +13,7 @@ class SqrtX069 {
 
 	public static void main(String[] args) {
 		SqrtX069 s = new SqrtX069();
-		System.out.println(s.mySqrt(8));
+		System.out.println(-3/2);
+
 	}
 }
