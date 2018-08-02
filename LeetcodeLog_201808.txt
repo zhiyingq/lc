@@ -1,6 +1,17 @@
 2018年08月01日15:18:54:
-	274. H-Index, 
+	274. H-Index
 
 	* 274: According to the definition of h-index on Wikipedia: "A scientist has index h if h of his/her N papers have at least h citations each, and the other N − h papers have no more than h citations each."
 	H-index: 正好有x个大于x的数。首先思路想到是排序，然后从后往前倒，直到出现第一个citations[i] <= i的情况，就可以返回。但是排序的时间是O(nlgn)。
 	第二种方法，使用count sorting, 即生成0，1，2，...,n的一个数组，每一个位存放大于等于这个index又小于index+1的数的个数，那么最后一位就是大于等于而没有上限。然后逆序往回，通常来说，等>=index的个数 >= index了，就说明我们的h有一个下限是index。对于index而言，肯定至少有Index个数>=它，这是利用了count的特性，即index对应的数只能是Index（除了最后一个),而其他的数都小于等于它，此时返回即可。由于是count sorting，时间是O(n).
+
+2018年08月02日16:29:20:
+	567. Permutation in String
+
+	** Sliding Window主要思想: 
+	array[end]: 简易记法，字符串s.charAt(end)所对应的那个letter出现的次数，保存在array中
+
+	设置一个end和一个begin, 一个数组记录letter出现的个数，count记录不同letter的种类。
+	每次array[end]--， 如果array[end]为0，count--， 而如果count为0，返回true。
+	当然array[end]有可能为负，那么当其为负数的时候，则开始向右移动begin，每次移动array[begin]++，直到array[end]变正为止，当然过程中涉及到count的变化————要注意当array[begin]从0变成1的时候，说明某个数又被添加回队列，
+	所以标志性的就是array[begin]++后，判断array[begin] == 1，从而看一下是否要改变count。

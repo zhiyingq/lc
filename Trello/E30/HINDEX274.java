@@ -13,8 +13,8 @@ class HINDEX274 {
         // if it is where h-index locates, then citations[index] >= index + 1;
         // and citations[index + 1] <= index + 1;
         // or if the index is the last one, we just return the index + 1;
-        for (int i = 0; i < citations.length - 1; i++) {
-        	if (citations[i + 1] <= i + 1) { return i + 1; }
+        for (int i = 0; i < citations.length; i++) {
+        	if (citations[i] <= i) { return i; }
         }
         return citations.length;
     }
