@@ -15,3 +15,9 @@
 	每次array[end]--， 如果array[end]为0，count--， 而如果count为0，返回true。
 	当然array[end]有可能为负，那么当其为负数的时候，则开始向右移动begin，每次移动array[begin]++，直到array[end]变正为止，当然过程中涉及到count的变化————要注意当array[begin]从0变成1的时候，说明某个数又被添加回队列，
 	所以标志性的就是array[begin]++后，判断array[begin] == 1，从而看一下是否要改变count。
+
+2018年08月03日23:54:19:
+	204 Count Primes
+
+	* 204: Sieve of Eratosthenes, 先设定一个长度为n的数组，从2开始，把2的倍数全部去掉，再从3开始，把3的倍数全部去掉……以此类推，同时每看到一个素数就count一下，返回所有的值。
+	
