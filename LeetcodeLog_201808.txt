@@ -20,4 +20,25 @@
 	204 Count Primes
 
 	* 204: Sieve of Eratosthenes, 先设定一个长度为n的数组，从2开始，把2的倍数全部去掉，再从3开始，把3的倍数全部去掉……以此类推，同时每看到一个素数就count一下，返回所有的值。
-	
+
+2018年08月04日12:24:33:
+	19. Remove Nth Node From End of List, 61. Rotate List, 83. Remove Duplicates from Sorted List, 82. Remove Duplicates from Sorted List II, 86. Partition List
+
+
+	* 19: linkedlist的典型例题
+	1. dummy的使用，有效地避免了只有一个head并且需要删除head的问题
+	2. two-pointer的灵活使用，slow & fast
+	3. deleteFromEnd可以先让fast走n步，然后再一起走，这样fast到尾部的时候slow总是比fast慢n步。这样就可以定位要所要删除的位置
+
+	* 61: 比较简单，没啥好说的，先确定长度，在确定需要旋转的index，最后再考虑一点corner case
+	* 82: 比较类似的思想,和83是同类题
+	* 86: 用了两种方法，第一种，定位length以及tail，把所有大数按个移到最后。
+	第二种方法是One-pass的，即直接用两个dummy,一个连接大数一个连接小数，最后首尾相接。在计算过程中考虑必要的corner case以及代码运行的机制。
+
+
+
+
+
+
+
+
