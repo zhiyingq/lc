@@ -35,6 +35,14 @@
 	* 86: 用了两种方法，第一种，定位length以及tail，把所有大数按个移到最后。
 	第二种方法是One-pass的，即直接用两个dummy,一个连接大数一个连接小数，最后首尾相接。在计算过程中考虑必要的corner case以及代码运行的机制。
 
+2018年08月06日08:51:52: 
+	21. Merge Two Sorted Lists, 24. Swap Nodes in Pairs, 92. Reverse Linked List II, 143. Reorder List, 147. Insertion Sort List
+
+	* 21: dummy + traverse OR recursion
+	* 92: 有一点动态规划的意思，本来做的是找到需要reverse的片段的首尾，然后再逐个添加。但其实不用的，只要不断把“尾巴”往后添加一个就可以了，这样就不需要先找到tail了。如果"tail"和"head"相差的比较大，那么这个算法就是2n的时间。而优化的算法用One-pass就可以通过了。
+	* 143: 找到mid， reverse后半部分， 逐个插入
+	* 157: 稍微有点搞脑子，需要一个dummy来保持list头，同时也要非常小心list尾部next需要剪除，否则很容易导致死循环。在这题里，dummy不需要首先和head相连，反而是直接新建一个dummy把剩下的一个个放上去即可。
+	
 
 
 
