@@ -94,6 +94,9 @@
 
 	本题不仅要求preorder, inorder, recursion的基本概念，还要从大局上来看preorder和inorder等等的性质，需要培养一种全局意识。
 
+2018年08月10日09:41:01：
+	106. Construct Binary Tree from Inorder and Postorder Traversal, 
 
+	* 106: 思路和LC105差不多，还是用recursion来做。只是这次是每次取postorder的最后一个数Instead of proorder第一个数。
 
 
