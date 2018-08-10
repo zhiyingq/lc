@@ -6,10 +6,19 @@ int add(int x, int y) {
 	return x + y;
 }
 
+void createarray() {
+	int a[4][4];
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			a[i][j] = 4 * i + j;
+			printf("a[%d][%d] = %d \t",i,j,a[i][j]);
+		}
+		printf("\n");
+	}
+}
+
 int main() 
 {
-	int i = 100;
-	int *p = &i;
-	cout << "p (i's address) equals " << p << endl;
-	cout << "*p (i's value equals " << *p << endl;
+	createarray();
+	return 0;
 }

@@ -42,10 +42,57 @@
 	* 92: 有一点动态规划的意思，本来做的是找到需要reverse的片段的首尾，然后再逐个添加。但其实不用的，只要不断把“尾巴”往后添加一个就可以了，这样就不需要先找到tail了。如果"tail"和"head"相差的比较大，那么这个算法就是2n的时间。而优化的算法用One-pass就可以通过了。
 	* 143: 找到mid， reverse后半部分， 逐个插入
 	* 157: 稍微有点搞脑子，需要一个dummy来保持list头，同时也要非常小心list尾部next需要剪除，否则很容易导致死循环。在这题里，dummy不需要首先和head相连，反而是直接新建一个dummy把剩下的一个个放上去即可。
-	
 
+2018年08月07日10:52:30:
+	138. Copy List with Random Pointer, 148. Sort List, 160. Intersection of Two Linked Lists, 203. Remove Linked List Elements, 206. Reverse Linked List, 430. Flatten a Multilevel Doubly Linked List
 
+	* 138: 本来的思想是用一hashmap存node的下标，同时copy一份node，在第二个循环中新建一个copy的数组，这样我们可以根据下标快速访问。在第三个循环中，从Map中得到原node.random的下标，从数组中读取，这样可以得到copy的random。
 
+	另一种思想是，新建一个hashmap，其中key是原node，value是copy后的node。第一个循环即创建一个这样的map，在第二个循环中，copy的指针跟着value走，把相应的next和random链接起来。
+
+	* 148: divide and conquor / mergesort
+	* 160： 考虑两个single linked list的总长度，如果两个指针都走A和B，那么总长度一定相等，假设他们含有共同的片段：由于single linked list的特性，一旦重合了就不可能分叉了，因为分叉需要两个next，由此，总长度相等，重复部分相等，那么第一次相等的时候 = 重复部分开始的时候。 而如果没有重合， 那么走完总长也不会重合，就判断最后一个数是否相等即可，如果巧妙地运用null会更好。
+	* 203: 考虑算法的特性，小心有坑！每次都是删除next，那么删除next必然会更新next，所以不能急于跳出循环，而是应该继续判定，直到能跳到next为止。
+	* 206: 由于每次都要reverse后面的几个数，同时我们每次都要返回head，那么就要保留node.next，然后再让这个next.next = node。这个方法是比较tricky的。space: O(n), time: O(n)
+	* 430: Recursuion，见文档<FlattenMultilevelDoublyLinkedList430.java>
+
+2018年08月08日09:09:24:
+	LinkedListStack<E> & LinkedListQueue<E>
+	20. Valid Parentheses, 155. Min Stack, 225. Implement Stack using Queues, 232. Implement Queue using Stacks, 94. Binary Tree Inorder Traversal
+
+	* 20: 没啥难度...就是比较简单的一道stack,有对应的括号就消除
+	* 155: 额外存储了一个minSoFar来保存目前为止看到的最小数，可以是继承前者也可以是更新当前值（如果当前值小于以往的最小值的话），就能实现min的constant time获取。
+	* 255: 要求对stack和queue有比较好的了解，比如如何维护一个queue来实现stack的功能。由于stack是LIFO，所以其实每次都是把queue的last poll out, 所以在每次存入queue的时候，都要把last提到第一个来，而把其他的数放到后面去，这样的话后面peek()和pop()的功能都能实现了。
+
+	其实主要是push时即先维护，然后peek()和pop()的时候就不需要考虑其他问题。干就完了！
+	* 232: 用两个stack,在push时即维护stack,使其新放入的元素永远在最底层，而旧元素在最高层。
+	* 094: 详见Bear: Stack - Binary Tree Iterative Traversal
+	iterative, recursive以及morris traversal三种方法，要注意iterative和recursive机制的不同，代码一定要注意！不然非常容易陷入死循环。
+
+2018年08月09日10:17:25:
+	144. Binary Tree Preorder Traversal, 173. Binary Search Tree Iterator,
+	641. Design Circular Deque, 606. Construct String from Binary Tree, 105. Construct Binary Tree from Preorder and Inorder Traversal
+
+	* 144: 关于iterative，还是决定一开始不把root加进去比较好判断，然后while-loop的判断条件变成node不能为null，stack不能为空，这两个条件不能同时满足。逻辑还是一样的，node非空时把node push进去，同时有一个while-loop把它所有的左孩子放进去，直到没有左孩子为止。注意，放进去的同时会放到list中。没有左孩子了再pop，并把右孩子放进去。以此类推。
+
+	另外本题用Morris Traversal还是可以做的，只是会改变顺序，网上已经有了可以不改变顺序的代码，留作以后复习。其基本思路就是，如果左孩子或右孩子为空（但不能同时为空），那么直接往另一个孩子方向走就可以；如果两个孩子同时存在，那么首先*找到最子树的最低点（法则：有右找右，没右找左），然后*把右子树放到最低点的左孩子处，然后node往左移，进入下一个循环。
+
+	* 173: 首先，O(1) time和O(h) memory说明，肯定会有一个东西来存储相应的节点，这里可以用stack来存储从root开始所有的左孩子，每次访问一个就push一个，那么很显然，到最左孩子处就是当前BST的最小值。每次pop的时候，我们还是要把“大于这个最小值的第二最小值”放进来，那么就可以把该节点的右孩子加进来，同样的，只加右孩子以及右孩子的所有左孩子，这样就可以得到next smallest了。以此类推。
+
+	* 641: Circular Double-ended Queue (Deque)
+	Circular: 头尾相连的，其实用一个dummy就可以了
+	Double-ended: 双向链表，有next和prev。
+
+	* 606: 比较简单的Recursive
+
+	* 105: 本题是根据preorder和inorder的顺序来构造tree,需要从全局上把握preorder和inorder。对于inorder来说，我们可能不知道root在哪里，但是必定满足这样的关系：
+	[root.left][root][root.right]
+	而对于preorder来说，我们可以知道root在哪里，且我们也知道会有这样的关系:
+	[root][root.left][root.right]
+	因此，我们可以选定preorder中的第一个元素作为root，同时找到inorder中root的位置，这样我们就可以推知root.left和root.right的长度。这样我们就可以进行递归，比如分别选定preorder和inorder的[root.left]作递归，直到长度为1为止，对于root.right也是同样。
+	本题过程中，选定了preorder中root之后，要在inorder里找root的下标，这样操作n次可能会是n2的复杂度，所以前期可以用map来存储root元素与下标的关系，那么一共需要n次递归，最后的复杂度就是O(n)。
+
+	本题不仅要求preorder, inorder, recursion的基本概念，还要从大局上来看preorder和inorder等等的性质，需要培养一种全局意识。
 
 
 
