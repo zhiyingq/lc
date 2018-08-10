@@ -96,7 +96,23 @@
 
 2018年08月10日09:41:01：
 	106. Construct Binary Tree from Inorder and Postorder Traversal, 
+	374. Guess Number Higher or Lower, 399. Evaluate Division
 
 	* 106: 思路和LC105差不多，还是用recursion来做。只是这次是每次取postorder的最后一个数Instead of proorder第一个数。
+	* 374: 主要是考察overflow的情况，比如mid = low + (high - low) / 2;
+	triple = low + (high - low) / 3; triple2 = high - (high - low) /3
+	但不能是triple2 = low + 2 * (high - low) / 3，否则会导致overflow
+	* 399: 用了Union-Find的思想，有两个map，一个map用于存放每个string所指向的下一个string，比如b->c，其中length为3，就表明3b=c。另一个map用于存放每个string对应的size和length，size指的是以这个string为root的点的个数，length指的就是它指向上一个string所需要乘的乘子。
+	初始化后，按以下步骤进行计算：
+		1. get the size, put the string with smaller size as the denominator, put the string will larger size as the nominator, adjust the coefficient.
+		2. make the smaller string's root point to the larger string's root
+		3. update the larger string's size as size(small) + size(large)
+		4. update the smaller string's length as 
+			coefficient * larger.length_to_root / smaller.length_to_root 
+
+		Then, for queries:
+		1. find if the map contains the string, if not, -1
+		2. find if the smaller and the larger string are with a same root, if not, return -1.
+		3. if yes, for example, b / c, return c.length_to_root / b.length_to_root
 
 
