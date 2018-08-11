@@ -96,7 +96,7 @@
 
 2018年08月10日09:41:01：
 	106. Construct Binary Tree from Inorder and Postorder Traversal, 
-	374. Guess Number Higher or Lower, 399. Evaluate Division
+	374. Guess Number Higher or Lower, 399. Evaluate Division, 150. Evaluate Reverse Polish Notation
 
 	* 106: 思路和LC105差不多，还是用recursion来做。只是这次是每次取postorder的最后一个数Instead of proorder第一个数。
 	* 374: 主要是考察overflow的情况，比如mid = low + (high - low) / 2;
@@ -114,5 +114,11 @@
 		1. find if the map contains the string, if not, -1
 		2. find if the smaller and the larger string are with a same root, if not, return -1.
 		3. if yes, for example, b / c, return c.length_to_root / b.length_to_root
+	* 150: 一道用stack做的很简单的题
+
+2018年08月11日09:36:41:
+	100. Same Tree
+
+	* 100: 简单的递归，判断每个节点是否相同，继而判	断左右孩子是否相同
 
 
