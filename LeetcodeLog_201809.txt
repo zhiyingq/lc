@@ -1,0 +1,108 @@
+2018年09月03日14:38:47:
+	137. Single Number II
+
+	137: 三进制位运算，见bear - "Bit Calculation Problems - Problem1"
+
+2018年09月04日09:07:40:
+	125. Valid Palindrome, 139. Word Break, 131. Palindrome Partitioning, 132. Palindrome Partitioning II
+
+	* 125: 设置两个双指针 是简单的
+	* 139: 可以用dp和dfs搜索剪枝来做。其本质上的想法都是细分问题，比如dp我们设置:
+	dp[i] = If s.substring[0, i] is contained in the word dict
+	而判断dp[i]的时候，只需遍历j: 0 -> i，看是否dp[j]成立以及s.substring[j, i]成立，
+	如果这样的话就可以设置dp[i] = true了。然后如果j == 0以及s.substring[j, i]成立的话
+	可以不用dp[j]成立。
+
+	暴力搜索剪枝，可以从两个方面：
+	1. 设置字典中的minLen和maxLen，使得搜索的时候就在这个范围内搜索，可以减少大量不必要的工作。
+	2. 设置visited数组，用来表示visited[i]: s.substring(i)是否有解，也就是说，
+	如果曾经我们碰到某个点i，发现其后的substring无解，那么以后我们再走到i的时候就可以直接返回false.
+	* 131: 比较简单的backtracking	
+	* 132: dp的思想, dp[i]表示s.substring(0, i)的最小cut，因此对于所有的j < i:
+	如果s.substring(j, i)是palindrome的， 取Math.min(s.substring(j, i) + dp[j])
+	如果不是的话就不取。由于如果substring是单个字符必成立，所以不用担心没有值的问题。
+
+2018年09月12日11:44:39:
+	127. Word Ladder, 130. Surrounded Regions, 128. Longest Consecutive Sequence
+
+	*127: 主要是受了之前dp的影响，这道题其实可以用BFS做，我们可以设置以下几个container:
+	1. 一个存放剩余word的wordSet
+	2. 一个用来进行BFS的wordQueue
+	每次我们从wordSet中挑选符合条件的word放入wordQueue中*，同时记得要删除wordSet中的word，这样的话就不需要设置一个visited array了。在每一层中更新distance，这样就不需要对每个string存distance。最后一旦发现pop出来的string是endWord,我们就可以返回距离。
+
+	*如何挑选符合条件的word呢？首先我们有一个targetWord,我们只要change它的每一位从a到z就可以了，所以复杂度是26 * targetWord.length(),且只要wordSet里有一个word匹配，那么就删除它并加入到queue中。
+
+	*130: 这道题已经说明了只有连通了border的'O'才能不被消除，那么其实只要对border上的几个'O'进行dfs就可以了。凡是在border上的以及和border连通的'O'全部设置为'*'，然后无视其他的符号。最后遍历整个board, 把所有的'O'改成'X', 把所有的'*'改成'O'就可以了。
+
+	*128: 要在n的时间里找出按顺序排列的最长数。先把所有数放入一个hashset中，如何判断一个数会生成序列？即：set.contains(num - 1)，如果存在，那么可以直接跳过，因此num - 1必定存在于后面的某处。如果!set.contains(num - 1)，那么说明这个数是一个序列的起点，我们直接数num + 1这样一直可以加到多少为止。因此时间最多是O（2n)的。因为如果一个数在序列中，那么只有序列头会访问一次，其他序列中的数会直接跳过。
+
+2018年09月13日14:12:59:
+	191. Number of 1 Bits, 151. Reverse Words in a String, 152. Maximum Product Subarray
+
+	*191: 一道简单的位运算，只要看32位每一位和1的关系即可。另外>>的运算要比*2快很多。
+	*151: 用到了java string的split方法，s.split("\\s+"), s.trim()等等。另外用StringBuilder要快一些
+	*152: 讨论的情况比较多，首先split0，然后看是否负数为偶数个，如果偶数个直接算，如果奇数个则看第一个负数和最后一个负数分成的4种情况哪个比较大一点。
+	另一种即是keep一个“到当前数字为止的最大值”和“到当前数字为止的最小值”，然后没次取最大值*该数，最小值*该数，该数中的最大值，最小值同样，然后更新全局最大值。
+
+2018年09月29日16:54:49:
+	153. Find Minimum in Rotated Sorted Array, 154. Find Minimum in Rotated Sorted Array II, 162. Find Peak Element
+
+	*153: 可以用多种方法：
+	首先我的想法是，只要判断某一个数是否大于它后面的数就可以了。如果是的话就直接返回“后面一个数”，因为那个数会比较小。但是如果不是的话，我们就判断这个mid是否大于当前的high，如果大于的话，low = mid + 1, 大于的意思表示首先这个数不是我们要找的数，其次pivot肯定在后面。如果小于的话，就令high = mid, 这是比较non-trivial的，因为我们一直找的是pivot中更大的那个数，所以这个数划掉后就会漏掉情况。
+
+	第二种方法是，有一个真理：只要nums[low] < nums[high]即可。
+	所以每次先判断是否nums[low] < nums[high], 如果是，直接返回答案。
+	然后再看如何移动low和high, 如果mid < high, 例如4,1,2,3 说明最小值肯定<=mid, 因此我们需要移动high, 但我们不确定mid是否是最小的那个数，所以只能使得high = mid;
+	如果mid >= high （实际上mid和high是不可能相等的，因为我们控制条件是low < high，这样的话mid最多只能和low相等）, 例如4,5,6,7,1, 那么很显然mid不是我们想要的解，需要至少移动一次，因此我们移动low使得low = mid + 1. 这样我们就能不断逼近了。当low == high的时候就可以跳出循环，这时候得到的应该就是最终的解，直接返回nums[low]和nums[high]都可以。推荐第二种方法。
+
+	*154: 整体的思想和153是类似的。
+	1.首先， 如果nums[low] < nums[high], 那么直接返回nums[low]即可。
+	2.如果nums[mid] < nums[high], 我们只需要搜索范围[low, mid]
+	3.如果nums[mid] > nums[high], 那么pivot必定在右侧且不是mid, [mid+1， high]
+	4*.如果nums[mid] == nums[high], 那么pivot肯定在两侧，考虑到这个，我使用了递归的方法。但是如果用while-loop的话只能考虑一种情况，在这里就比较tricky地使用了high--，就是在[low, --high]的范围里直到mid和high不相等为止。
+	5*.如果跳出循环了，说明low == high, 此时的解必是最后一个符合条件的解，直接返回即可。
+
+	*162: "bear - binary search"
+
+2018年09月30日09:29:34:
+	165. Compare Version Numbers, 166. Fraction to Recurring Decimal, 168. Excel Sheet Column Title, 171. Excel Sheet Column Number
+
+	* 165: 不是简单的比较一位数的问题，需要把string split("\\.")成string数组，然后对于每个对应的string进行比大小。
+	string比大小的话要看是否有leading 0s, 有的话要去除，然后看谁的长度大谁就大。如果长度一样，还要进行每个数位的比较。
+
+	对应的string比较完毕后，如果还是一样，那么就看剩下未到结尾的那个是否后面还有大于0的数，有的话返回相应的1或-1，没有的话返回0。
+
+	* 166: 这道题主要考察了除法的运算。需要注意的几点：
+	1. 记录符号，Integer.MIN_VALUE / -1 会导致overflow
+	2. 转换成long后取绝对值
+	3. 先记录下decimal的因数
+	4. 考虑小数部分，我们要记录每一个remainder, 包括第一个。然后模拟除法运算，比如先乘10然后再除取余数，把余数和当前的size()保存到map中，如果之后碰到了一模一样的余数，说明已经陷入了循环，这时候把size()取出来作为index插入括号到结果中即可。
+	！最重要的还是要把整个过程自己演算一遍，这样才知道先后顺序。
+
+	* 168: 从最后一位往前，最后一位是 num % 26 所对应的数，如果要使0对应A，1对应B，那么就是mod = (num - 1) % 26.
+	然后前一位就是把num扣除模数再除以26，即(num - mod - 1) / 26，因此这里的mod少减了一位，所以这里要加上。
+
+	* 171: 就像26进制数一样。从最高位（最左侧）开始乘和加。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

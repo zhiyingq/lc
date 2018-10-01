@@ -1,8 +1,8 @@
 2018年07月22日13:52:18:
 	1. Collection FrameWork
-	2. Review Digit Calculation in CS & Digit Operation: &, ^, ... 
-		2.1 LeetCode 260
-	3. Review Arrays: slindg window; Kadane; two-pointer; ...
-	4. Review 210; Topological order; Graph
-	5. BFS, DFS... 留守问题: 542. 01 Matrix
-	6. Stack, iterator, recursion, ... 留守问题: 341. Flatten Nested List Iterator
+	2. BFS, DFS 
+
+
+留守问题，尚未想明白的: 
+	542. 01 Matrix 
+	117. Populating Next Right Pointers in Each Node II

@@ -121,4 +121,193 @@
 
 	* 100: 简单的递归，判断每个节点是否相同，继而判	断左右孩子是否相同
 
+2018年08月13日10:53:26:
+	103. Binary Tree Zigzag Level Order Traversal, 101. Symmetric Tree, 
+	104. Maximum Depth of Binary Tree, 98. Validate Binary Search Tree, 230. Kth Smallest Element in a BST
+
+	* 103: queue+size+reverse法，或者dfs思想的bfs，用level获取list中的List<integer>元素。见bear “Tree - traversal 树的三种BFS遍历”
+	* 101: mirror的思想，左右子树是否对称->判断左右字数是否镜像->判断两棵树是否镜像。见Tree - 树的三种BFS遍历/是否对称树。 当然也可以认为自己和自己是镜像=对称。
+	* 104: 递归的思想 一个参数记录当前depth, return自己的左孩子和右孩子中较大的那个depth
+	* 098: 比较容易出错的一道题，首先BST不仅要满足左孩子要小于node，右孩子大于node，还要满足[所有左子树的node]小于node，[所有右子树的node]小于node，因此不能简单的判断node.left.val < node.val之类的，还要设置阈值，比如left中最大值要改成node.val，right中最小值也是node.val。
+
+	另外int有上下界，这里如果设置Integer.MAX_VALUE, Integer.MIN_VALUE很容易在碰到上下界的时候出错，所以设置成long会比较好。
+
+	另外看到有的解答用了in order traversal的思路来做，感觉可以！因为总是按照left-root-right的顺序，所以顺序总是从小到大排列的。
+	* 230: 用了in-order-traversal来做的，就是中序遍历计算pop（）了多少次，达到k次的时候即返回。也有办法可以用recursion来做。突然感觉对recursive的算法的理解还是不够…
+	
+	如果用recursive的方法，也是有一个Private instance: count和result，count用来存放每个数是nth小的数，result用来返回结果。其实就是根据In-order recursion的思想来做，先遍历左子树，然后count++，再遍历右子树，当count等于k的时候就保存result，当count>k的时候就不进行递归。
+
+2018年08月14日10:51:02:
+	99. Recover Binary Search Tree, 107. Binary Tree Level Order Traversal II
+	112. Path Sum, 113. Path Sum II, 114. Flatten Binary Tree to Linked List, 222. Count Complete Tree Nodes
+
+	* 99: Morris Traversal! 见bear "Tree - Morris Traversal"
+	* 107: 用queue很简单，每次add 0位置就可以了。用DFS的话也是记录level和size，每次add 0，相应的位置应该是“越后面的放在越靠前”，位置是size - level。
+	* 112: 总体比较简单的，要注意条件必须是节点
+	* 113: DFS, 见bear - "Tree - DFS/backtrack", 需要用一个list来记录当前访问过的值
+	* 114: 和之前做的Morris Traversal有点类似，就是把左孩子移到右孩子，同时左孩子里面最大的数接着原先的右孩子。
+	* 222: 有点类似divide and conquor, 首先我们知道，一颗complete BT的左子树一定是一颗complete BT, 右子树也一定是颗complete BT, 那么就可以用递归的思想来做。当是complete BT且左右对称时，直接2**height - 1就可以了，其中2的n次方可以用到位运算，1 << n，重要！
+
+	而一棵树分解到无穷小（1个node）的时候必定是一颗complete BT,所以在递归的时候只要把左右子树的node加起来就可以了。关于time complexity，首先判断高度是lgn，其次，对于一颗complete BT而言，如果把它对半分，必定有一半是完全对称的，另一半则可能是不完全对称，所以要这样操作lgn次，最后的复杂度是(lgn)2
+
+2018年08月15日11:19:27:
+	108. Convert Sorted Array to Binary Search Tree, 111. Minimum Depth of Binary Tree, 144	Binary Tree Preorder Traversal, 116. Populating Next Right Pointers in Each Node, 117. Populating Next Right Pointers in Each Node II
+
+	* 108: recursion的思想，找到中间那个点，凡是在左边的都是左子树，凡是在右边的都是右子树，然后low > high的时候返回null就行，总体比较简单的。
+	* 111: bear - “Tree - Overview”， 取最小和取最大有一些不同，取最大只要无脑取最大的深度就可以了，不管你的左右孩子是否为null，但是取最小的话必须考虑左孩子、右孩子为null的情况，否则的话深度就会停留在null的level，而不会增加了！
+	* 144: 今天考虑了Morris Traversal的preorder实现方法，见 bear - "Tree - Morris Traversal", 其思路和in-order是一模一样的，只是对当前node的business顺序有一些不同。
+	* 116: 用了DP的思路，先连接left child和right child，然后再连接right child和next的left child。主要是要找到一个动态的思路……
+	* 117: 好难好难，用一个dummynode来串联下一层的node，还是需要先在草稿纸上推算好再写代码，不然太太太太太太太太太太太太太太太太太太太太太太太太太太太太太太太太容易出错了。
+	这道题其实也是level-order遍历，见bear - "Tree - 树的三种BFS遍历/level-order/是否对称树"，这道题提供了一种思路，就是树的Level-order遍历，如果含有next的这种题目，可以加一个dummy node来做，就像linked-list一样。
+
+2018年08月16日08:25:54:
+	257. Binary Tree Paths, 129. Sum Root to Leaf Numbers, 145 Binary Tree Postorder Traversal, 236. Lowest Common Ancestor of a Binary Tree
+
+	* 257: 本题可以直接用string的加法，但是这样的话会创建N个对象，N为树的节点数，占用了N的空间。因此这里用了StringBuilder来代替，但是String是immutable的而StringBuilder是mutable，导致我必须访问完一个节点后删除对应的StringBuilder的内容。那么在这里就需要记录每个node.val转换成string后的长度，然后在StringBuilder里把它相应地删除掉。一开始很简单的设置成删除最后一个数或者最后三个数，这里就没有考虑到数字的位数、正负号等等。
+	* 129: 可以设置一个"当前的和", current = current * 10 + node.val, 这样不断跟进更新值。一开始用了string，其实作用是一样的，但是string占用的内存太多了。这种可以用数字运算的就尽量用数字进行运算把！
+	* 145: postorder: left -> right -> root, 现在用postorder.reverse, which is root -> right -> left, 这样的话就可以用之前与preorder类似的stack方法，用Iterative的方法就可以实现了。详情：bear - "Stack - Binary Tree Iterative Traversal"
+	* 236: Tree - Overview -> 题型2 判断共有的最小ancestor
+
+2018年08月17日12:49:46: 
+	332. Reconstruct Itinerary, 841. Keys and Rooms
+
+	* 332: 见 "Graph - Eulerian path & Eulerian Cycle - Hierholzer's algorithm"
+	* 841: 见 "Graph - Depth First Search" 题型1
+
+2018年08月18日17:47:06:
+	802. Find Eventual Safe States
+
+	* 802: 本题稍微有点搞得，主要是判断每一个node往后走会不会碰到一个circle，也就是说，不一定自己在circl中。主要设置几个参数, visited, cycle, onstack. visited表明一个node的cycle性质已经被决定了，而cycle表明它是否会碰到一个cycle，onstack表示该数是否在递归中。
+
+	在递归函数中，首先看一个数是否visited，如果visited，那么只要返回它的cycle属性就可以。如果没有visited，就看她是否在stack上，如果已经在了，那么cycle=true，返回。如果不在，那么放入stack，然后其cycle值由其后面的Neighbor决定。当跳出循环的时候，出stack，visited改成true。
+
+2018年08月20日17:37:56:
+	207. Course Schedule, 743. Network Delay Time
+
+	* 207: DFS / Kahn's Algorithm, 见bear - "Directed Graph - Detecting Cycle / if DAG". 
+	* 743: bear - "Shortest Path - Dijkstra’s Algorithm - Nonnegative"
+
+2018年08月21日10:45:07:
+	133. Clone Graph, 310. Minimum Height Trees
+
+	* 133: 本题和"138. Copy List with Random Pointer"有异曲同工之处，即这种copy类的题型，用HashMap来一一对应非常有用。key是原node，value是复制后的node, 将他们根据原node的关系串联起来。
+	* 310: 有点类似Kahn's algorithm. 从degree为1的leaf开始，我们先使用一个leaves的队列，每次pop()出来一个Leaf，进行graph中相应的操作（删除neighbor中相应的leaf),如果发现对应的degree为1了，push到queue中。直到最后queue的size<=2为止。
+
+	还可以参照Kahn's algorithm设置一个indegree数组，想象每一个leaf都指向相应的neighbor，在每次删除leaf的时候，对graph保持不动，对graph中的Neighbor进行相应的减去indegree的操作，如果为1，则加入。但是这样的话整个逻辑比较混乱。
+
+2018年08月22日07:47:53:
+	785. Is Graph Bipartite?, 005. Longest Palindromic Substring, 006. ZigZag Conversion, 7. Reverse Integer
+	
+	* 785: 见bear - "Graph - Coloring Problem"
+	* 005: 见bear - "String - Problems: Palindromic"
+	* 006: 可以计算i和row的关系来不断把字符加进去，当然也可以转换思路，不要用i，用每一行的index来操作，比如用一个指针分别上下往返添加字符。
+	* 007: 关于reverse一个int，可以考虑int x对10的余数，然后用result 不断乘10再加余数的方法。关于判断一个数的是否会overflow，可以先把它赋值给long, 然后再看long和int是否一样。
+
+2018年08月23日09:53:24:
+	8. String to Integer (atoi), 12. Integer to Roman, 9. Palindrome Number, 14. Longest Common Prefix, 22. Generate Parentheses
+
+	* 008: 要考虑太多情况了… 在第二遍做的时候，关于str和int的相互转化要考虑 base = base * 10 + charAt(i)这样的形式，用String.valueOf(int)或者Integer.parseInt(string)有点太慢了！
+	* 012: 其实直接暴力运算考虑所有的组合就可以了…
+	* 009: 考虑reverse和原数字是否相等即可，或者考虑reverse的一半是否和原数字相等
+	* 015: 感觉代码简洁度还不够........
+	* 022: backtracking的思想！经典的backtrack题，保持“在某些条件下，每加一个左括号，要加一个右括号“的规则然后继续运算！
+
+2018年08月24日08:42:05:
+	28. Implement strStr(), 29. Divide Two Integers, 36. Valid Sudoku, 40. Combination Sum II, 46. Permutations
+
+	* 28: 代码不够整洁…主要思路还是很简单的
+	* 29: 主要思想是，既然不能用除法，那么就用binary addition, 让加法不断迭代。 比如考虑dividend和divisor，对于一些corner case先不说。我们考虑：
+	sum += sum, 那么最后sum = 0 + 1divisor + 2divisor + 4divisor + ... + 2^n divisor, 其中sum <= divisor, 这样我们就得到了乘子 0 + 1 + 2 + 4 + ... + 2^n
+
+	然后继续考虑dividend - sum, divisor
+	这样的话就有点类似binary求解乘子，并且总是可以得到解。
+	* 36: 遍历的时候把每个元素放入HashSet, 可以设置3个HashSet, 分别放置某一行、某一列、某一个block的所有数字，如果发现有重复的，return false。
+
+	如果用3个hashset，那么到某一行i的时候，想象以(i,i)为中心的第i行以及第i列上所有元素都要考虑，以及block也是关于斜对角线对称的那两个需要考虑。
+
+	如果用1个hashset，那么则设置string的hashset，对于某一行是"r" + 行下标 + 数字的形式，同样地，col和block也是如此。这样只要对整个board进行遍历，判断是否有重复的string即可。
+	* 40: 【看到筛除重复，就要想到排序清理法】
+	下面对有效性进行论述，假设数组: 1,1,1,1,...,1,2,2,3,4,4,5,....
+	共有x个1, 那么当我们做第一个1的时候，已经考虑过含有1~x个1的所有情况了，因此，后面的完全不需要考虑！0个1的情况会在到达2的时候考虑。
+	* 46: 也是一道backtracking的题目，和Stanford-backtracking课上讲的几乎一样。我的方法是维护一个list来放置已经选定node，同时维护一个list来记录剩余的node。只是对于add和remove的效率有点怀疑。比如ArrayList的add会导致后面的元素后移，而linkedlist访问到某个点就需要一个一个去数。remove同样，ArrayList的remove会导致后面的元素前移，而linkedlist还是需要找到那个index才行。 还有一种方法是用visited来记录已经保存的node，虽然访问速度比较快，但是这样还是需要遍历visited才可以，还是不能显著提速。
+
+	For linkedlist: remove(int) and remove(Object) operations, on the other hand, are not O(1). They requires traversal, so you correctly identified their costs as O(n).
+
+2018年08月25日21:45:44:
+	47. Permutations II, 50. Pow(x, n)
+
+	* 47: 和46大致一样的思路，但是这次会有重复的字符。主要思想是排序+对于重复的字符严格按照从前到后的顺序访问，否则就会出现同样数字的转置的重复现象。
+	* 50: 递归的思想，主要考虑n为-Integer.MIN_VALUE的情况，只要把指数改成-(n+1)，底数改成1/x然后再补乘一个1/x就可以了。
+	感觉对double类的运算不是很熟悉，似乎double类Overflow后就直接变成infinity了，不会像Int一样变成其他值。所以感觉double类的运算会更安全
+
+2018年08月26日15:59:00: 
+	51. N-Queens
+
+	*51: bear - BackTracking Problems Problem 2
+
+2018年08月27日08:21:57:
+	52. N-Queens II, 59. Spiral Matrix II, 60. Permutation Sequence,
+	62. Unique Paths
+
+	* 52: 和51几乎一模一样
+	* 59: 直接按照从外向内的顺序遍历即可，每一个外层按照从左到右、从上到下、从右到左、从下到上的顺序直接往里填就行了。
+	* 60: 用了两种方法，一种就是暴力搜索枚举。第二种其实可以根据数学推算出来，比如k和(n-1)!的关系，如果k / (n-1)! <= 1，只要取第一个数出来就行了，如果1 < k / (n-1)! <= 2，那么就取第二个数，然后取过的不能再去，以此类推…
+	* 62: DP的思想，如果用数学公式做的话太危险了，要么容易overflow要么必须转换成double. 我们考虑每一个格子都是从上面的格子和左边的格子来的，所以可以有
+	board[i][j] = board[i][j - 1] + board[i - 1][j];
+	同时考虑最上面一行和最左边一列都只有一条路径，因此把它们初始化为1，再根据上述公式进行dp就可以了。最后优化的时候用一个一维数组就可以了，这是因为每个值都是由【左边】和【上面】（也可以认为是之前）的值来的，所以我们只要从左到右按照：
+	board[i] = board[i - 1] + board[i]的关系进行dp就可以了！
+
+2018年08月28日09:16:09: 
+	63. Unique Paths II, 64. Minimum Path Sum, 73. Set Matrix Zeroes, 67. Add Binary, 74. Search a 2D Matrix
+
+	* 63: 和62dp一样的思想，其他的地方就是把obastacle所在的位置设置成0，然后如果再第一行第一列的碰到obstacle的话，obstacle后面的值全部初始化设置为0，因为只有一条通路。
+	* 64: 和前几道题一样的思路！把每个格子中的数字看作到这个格子的最短路径，那么久可以对第一列和第一行进行初始化。然后每次对于左格子和上格子选取一个更小的值再加上它本身即可。
+	* 73: 以第一行、第一列作为index指示器，先设置rowZero和colZero看是否第一行第一列有0。好然后对于剩下的m - 1 * n - 1的矩阵，如果某个位置i, j有0， 那么把matrix[0][j]和matrix[i][0]设置为0，最后对于整个第一行第一列，如果哪个位置有0，就把哪行（列）全部设置为0。然后我们最后还要返回原来的值，也就是说如果本来第一行第一列就有0的，我们就要把它们全部归0。
+	* 67: 设置一个StringBuilder, 从后往前把所有的位数加起来，包括进位carry，当然要注意index变为-1的情况。然后加起来无非就是0、1、2、3，按照这几种情况分别讨论就可以了。比如str.append(sum % 2); count = sum / 2等等；
+	* 74: binary search, 先找到对应的行（要设置一些Non-trivial的条件来找到对应的row），再在对应的行里找对应的元素。
+
+2018年08月29日08:38:40:
+	75. Sort Colors, 77. Combinations, 76. Minimum Window Substring, 78. Subsets, 79. Word Search
+
+	* 75: 永远把0换到最前面，把2换到最后面，对于1则不动。 然后更新最前、最后的值。
+	* 77: 比较简单的backtracking
+	* 76: sliding window, 用数组做会更快，见"bear - String - Sliding Window"
+	* 78: 严格意义上来说这可能不是一道backtracking的题目，因为每次进入recursino都会进行一些相应的操作，比如直接把subset放入list中，而不是等满足条件后再放入。因此认为属于dfs更多一些。具体代码及分析见"bear - BackTracking Problems - Problem 3"
+	* 79: 这道题有以下几个特征 
+	1. word必须严格按照顺序，而不是只要凑满数字的组合就可以了。 
+	2. 每个格子可以往上下左右四个方向走。
+	由此，我们必须遍历整个board，然后按照word的顺序来检索。对于已经符合条件并检索过的点，可以设置一个visited[][]数组来检索，但是这样会导致mn的额外space从而使得运行速度变慢。另外一个方法是把已经符合条件并检索过的值设置成一个以后永远不会出现的字符，例如条件是word，那么我就改成'?'等不太可能出现在word里的字符。但是这样可能会导致bug出现。
+
+2018年08月30日09:20:30:
+	72. Edit Distance, 80. Remove Duplicates from Sorted Array II, 81. Search in Rotated Sorted Array II, 89. Gray Code, 90. Subsets II
+
+	* 72: "bear - Dynamic Programming Problems"
+	* 80: 可以使用'跳转法'，对于下标i表示“目前为止已经符合要求的array”，也就是(0, i - 1)都是符合要求的。因此，当我们访问j的时候，必须保证nums[j] != nums[i - 2]，否则就会超出限定的个数。如果不等于的话，i++, j++；而如果等于的话就只是j++。
+	* 81: 这题和之前做过的LC33: Search in Rotated Sorted Array几乎是一样的。通过比较nums[low], nums[mid], nums[high]的大小关系可以判定哪一边是按照顺序排列的。但是有一个问题比如: 1 1 1 1 3 -> 1 3 1 1 1， 这里mid = low = high， 因此如果碰到这种情况需要对两边都进行讨论。
+	* 89: 我们知道，假设n=3,那么当n=2的时候有：
+	(00, 01, 11, 10)
+	所以其实我们把第一位看作0，那么后面只需要对称地把1加上去就可以了：
+	(000, 001, 011, 010) + (110, 111, 101, 100)
+
+	当n=0时，起始值为[0]
+	那么要到n的话我们一共要进行n次循环
+	每次循环都是取上次的结果+ 1 << (n-1)
+	* 90: 还是百试不厌的排序删除重复点法。因为前面的点已经把所有的可能性都考虑过了，后面重复的点就咩有必要再考虑了。另外逐渐递进求解的话，比如for (i = start; i < n; i++) 进入下一个循环的条件是 dfs(i + 1)而不是dfs(start + 1)!!!!!这个错误整整卡了快半个小时。
+
+2018年08月31日10:08:55:
+	23. Merge k Sorted Lists, 109. Convert Sorted List to Binary Search Tree, 110. Balanced Binary Tree, 115. Distinct Subsequences, 120. Triangle
+
+	* 23: 可以用minheap来做，也可以用divide-and-conquor + mergesort来做。这一项待定。
+	* 109: Recursive + Two Pointer见"bear - LinkedList - Overview 例题 6"
+	* 110: 有点把"Minimum Depth of Binary Tree"和这道题搞起来了。balanced tree指的是，对于每一个节点，其左、右子树的最大深度相差不超过1。而Minimum Depth指的是根节点root到第一个leaf的距离。因此差别还是蛮大的。
+
+	然后用getHeight函数来返回每一个节点的高度。如果左右子树本身不平衡则直接返回-1。然后看左右子树高度差是否大于1，如果大于1则返回-1，否则就返回真实的高度。
+
+	感觉判断BST的高度的题目做的都不是很好...到BST的height啊depth啊balance啊，就要想到【自底向上】法。
+	* 115：用backtracking会超时，所以用dp做。似乎用dp来处理字符串之间的关系非常好用，但是关键是要找出两个字符串分别+1个字符后的关系。比如这里s和t多出来一个字符以后，如果不同的话要怎么分析他们之间的关系，首先记住是拿s去匹配t，所以t的个数不能少，然后再看是否要用到最后一位数。如果最后一位数不同，那么显然没办法用到；而如果最后一位数相同，那么可以直接拿最后两位匹配，在考虑前面的i - 1个数的匹配结果就可以了。当然还要再加上不用到最后一位数的情况，因为对于s来说不一定字符串要用满，但是对于t来说必须所有字符都匹配到。
+	* 120: 自底向上方法，见bear - "Bottom-Up Algorithms" 例题1
+
+
+
+
 
