@@ -12,8 +12,41 @@
 	或者另一个思路，首先考虑每一个house, 偷完这个house后只能偷house + 2或者house + 3的房子，没道理直接去house + 4的，这是因为完全可以去house + 2再去house + 4。那么同样的，每一个house都来源于之前的House - 2或者house - 3, 我们只要取其中的最大值再加上nums[i]就可以了。但是这样的话我们就要比较并返回最后两个点中的较大值。-  -
 
 2018年10月02日08:45:55:
-	201. Bitwise AND of Numbers Range, 202. Happy Number
+	201. Bitwise AND of Numbers Range, 202. Happy Number, 213. House Robber II, 216. Combination Sum III
 
 	* 201: Math.floor(log2(m)) should be equal to Math.floor(log2(n)). Otherwise the reuslt will definitely be 0. Then the highest digit must be 1. And we substract the power of 2 from m and n and do recursive calculations.
 
 	* 202: 有点类似除法运算，保存每一个digit square sum，一旦出现重复的就说明这个数不行，跳出循环返回false，而一旦出现1就返回true。
+
+	* 213: 和198. House Robber基本一致。这次的话就是做两个loop，一个是考虑第一个house到倒数第二个house，一个是考虑第二个house到最后一个house。这样的话无论如何第一个和最后一个house不会被同时rob。但是第一个和最后一个house可能都不被rob，这种情况也已经被考虑进去了。
+
+	* 216: 做过的比较多的backtracking, 主要控制剩余的num不能<0, target不能<0,然后只有当num和target同时为0的时候可以加进去。另外注意参数传递进入下一个recursion的时候不要改变参数的值，比如--num这样的式子，不然的话返回后很容易忘记加回来。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
