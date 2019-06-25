@@ -1,0 +1,252 @@
+2018年11月07日23:49:33:
+	934. Shortest Bridge
+	* 934: 先run DFS,把得到的结果保存到Queue中，然后对Queue run BFS，每次都把队列中现有的node清空， 如果碰到新的（即值为0），我们就继续加入到queue中，同时需要判断什么时候可以到达一个没有被visit过的1，此时即返回长度。注意一开始第一次run DFS的不是所有value=1的都要run，而是只要run一次。
+
+2018年11月08日11:44:27:
+	140. Word Break II
+	* 140: backtracking / recursion的方法, 每次记录string以及对应的List<String>, 然后如果判断含有某一个substring，我们就看时候map中有对应的后面的substring，如果有那么就直接用一个for-loop把所有组合写出来；如果map中没有的话就递归调用，判断后面的是否有并全部加上去。等所有的substring判断完后，把这个substring的结果保存进去，这样对于重复的string就不会重复计算了。
+	212. Word Search II
+	* 212： 可以是做多次word search, 但是要注意只有一个元素的情况！上次也错了
+	另外可以用trie来做，周末看trie！！！
+	784. Letter Case Permutation
+	* 784: 尝试每碰到一个char都加进去，如果是数字，那么加完后直接下一个backtracking，然后删除。如果是小写字母，需要删除后变成大写字母加入，如果是大写字母，需要变成小写字母加入
+
+2018年11月13日11:45:56:	
+	416. Partition Equal Subset Sum:
+	* 416: 背包问题变体，首先找到所有元素的和, sum/=2, 后面的问题就是是否能找到一个组合使得这个组合的和为sum, 就用dp[nums.length+1][sum+1], 其中dp[0][0] = false, dp[i][j]表示从0到i-1,是否能组合成j的，那么dp[i][j]可以不用i，即dp[i][j] = dp[i - 1][j], 也可以用i，但是要保证nums[i-1]<=j, 此时dp[i][j] |= dp[i-1][j-nums[i-1]]
+
+	474. Ones and Zeroes:
+	* 背包问题！用三层loop来做
+	518. Coin Change 2:
+		这道题厉害了，考虑dp[i][j], 即由coins[0]到coins[i-1]能有多少个组成amount j, 那么这里dp[i][j]首先可以等于dp[i-1][j],表示没有用coins[i-1]。然后如果考虑用到了coins[i-1],这里还要考虑用了几次，当然可以写一个for循环来找dp[i-1][j-coins[i-1]],但是更妙的方法在于直接用dp[i][j-coins[i-1]], 这个方法表示的是，我先用了一次，但是后面用没有，我不知道，可能用了可能没用，但是至少是用了一次。有点recursion的感觉。或者就是我先用了一次，然后再往前看，这个硬币还是在这里，但是可能用也可能没用。。。
+
+2018年11月14日09:32:11:	
+	85. Maximal Rectangle:
+		假设有m行，对这m行求maximum rectangle histogram即可。顺带复习了84.
+	560. Subarray Sum Equals K:
+		bear - subarray problems
+	349. Intersection of Two Arrays:
+		用HashSet求intersection
+	706. Design HashMap:
+		好题！注意put的时候可以每个看过去然后存在的话更新值，如果不存在可以直接加在list的前头。get的话很简单一个个看过去。remove的话加一个dummy node, 然后看到如果node.next.key == key的话删除，然后注意更新table[index]因为可能头会被删掉。
+
+2018年11月15日09:56:15:
+	156. Binary Tree Upside Down:
+		用recursion可以做，函数名搞错调了一个多小时。
+	157. Read N Characters Given Read4:
+		read4(char[] buf)的作用是有一个未知的源文件，每次读取4个字符或者<4个字符存储到buf中。现在的要做的就是每次读取n个字符，通过调用read4。那就是判断每次numChars < 4或者count + numChars > n的时候即终止，然后每次加进去的字符是min(numChars, n - count) 
+	161. One Edit Distance:
+		非常容易出错的题，用two pointers，要考虑的情况为
+		1. 完全相等 return false
+			会到最后diff=false,判断长度是否相等，相等返回false，不等的话返回true(参考4)
+		2. 中间有超过两个的不等 return false
+			这种情况下中途就会跳出
+		3. 中间恰好有一个不等 return true
+			这种情况下最后diff=true
+		4. 前面都相等就最后一个不等 return true
+			aaab, aaa => 这种情况下到a就会返回，b就没有访问，因此最后的diff=false，但是我们要判断最后一位。
+	348. Design Tic-Tac-Toe:
+		解法1:2018年11月15日16:13:31: 用两个2n+2的array记录player1和2的得分，哪个先到n就赢
+		解法2:可以用int[] row, int[] col来计数，player对应的值分为为1，-1，即可对对应的row进行+1-1的操作，col同理，还要注意diagonal,最后当绝对值等于n的时候即获胜。
+	45. Jump Game II:
+		1. dp从后往前做，遍历寻找可以跳到终点的最小步数。
+		2. 每次都跳到最远的地方，然后只有当i等于最远地方的下标时才更新下一个最远的地方
+           因为当i跳到currFurthestEnd之前，我们已经确定只要跳一次就能到这里，所以到currFurthestEnd后，我们会有新的furthest，这时候才更新，也是需要跳一次....
+
+2018年11月16日10:13:34:	
+	163. Missing Ranges:
+		要考虑的corner case很多，1. overflow 2. lower和upper的范围 3. 第一个元素和最后一个元素
+	170. Two Sum III - Data structure design
+	186. Reverse Words in a String II:
+		这种有关于reverse的题可以先整体翻转，然后再翻转局部，通常会比较有用！
+	187. Repeated DNA Sequences:
+		利用bit来存储信息，因为一共的ACGT就四种，可以用00,01,10,11来存，一共10位，所需的一共是20个bit。可以用integer来存储，每次<<2，当位数超出了之后第21和22位需要被删除，用 & 0x000FFFFF 来进行操作。最后把结果存储到hashset中以免重复。
+	190. Reverse Bits:
+		比较简单的bit题，每次对n进行操作取最后一位（n&1)，把这个结果加给target<<1，最后赋值给target
+	227. Basic Calculator II:
+		还是一样的，记录之前的符号，如果之前的符号是+号或者-号，那么后面的状态无法确定，因为后面可能是乘号或者除号什么的，所以先把对应的元素push到stack上；如果之前的符号是乘号，那么把最近的一个元素拿出来（pop）然后做相应的运算后放回去。
+
+		要注意的corner case是，当进行到最后一位的时候，如果是数字，那么按照之前的规则就不会进行运算了，所以当在最后一位的时候要进行运算。最后一位也有可能是空字符串' '，那么此时也要进入loop。所以进入loop的条件是就是：
+		（是运算符=-*/ || 是最后一位）
+
+		最后我们对所有的结果相加就可以了。
+
+	223. Rectangle Area:
+		https://leetcode.com/problems/rectangle-area/discuss/194542/An-easy-and-interesting-%22scanning%22-view-of-this-problem-Java-Solution
+		线性扫描法+排序+取2、3个点
+
+2018年11月18日11:02:43:
+	228. Summary Ranges:
+		保存一个start作为起点，当条件不符合时（nums[i] > nums[i - 1] + 1）记录start -> nums[i-1]的值，最后在loop结束后补充最后一个点。注意这种题目考虑i和i-1关系的，特别是i从1开始而不是从0开始，需要考虑corner case也就是整个数组的size==1的情况，这时候不会进入loop，所以需要把数组末位的运算放到loop外以防止不进入数组的情况。
+	229. Majority Element II：
+		Boyer-Moore Majority Vote algorithm
+		要注意判断count1==0、count2==0、num==c1、num==c2的顺序，应该把（num==c1、num==c2）放在前面，因为如果把count放在前面，一旦某一个count比如count1为0而下一个数是c2的话，c1的值就会和c2一样。而如果把num==c1、num==c2放前面，就算我们随便设定的初始值正好和数组的一样，通过++算法也是从0变到1，不会影响什么。
+
+		其次是else if结构的使用，这个是比较tricky的，每次只进行一个运算。在得到candidate后我们只需再回到数组里判断它出现了几次就可以了。
+	169. Majority Element：
+		Boyer-Moore Majority Vote algorithm
+		加上使其提前终止的条件，即count>剩余number数
+
+2018年11月19日10:07:21:
+	211. Add and Search Word - Data structure design:
+		发现add方法用iterative更好用，但是search方法用recursive更好。
+	242. Valid Anagram:
+		把出现的次数存到int array中，对另外一个进行--操作，最后判断是否array所有元素为0
+	235. Lowest Common Ancestor of a Binary Search Tree:
+		这道题可以用Iterative的方法做也可以用recursive的方法做。
+		iterative: 首先我们知道如果(root.val-p.val)*(root.val-q.val) < 0的话，那么只有可能root是唯一的ancestor。而一旦 (root.val-p.val)*(root.val-q.val) > 0, 说明p和q在root的同一侧，我们只要把root右移或者左移就可以了。
+
+		同样地，用recursive的方法，如果(root.val-p.val)*(root.val-q.val) < 0直接返回，不然就调用(root.left)或者(root.right)即可
+	243. Shortest Word Distance:
+		1. 找出所有word的下标，保存在word1Index和word2Index中
+		2. 由于是两个sorted array找最近的距离，我们可以对元素进行一一比较，且只移动小的那个的指针，这样可以保证差距在不断的缩小。这是一个比较重要的思想。
+
+2018年11月21日10:02:53:
+	244. Shortest Word Distance II, 245. Shortest Word Distance III, 246. Strobogrammatic Number, 247. Strobogrammatic Number II, 249. Group Shifted Strings
+
+	* 244: 用n的时间保存每个word的下标，再根据sortedArray的性质找出最小的距离
+	* 245: 分情况讨论，就是相同or不相同，感觉比较蠢…
+	* 246: 先变换数字、再反转180度，即把对应的6改成9，9改成6，1、8、0不需要改直接添加，碰到23457直接false，最后reverse整个string看是否和原来的相等。
+	* 247: 每次当计算第i个list的时候，我们都用到了第i-2个list，所以需要保存三个变量，i-2, i-1和i的list。在到达终点之前，两边都可以加"0"，到了终点才不行。
+	* 249: 
+	想法1：一开始是每放入一个string的时候，都把group挨个找过去看是否一样。
+	想法2：现在就是把string转换成以a为起点的string, 比如“ab" encode后还是"ab", "bc" -> "ab", "zac" -> "abd"，以encode后的string作为key， List<String>作为value，把这些string加到map对应的key中。
+
+2018年11月22日09:53:12:
+	250. Count Univalue Subtrees
+	* 250: bottom-up, 判断一颗子树是否是Univalue的，是的话private variable count++
+	251. Flatten 2D Vector
+	* 251: 可以用两个queue, 一个用来每次poll新的list，一个负责把弹出的list中的元素加进去。也可以用两个pointer i & j, 需要看的是i < lists.size() && j < lists.get(i).size()，同时也要经常维护i和j的值。
+	252. Meeting Rooms
+	* 252: sort 判断前后end-start关系
+	254. Factor Combinations
+	* 254: 这道题要考虑的地方较多，有空需要再想一想怎么做。
+		首先要知道对于任何素数的答案都为空，同时判断条件不能是i<=n/i，因为如果一个素数我们想要把它加入最后的答案，只有当i==n的时候才会加进去。
+
+		这道题为什么不能用mapping呢，因为比如说我们考虑完2之后，我们需要设置一个start，这个start必须>=i， 不然的话考虑之前的数字就会发生重复。之前的想法是保存所有的getFactors(n)的答案，这样2的时候就加上n/2的答案，3的时候加上n/3，但是这样会有重复。
+
+		最后比较tricky的一点在于，当一个数是素数的时候是不保存它本身的值的，就是不会有[1,n]这种组合，处理这种case的时候需要比较小心。
+
+		还有一种想法是，当找到一个i的时候，直接把[i,n/i]
+	255. Verify Preorder Sequence in Binary Search Tree
+	* 255:
+		第一种方法，首先我们知道每一个preorder一定是由以下形式组成的：
+			root | left tree | right tree
+		因此我们recursively 检索root，left tree，right tree是否是valid，即设置一个最大值和最小值。时间上是O(nlogn)
+		
+		第二种方法非常tricky，可能比较难想到，就是模仿原来preorder的顺序，即把stack每次都只维护一个左子树，就是说如果放入的值小于当前的peek()，那么直接放入即可。一旦有node大于当前的peek（），那么就不断pop直到该node小于peek()或stack为空位置。但是我们要不断更新最小值，也就是右子树的最小值必须是最近pop出去的那个值，且必须大于这个值。如果出现conflict就证明不是。
+
+		像这种方法的话就是很巧妙地利用了stack的性质和最小值的关系，因为是从左到右的只需要考虑最小值而不需要考虑最大值。
+
+
+2018年11月23日16:29:59:
+	258. Add Digits:
+		return 1 + (num - 1) % 9; ?
+	259. 3Sum Smaller:
+		如果用brute force就是n3时间。
+		
+		n2时间的基本的思想是，首先进行排序，每次我们都会有一个pivot，low和high
+		pivot | low .... high
+		如果， nums[pivot] + nums[low] + nums[high] < target, 说明什么？
+		说明，不管怎么排列，这三个数的和都小于target，而在原数组中必定有一种排列满足i<j<k。
+		另外我们取pivot + low + 任意index介于low+1和high之间都能满足。所以count += (high - low)个数
+	261. Graph Valid Tree:
+		union-find
+		https://leetcode.com/problems/graph-valid-tree/discuss/197284/Java-detailed-Union-Find-solution-with-path-compression-and-weighted-union
+	265. Paint House II:
+		关键在于维护两个最小值min1和min2，因为如果颜色=min1，那么用min2，不然的话就可以使用min1。
+		逻辑： if (min1 == -1 || dp[j] < dp[min1]) { min2 = min1; min1 = j;}
+              else {
+                  if (min2 == -1 || dp[j] < dp[min2]) { min2 = j; }
+              }
+        另外每次更新dp[j]的时候用到都是之前的prevMin,以及使用的temp也都是prevDp,要注意数组的赋值及更新，比较容易出错。
+    266. Palindrome Permutation:
+    	统计奇偶性
+    	也可以用one pass, 用一个count碰到奇数++，碰到偶数--，看最后剩下多少个
+    595. Big Countries:
+    	第一次做mysql！
+    613. Shortest Distance in a Line:
+    	MIN函数的用法，以及join还不是很了解
+    584. Find Customer Referee:
+    	is null的使用
+
+2018年11月24日09:49:36:
+	267. Palindrome Permutation II:
+		1. 参考了Palindrome Permutation I的trick，首先把所有字符出现的次数存入map中，统计奇数出现的次数，如果最后>1就认为不会有palindrome.
+		2. 建立一个char[] array, 从low和high开始，碰到map.get(c) >= 2的都可以放入low和high，碰到map.get(c) == 0的直接跳过。最后碰到map.get(c) == 1的时候判断是否low == high, 是的话就在最后的位置上加上这个char，不是的话直接跳过。
+		3. 如果用int[128]来存放数组统计结果会更快。
+
+	269. Alien Dictionary:
+		1. 每个letter （char）都要建立一个对应的arrayList (即非空)
+		2. 遍历所有graph[i]，如果非null，更新indegree，最后把indegree为0的放入queue中
+		3. pop queue，更新indegree，直到最后全部indegree为0并被pop出来为止
+
+		有很多小细节要注意，可以下次再做一次。indegree可能可以用hashmap来做
+
+2018年11月25日09:56:50:
+	586. Customer Placing the Largest Number of Orders
+	* 586: order by count, limit的使用
+		
+
+2018年11月26日08:51:02:
+	175. Combine Two Tables:
+		left join -> 左边的一定要匹配，但是右边的不匹配，OK没问题
+	570. Managers with at Least 5 Direct Reports
+	610. Triangle Judgement:
+	603. Consecutive Available Seats
+	577. Employee Bonus:
+		null value的使用， left join
+	607. Sales Person
+		subquery
+	612. Shortest Distance in a Plane:
+	182. Duplicate Emails:
+		count的使用
+	181. Employees Earning More Than Their Managers
+	184. Department Highest Salary:
+		group by的使用，通常group by 会和count, max, min, avg还有having联系在一起
+		返回的结果是一个row，所以不能有multiple value，不然就会随便取一个
+
+2018年11月27日09:43:31:
+	727. Minimum Window Subsequence:
+		用brute force做了一遍，感觉不是很好，还是要用dp重新做一下。
+	674. Longest Continuous Increasing Subsequence
+
+2018年11月28日11:25:53:
+	351. Android Unlock Patterns:
+		dfs中很好的一道题，主要是由于它的模式太复杂，用dp反而不好做。
+		需要考虑的点有： 1. 不能使用重复点， 2. 不能跳过未访问的点
+		对于第一点用一个Onstack或者visited array来记录就可以了，记得访问完毕后要取消
+		对于第二点就记录一个skip表格，看从哪些点跳到哪些点后会产生中空点，并且该点不能在stack上。
+	729. My Calendar I
+		用treeMap来做，floorKey(), floorEntry(), ceilingKey(), ceilingEntry()
+
+
+2018年11月29日11:26:14:
+	460. LFU Cache:
+		* 首先用一个Map<Integer, Node>来记录对应的<key, node> pair, 其中node可以记录对应的key, value, times. 其次有一个Map<Integer, LinkedHashSet>来记录frequency对应的元素，如果有多个元素是同样的frequency，那么他们就在同一个linkedhashset中，用LHS的好处就是元素是根据次序来排列的，这样我最early加进去的就在第一个，最新加入的就在最后一个。同时我又能在O（1）时间删除元素。
+
+		当某一个元素被访问的时候，我们把对应frequency-times里面的node删除，加到times+1的LHS中。当一个元素被put的时候，我们看当前size是否已经超出了capacity，如果是，我们就pop掉frequency最小的，最早加入的那个node。如果否，我们就直接加入并更新frequency。
+
+		这里有两处tricky:
+		1. put的时候发现key已经存在，这时候只要更新value然后call一下get方法即可
+		2. 更新min，min指的是当前最低的frequency，并不一定是1，而frequency之前的remove操作只在get操作下才有，所以在get操作里如果当前remove掉的frequency等于min并且remove后LHS变为空，那么我们就更新min。在put中也同样需要更新但是只要把min设置为1即可。
+	346. Moving Average from Data Stream:
+		queue + recording sum
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

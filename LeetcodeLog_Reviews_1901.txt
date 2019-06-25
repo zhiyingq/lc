@@ -1,0 +1,158 @@
+2019年01月01日09:47:53:
+	203. Remove Linked List Elements:
+		陷阱: 不能删除后直接跳过，因为有可能有连续的1，1，1，这样的，所以要一直删到Node.next.val != val为止
+	143. Reorder List:
+		注意切断联系，否则会陷入infinite loop
+	68. Text Justification:
+		关于加空格，记录numSpaces和剩下的num, 每次加上numSpaces/num，如果mod>0,那么再加上1，同时NumSpaces-=addedLen, num--. 控制num>0
+	460. LFU Cache:
+		把主要的更新操作都放到get()里， 注意capacity==0, 注意minFrequency的更新，注意元素超出capacity后元素的删除。
+	198. House Robber
+	213. House Robber II：
+		分成两种情况: 0 ~ nums.length - 2, 1 ~ nums.length - 1
+	256. Paint House	
+	265. Paint House II:
+		保持几个变量: minValue1, minIndex1, minValue2, minIndex2
+		更新minValue1后要记得更新minValue2,否则minValue2可能没有数值
+	70. Climbing Stairs
+	40. Combination Sum II:
+		如果用index来递进的，可能不需要用"used"来去除重复项。
+		如果没有用index来递进的，比如Permutations II，那么可能会需要用到i > 0 && nums[i] == nums[i - 1] && !used[i - 1]来考虑重复项. 
+		时间复杂度是O(2^n), 而后者的复杂度是O(n!)
+	216. Combination Sum III
+	128. Longest Consecutive Sequence:
+		check the consistency
+		如果遇到set.contains(num - 1)的，直接跳过，如果没有跳过，就看最长能延伸到多少
+		时间也是O(n)
+	300. Longest Increasing Subsequence:
+		1. brute force
+		2. binary search
+	655. Print Binary Tree:
+		先建立所需要的List<List<String>>, 然后再依次填充
+		或者也可以先确定好每层的len之后，在backtracking里填充
+	304. Range Sum Query 2D - Immutable
+		注意invalid input
+	48. Rotate Image
+	162. Find Peak Element:
+		这道题有几个隐藏条件
+		1. 没有必要使low <= high, 只要low < high即可，因为我们要有mid且使nums[mid + 1]不会overflow, 因此我们控制low < high的条件使得mid永远偏向low并且low + 1不会overflow。
+		2. 注意换边的条件，这个反而比较容易想呢
+	660. Remove 9:
+		base transition algorithm:
+		每次把num%9放到第0,1,2,3...位，然后再num/=9
+		为了逐渐升高位数， 需要每次用一个base来加到相应的位数上去。
+			int base = 1;
+	        int ans = 0;
+	        while (n > 0) {
+	            ans += base * (n % 9);
+	            base *= 10;
+	            n /= 9;
+	        }
+
+2019年01月02日10:00:11:
+	33. Search in Rotated Sorted Array
+	81. Search in Rotated Sorted Array II
+		如果最低位和最高位相等，那么缩小搜索范围
+		后面这里就需要看nums[mid]和nums[low]的关系，因为这里允许重复，所以很有可能就nums[mid] >= nums[low], 首先在这个情况下，我们可以看target是否在这个范围内。这个条件所对应的另一面是nums[mid] < nums[low]，这个条件说明有序数列必定在右侧，所以可以判断。
+		如果不加 = 号的话可以考虑这个例子：
+		[2,2,2,0,0,1]
+		0
+	153. Find Minimum in Rotated Sorted Array:
+		核心思想: 控制low < high
+		把mid和high进行比较，而不是和low，因为只要low和high不等，mid就不会和high相等，这样会有参照物。同时考虑edge cases，比如长度为1怎么办，或者其他的low==high的情况，看最后返回哪个。
+	154. Find Minimum in Rotated Sorted Array II:
+		主要条件是nums[low] < nums[high], 如果这个条件满足那么就说明是最小值。然后就看nums[mid]和nums[high]的关系。
+	140. Word Break II
+		recursion with memorization
+	161. One Edit Distance:
+		two-pointers, 因为它们是exactly差了一个distance, 所以必须满足diff=true, 然后如果长度不等的话肯定是移动长度更大的那个，如果长度相等的话就同时移动两者。
+	212. Word Search II:
+		需要注意的点:
+		1. 用dfs的时候需要加一个boolean来看是否这个点之前用过
+		2. *注意corner case，有时候只有一个元素的时候进不到后面的循环，所以进入recursion的条件在执行前可以判断是否node含有对应的word，如果有的话先加入dict，再看i,j是否符合条件。这个错误经常犯。
+		4. time complexity: 每次可以走4个方向，4^(word_length) * m * n 
+	240. Search a 2D Matrix II
+
+2019年01月03日11:28:09:
+	prime factorization:
+	1. 只要num是2的倍数，就不断地除以2直到num是奇数为止
+	2. 后面只需要考虑factors, 从3开始，如果factor * factor <= num, num就一直除这个factor直到该条件不满足或者num % factor != 0为止。	最后判断num是否大于1，因为其本身可能是一个prime number。
+
+	204. Count Primes
+	
+2019年01月05日20:53:40:
+	811. Subdomain Visit Count
+	253. Meeting Rooms II:
+		用排序的想法
+2019年01月06日15:57:29:
+	做了一下calculator
+	224. Basic Calculator
+2019年01月07日10:30:13:
+	252. Meeting Rooms
+	759. Employee Free Time
+2019年01月15日11:31:50:
+	394. Decode String:
+		用stack来做，保存之前的结果（包括number和string），时间是O(n)
+	426. Convert Binary Search Tree to Sorted Doubly Linked List
+		stack, in-order traversal
+		注意要记住第一个node，同时如果node已经是最后一个也要进行处理
+
+2019年01月16日11:22:50:
+	32. Longest Valid Parentheses
+	注意括号需要连接
+	128. Longest Consecutive Sequence
+	
+2019年01月28日14:27:23:
+	146. LRU Cache
+		用LinkedHashMap来做，需要override一个function, which is:
+		protected boolean removeEldestEntry(Map.Entry eldest) {
+            return size() > capacity;
+        }
+        使得size在大于capacity的时候自动去除掉最老的那个元素
+
+        另外在constructor里也要开启accessOrder模式，which is:
+        LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder)
+		Constructs an empty LinkedHashMap instance with the specified initial capacity, load factor and ordering mode. 在Access Order模式下: Invoking the put, putIfAbsent, get, getOrDefault, compute, computeIfAbsent, computeIfPresent, or merge methods results in an access to the corresponding entry (assuming it exists after the invocation completes).
+
+	819. Most Common Word:
+		1. 不要忘记初始化Set<String> bannedWords, 用asList(banned)
+		2. split可能会带有第一个空格，需要check
+		3. 不要忘记更新max和commonWord
+
+2019年01月31日09:58:04:
+	21. Merge Two Sorted Lists
+	42. Trapping Rain Water
+	295. Find Median from Data Stream:
+		两个heap, 一个min一个max，必须要保证min内所有的元素都>=max，或者max内的所有元素都<=min.
+		一开始的做法是，先放到max里，如果max的size大于min，那就pollmax的放到min里，但是这会产生一个问题，就是如果放入一个很大的数但是max的size又没有大于min的时候，就会违背这一原则。
+
+		所以现在的做法是，假设先放到max里，不管怎么样都要poll max最大的到min里，然后需要维护的条件是max.size() >= min,这样当max.size() < min.size()的时候，max可以从min里再拿一个。这样就保证了不会出现之前的情况。
+
+		这道题可能有点生疏了！
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

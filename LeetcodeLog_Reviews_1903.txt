@@ -1,0 +1,119 @@
+----------AMAZON REVIEW SESSION----------
+2019年03月01日11:16:37:
+	79. Word Search
+	212. Word Search II
+		basic idea:
+			1. construct a trie according to the word list
+			2. search throught the trie based on the board, take the results into the set
+		cautions:
+			1. 注意不能使用重复单元
+			2. 注意边界条件，比如是从root开始，还是从root.next[xx]开始，然后node是已经对应了i，j还是尚未对应i，j。
+			最容易考虑的情况就是只有一个元素的情况，即[["a"]]
+			3. 最好是每层考虑自己的，不然的话重复的case太多了，由于hashset的关系，rehash的cost比较高。
+	139. Word Break
+	140. Word Break II
+	126. Word Ladder II:
+		/* 
+         * we don't invalidate the word intermediately
+         * which, we are not saying that once a node is added into the queue, it is invalidated immediately
+         * instead, a node that is just to be added into the queue can be used at the second time
+         * but a node that already committed in the queue (in the previous level) cannot be used
+         * which means that, once nodes in the level have been all added, they are "committed"
+         * then they cannot be used
+         * otherwise, as long as they have not been committed, they can use!
+         * 中文: 把所有要加入的点存到一个tempList里，当这层的所有node加完后，再在set中删除所有在tempList里的点
+         */
+    322. Coin Change
+    45. Jump Game II
+    	对这道题有了新的理解
+    	每次走都会有一个最大index，那么我们下一次走的时候都从当前走到那个最大index
+    	统计走的bu
+
+2019年03月02日12:17:09:
+	18. 4Sum
+	545. Boundary of Binary Tree
+	TODO: PriorityQueue done!
+
+2019年03月04日22:08:22:
+	36. Valid Sudoku
+	
+2019年03月06日17:53:35:
+	142. Linked List Cycle II
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

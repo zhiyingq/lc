@@ -1,0 +1,174 @@
+2019年02月03日12:06:21:
+	340. Longest Substring with At Most K Distinct Characters
+		用hashmap做的，下次可以试试看用array来做
+
+2019年02月04日11:57:52:
+	857. Minimum Cost to Hire K Workers
+		首先"Every worker in the paid group should be paid in the ratio of their quality compared to other workers in the paid group."这句话表明. paidA / paidB = qA / qB => paidA / qA = paidB / qB
+		这样我们就知道在某个组合下，所付工资都是一样的，那么既然这样的话，我们就要找ratio最小的那几个组合，因此我们首先根据ratio进行排序。因为本身每一个worker的ratio就是其自身的底线，因此如果我们根据ratio从小到大排序的话，应付的钱就应该是quality之和 * ratio。
+
+		现在我们希望所付的工资为最低，那么如果用greedy的方法，我们每次加进来一个更高的ratio，我们pop掉的应该是quality最高的那个worker，that is insane!但这个同时也make sense...
+
+	909. Snakes and Ladders:
+		1. 首先转换成1一位数组
+		2. 用一个dest记录之后要跳到的值，用一个boolean[] array记录访问过的点
+		3. poll() 之后再进行判断因为终点有可能是一个ladder / snake
+		4. 本来想用贪心做，但是并不行因为有可能index+6是一个反向的ladder，还不如跳到为-1的index+5上，所以每个点都要遍历
+
+2019年02月05日10:54:24:
+	895. Maximum Frequency Stack:
+		1. 首先用一个map记录每个integer出现的次数
+		2. 然后用一个map<Integer, Stack<Integer>> 来记录frequency所对应的整数，每次pop掉stack顶层的整数即可
+		3. 用一个maxFreq来记录当前map最大的frequency是多少，这样就不需要使用treemap了
+
+		有一个比较容易出错的点就是虽然pop掉了以后frequency的那个map把该点删除了，但是第一个map没有响应地把次数-1，这个要注意！
+
+	543. Diameter of Binary Tree:
+		用maxDepth的思想做，或者想成“the max number of nodes along a straight path in left subtree"来做
+		然后设置一个global variable来不断更新寻找path的最大值（以root为拐点）
+
+	373. Find K Pairs with Smallest Sums:
+		首先考虑一个fact: 
+		if we want k smallest pairs, we don't need to consider the k + 1 th element in nums1 because the previous k must be smaller. Similarly, we don't need to consider the k+1 th element (and later) in nums2. Thus, we only need to consider the first k elements in both nums1 and nums2.
+
+		First we connect nums1[0] ... nums1[k - 1](if k - 1 < nums1.length) to nums2[0]. Then there must be a candidate that has a minimum value. 同时我们需要一个“指针”来指向下一个值，也就是说我们此时需要一个含有三个元素的数组，其中第一个元素是nums1, 第二个元素是nums2, 第三个元素是nums2的index，这样我们就可以知道下一个值的index以及是否可能会越界等。注意在这里我们nums1是保持不变的，因为我们已经有k个nums1了，所以只要保持对nums2的索引即可。
+
+2019年02月06日18:03:10:
+	703. Kth Largest Element in a Stream:
+		注意当val<=pq.peek()时候直接返回pq.peek()的条件，要求是必须pq.size() == k, 不然就没有道理返回。
+	449. Serialize and Deserialize BST:
+		preorder + recursion
+		找到第一个比root大的作为右半部分
+
+2019年02月07日11:37:44:
+	957. Prison Cells After N Days:
+		因为一共只有2^8 = 64种可能，所以只要找到和第一个重复出现的就可以了。
+		然后用N-1 % period找到下一次要返回的点即可。
+
+		但是其实也不能确保是第一次重复出现的一定就是第一个字符，所以严谨一点的话还是参照
+		https://leetcode.com/submissions/detail/206362859/ 的解法，因为我们不能保证每一个cell的产生都是唯一的，也就是说对于一个y，是否有多个x可以产生它呢？这个暂时还不确定，所以第一个解法比较保险。
+
+		第二个解法就是默认第一次重复出现必等于第一个cell（day-1, not day 0)，这样的话快一点但感觉需要证明。
+	658. Find K Closest Elements:
+		主要思想是先用binary search找到偏小或者等于的一个index， 然后用two-pointer向左向右指直到为k为止。
+		时间复杂度是O(logN + k)
+	126. Word Ladder II:
+		1. BFS, 记录每个node的ancestor, 数据结构为Map<String, Set<String>>， 否则多条路径会重复
+		2. 每个node可以被访问的条件是它是第一次加入队列或者它的level = ancestor's level + 1
+		3. 每个node如果被poll出队列时应被从wordSet中remove，表示其已经被expanded过
+		4. 最后用DFS得到一条路径
+
+		下次可以记录一下从上到下的路径，就是记录children而不是ancestors
+
+2019年02月13日16:46:52:
+	313. Super Ugly Number:
+		1. 第一个循环 每次更新product和min， 第二个循环找到min，增加index
+			https://leetcode.com/submissions/detail/207744267/
+		2. 用同一个循环，如果某一个prodcut等于prevMin, 那么index++，同时下一步继续找product，更新currMin
+			https://leetcode.com/submissions/detail/207746875/
+		3. 用一个heap, 第一个参数是该素数的index，第二个参数product，同时也是用prevMin，如果现在heap上的元素等于prevMin，那么就pop它，而只有在pop掉的时候才有必要继续加进去。时间复杂度应该比nlogk略高一些
+			https://leetcode.com/submissions/detail/207748856/
+		有空这题要多做做！
+
+2019年02月14日11:06:56:
+	923. 3Sum With Multiplicity:
+		用math的方法，注意避免重复，比如，如果三个数都是相等的，那么就不会重复（因为是hashmap)
+		如果三个数都不同，那么就会重复，那么就要保证i>j>k
+		如果有两个数相同，一个数不同，那么其实只要考虑一侧情况，即i!=j && j==k即可，另一侧i==j && j!=k的情况因为有for-loop的存在所以可能会产生重复。
+
+	282. Expression Add Operators: [Hard]
+		https://www.youtube.com/watch?v=v05R1OIIg08
+		由于乘号的存在，需要记录:
+		之前的prevNumVal, 比如如果是+4，那么现在有了乘号就要乘上这个4，然后更新prevExpVal
+		如果之前是-4*5*6，那么这次更新后就是-4*5*6*2这样子，然后prevExpVal - prevNumVal + prevNumVal * currNum
+
+		然后就是一开始读取第一个数字（可能>1位），后面不断添加+, -, *, 或者不加（那就是往后继续取数字），然后看谁先到终点并且值等于想要的值，那么就是所要的答案。
+
+		另外还要注意leading0, overflow的可能，以及空间、时间优化的方法。
+
+		看到这种题目首先想一下能不能不用backtracking、dfs之外的方法，如果不能的话，尝试分析一下可能做的解法，比如怎么样遍历所有的可能性，进阶地关于如何处理乘号，如何在recursion里储存信息等。
+
+2019年02月16日20:08:51:
+	995. Minimum Number of K Consecutive Bit Flips:
+		用贪心做！
+
+2019年02月20日20:46:21:
+	854. K-Similar Strings:
+		贪心+BFS
+		就是swap每一个可能字符，swap的条件是先找到第一个不同的字符位置i，然后j=i+1往后开始找，使得S[j] == target[i], 并且要S[j] != target[j], 这样可以保证至少有一位可以对得上。S[j] != target[j]的原因是这样即使对上了也会有一位产生错位，那么此时就保证s[j] == target[j]即可，不然是多此一举。
+
+		另外要注意重复的情况，比如:A = aaabc, B = baaac, 后面不管怎么移动B的"a",效果都是一样的。
+
+2019年02月21日11:28:57:
+	800. Similar RGB Color:
+		要意识到如果两个数字相同: 0x00 - 0, 0x11 - 17, 0x22 - 34, ...
+		那么它一定是【17】的倍数！因此我们只要把原来的两位数转换成10进制的数然后找距离17倍数最近的那个数就可以了
+		比如如果一个数对17的余数<=8, 那么就直接取商即可，如果>8，那么商+1.
+	444. Sequence Reconstruction:
+		保持typological sort, queue size = 1
+		crucial points: 
+		1. [1,2,3], [[1,2]]: 所有条件都满足，正确的typological order, 但是缺少最后一位
+		2. [1,2], [[1,2],[1,2]]: 重复序列，这样会导致2的indegree为2从而不能正常被抛出，所以需要用set来表示graph
+		3. [1,2], [[1], [2]]: 注意单个序列，不能光注意 graph[seq.get(i)].add(seq.get(i + 1)) 这种情况
+		4. 保持queue.size() == 1以防止多条路径
+		5. 注意数字的upper bound & lower bound
+		6. 加入队列的时候保证 indegree[i] == 0 && graph[i] != null， 不然的话可能这个点根本没见过，就不能放入queue里，同时要注意queue的size要为1，这个可以在while-loop里做判定
+		7. 注意边加入的时候要和org的顺序保持一致
+
+2019年02月23日12:47:16:
+	311. Sparse Matrix Multiplication:
+		1. 先用brute force做的
+		2. 然后发现矩阵乘法可以由左边的行 * 右边的行对应得到，所以如果某个元素是0的话就不需要计算了。
+			所以整个算法在第三个for-loop中只要加一个判断语句if (A[i][j] ！= 0) 即可
+	887. Super Egg Drop:
+		dp + binary search
+		比如说如果输入是(K, N), 我们从x处开始drop，那么就会有(K, N - x), (K - 1, x - 1)两种情况，对应的分别是unbroken（往上继续检索）和broken(往下继续检索)的情况。但是我们不知道这两个值的大小，但是我们可以知道，随着K的减小，值应该是连续变化的，也就是说，在这里我们可以用binary search来找到最优的解。
+
+		可以设置一个low = 1, high = N, 然后mid = (low + high) / 2, 每次比较一下unbroken和broken对应的操作数，如果unbroken较大，那么low = mid + 1, 如果broken较大，那么high = mid - 1, 最后我们控制的条件是当跳出循环的时候，unbroken always <= broken, 这样的话我们最后再判断一下low和low-1对应的max(unbroken, broken)，找到他们的最小值作为结果返回。同时由于会有重复的子问题所以我们用一个hashmap来进行保存，key是100*N + k，这样就不会有重复的了。
+
+		【这道题worth重新思考一遍】
+
+2019年02月25日10:16:05:
+	312. Burst Balloons:
+		比较难的一道题, 是根据长度来进行dp，而不是简单的根据index i, j进行dp
+		可以看到对于串序列Index i->j, 如果要把这串序列全部戳爆，那么能获得的最大值等于:
+		当k ranges from [i, j], 选一个最大的k使得 max(dp[i][k-1] + nums[k] * nums[i-1] * nums[j+1] + dp[k+1][j])
+		为了处理边界条件把dp设置成二维int[n+2][n+2]数组，同时要注意下标
+	557. Reverse Words in a String III:
+		设置start和end，注意最后没有空格的情况下也要reverse
+		stringBuilder/hashMap: not thread-safe, but faster
+		stringBuffer/hashTable: thread-safe, synchronized, slower
+	932. Beautiful Array:
+		1. for an array A, 2*A is still a beautiful array
+		2. which means that 2*A - 1 is still a beautiful array
+		3. to construct an array with double size, just need to concatenate 2*A and 2*A - 1 (all the even and all the odd numbers)
+		4. 6: 3 odd, 3 even, 7: 4 odd, 3 even, which means that each N has (N+1)/2 odd, N/2 even numbers
+
+
+2019年02月28日11:33:41:
+	417. Pacific Atlantic Water Flow
+		consider the flow from pacific & atlantic, calculate the union of two results
+	490. The Maze:
+		BFS (shorter better) rather than DFS
+		每次往4个可能的方向走，记录走到过的点，用一个direction来涵盖四种情况{{0,1}, {0,-1}, {1,0}, {-1,0}}
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

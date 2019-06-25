@@ -1,0 +1,156 @@
+2019年02月13日16:04:17:
+	264. Ugly Number II
+
+	每一个prime number都有一个对应的下标，表示dp数列哪个数已经乘过这个prime number了，然后在里面取一个最小的。
+	比如说从1开始，2、3、5的index都是0，那么就会产生1，2，3，此时2和3的index都为1，5的index为0，这时候我们判断每个prime和它dp[index]对应的乘积中的最小值，比如2->4, 3->6, 5->5, 此时把4放进去，2的index右移。注意如果碰到重复的那么多个指针需要同时右移
+
+----------AMAZON REVIEW SESSION----------
+2019年02月25日11:29:12:
+	973. K Closest Points to Origin
+		max_heap, bound issues
+	146. LRU Cache
+		pay attention to the size
+		don't need to actually maintain a size variable, just use the map's size
+		three linkedlist operations：
+		1. add (a new node) to front
+		2. pop last
+		3. move (an existing node) to front
+	1. Two Sum
+	200. Number of Islands
+	819. Most Common Word
+	5. Longest Palindromic Substring
+
+2019年02月26日07:39:24:
+	295. Find Median from Data Stream:
+		每加入一个元素的时候都要让它"reorder"一下，就是说先放到smaller heap里，再把smaller heap poll掉一个元素放到larger heap里
+	21. Merge Two Sorted Lists:
+		循环条件注意
+	138. Copy List with Random Pointer
+	42. Trapping Rain Water
+	675. Cut Off Trees for Golf Event:
+		分成两个函数写会比较清楚一些
+		另外注意新式用法: for(int i = queue.size(); i > 0; i--) 是>0 不是>=0
+	2. Add Two Numbers
+	957. Prison Cells After N Days:
+		还是假设不知道什么时候周期开始，从第一天开始存入map中，最多就只有2^6=64种可能
+		最后当获得一个周期后或者到达N上限后跳出循环。如果到达N上限，那么就直接输出最后的结果，不然的话就是寻找mod。
+		假设我们不知道周期是怎么样的，计算剩下的天数会容易一点，不然直接用N算的话还需要扣除非周期的那几天然后再求mod，思路上比较麻烦。
+	23. Merge k Sorted Lists:
+		take care of the "null" case
+	127. Word Ladder
+	253. Meeting Rooms II:
+		Solution I:
+		1. sort according to the starting time
+		2. according to the end time, while intervals[i].start >= pq.peek() => poll it
+		   then add the new intervals[i].end to the pq
+
+		Solution II:
+		1. sort separately according to start[] and end[]
+		2. compute the overlap -> if start, count++, if end, count--
+		注意start[i] < end[j]是否要加等号，这里是不加，因为等于的话就不会有overlap，只有不等于才有
+	15. 3Sum:
+		avoid duplicate by sorting
+	20. Valid Parentheses:
+		注意最后stack要为空
+	25. Reverse Nodes in k-Group:
+		keep track of the pointer, pointer -> 1 -> 2 -> 3 -> 4 -> 5
+		pointer 永远指向前一个数，用dummy守住第一个数，然后不断更新pointer
+	33. Search in Rotated Sorted Array:
+		it's easy to 先处理nums[low], nums[mid], nums[high]
+	54. Spiral Matrix:
+		维度的处理
+	55. Jump Game:
+		用了dp的思路，用nums[i]表示能到达的最远距离，那么首先判断是否nums[i - 1] >= i, 如果否，那么就不行，返回false。然后如果可以的话nums[i] = max(nums[i - 1], i + nums[i])
+
+2019年02月27日10:21:21:
+	56. Merge Intervals
+	71. Simplify Path:
+		the key idea is: "/" does not really matters in this problem
+		we just need to split them and deal with other strings like "."  ".."  and "abc"...
+		有一个corner case要注意，即如果用split有可能使字符串为空，所以这里需要判断一下非空
+	97. Interleaving String:
+		考虑到s3、s2、s1在长度上有比较强的关联性，所以这里用2维dp就可以了
+		dp[i][j]: whether s1.substring(0, i) & s2.substring(0, j) can interleave s3.substring(0, i + j)
+	98. Validate Binary Search Tree:
+		注意设置最大最小值的上下界，用long，因为recursion的话就取不到那个值了。相当于一开始就设定integer.max_value是取不到的。
+		也可以用in-order traversal保证所有数是递增的就可以了。
+	101. Symmetric Tree:
+		1. 检查两个对应的root，首先check为空的情况，然后要看root1.val == root2.val, 随后check对应的root: root1.left & root2.right, root1.right & root1.left
+	103. Binary Tree Zigzag Level Order Traversal
+	104. Maximum Depth of Binary Tree
+	121. Best Time to Buy and Sell Stock: dp
+	155. Min Stack
+	198. House Robber
+	207. Course Schedule
+	210. Course Schedule II
+	215. Kth Largest Element in an Array
+		1. 快排i<=j 2. min heap with size k
+
+2019年02月28日08:44:11:
+	236. Lowest Common Ancestor of a Binary Tree:
+		1. recursion 
+		2. dfs, add all the nodes on the path to the list, check the common part of the two lists
+	240. Search a 2D Matrix II
+	252. Meeting Rooms:
+		想复杂了，只要判断"intervals[i].start < intervals[i-1].end"即可
+	268. Missing Number
+	305. Number of Islands II:
+		union-find, 用row * n + col作为id，其他都和general UF 差不多
+		可以用一个grid[m][n]记录number的情况，也可以不用grid，用id[x*n + y]来记录，初始化为-1，表示不是island。
+	344. Reverse String
+	346. Moving Average from Data Stream
+	387. First Unique Character in a String
+	417. Pacific Atlantic Water Flow:
+		换一个思路，从pacific或者atlantic开始flow，dfs和bfs都可以，最后找两者重合的地方！
+	490. The Maze
+		BFS (shorter better) rather than DFS
+		每次往4个可能的方向走，记录走到过的点，用一个direction来涵盖四种情况{{0,1}, {0,-1}, {1,0}, {-1,0}}
+	628. Maximum Product of Three Numbers:
+	621. Task Scheduler:
+		插板法
+	703. Kth Largest Element in a Stream:
+		比较容易出错的一道题，要注意pq的size，以及加入新元素的条件
+	783. Minimum Distance Between BST Nodes
+	336. Palindrome Pairs
+		注意corner case, 如果是整个string是substring，那么对于第一个if, "","waaw", 无内容加在左边，对于第二个，"waaw","",无内容加在右边
+
+		总之在考虑right的时候要长度大于0......不知道为什么.....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

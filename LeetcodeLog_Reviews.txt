@@ -1,0 +1,349 @@
+2018年10月09日15:54:51:
+	1. Two Sum: 该返回结果就中途返回, 否则会影响速度
+	2. Add Two Numbers: 比之前好多了！
+	3. Longest Substring Without Repeating Characters: Sliding window
+	   一开始想成dp的问题了，其实通常对一个string来说有很多sliding window的题型。对于两个string的关系，想一下sliding window和dp是否有可能做。 如果不用int[128]可以用HashSet —— 晚上做。 ✅done
+
+2018年10月10日18:37:06:
+	20. Valid Parentheses
+	11. Container With Most Water
+	5. Longest Palindromic Substring: ====> 需要做第三遍！
+		其主要思想是，我们用一个dp数组来看是否s[i]->s[j](包括首尾)是否是一个palindrome string
+        因此我们只考虑j>=i的情况，j<i的情况直接不考虑
+        另外我们是按照对角线来的，where j = number + i, 一定要注意这个顺序，当j-i >= 2的时候，每个格子都是由其【左下角】的格子生成的，这个很重要。
+        如果i==j, 那么很显然单个数字就是palindrome的，如果i==j-1，那么我们只需要判断是否s[i]==s[j], 这样就是一个长度为2的palindrome
+        在其他的情况下，不管是aba的形式，还是abba的形式，还是aaaa的形式，我们只要“掐头去尾”在判断是否是palindrome就可以了
+        在这种情况下，j>=i+2, j-1>=i+1,因此还是在上三角上，我们可直接判断是否s[i]==s[j] && isPalindrome(s[i+1][j-1])
+
+2018年10月11日23:17:08:
+	138. Copy List with Random Pointer: hashmap链接
+
+2018年10月15日10:10:37:
+	53. Maximum Subarray: 关键点在于维护一个“到这个点为止“的sum，如果之前的sum0，
+		那么直接弃置，如果之前的sum>0，那么就加上nums[i]，并且每次判断是否大于目前的globalmax。
+
+	15. 3Sum: 这道题的关键点在于3sum要防止重复元素，关于重复元素比较有效的一点是采用sort,
+		然后把后面的元素全部去掉。那么之后如何考虑2-sum呢？考虑到sort后的array做2-sum比较容易，即采用逼近法从左右逼近，在得到确认有解并++，--之后，我们要考虑是否nums[low]和nums[low-1]相等，以及high的值，也是利用了sort的特点。
+
+	7. Reverse Integer: 要注意corner case的处理，先转换成abs,然后考虑是否会overflow。
+		判断overflow很简单，就是看long x == (int)x. 然后Integer.MAX_VALUE和Integer.MIN_VALUE的绝对值大小要注意。
+
+2018年10月17日11:50:00:
+	56. Merge Intervals: implement a comparator, sort the list according to the first
+		value, then compare the last value when adding to a list. if toAdd.start <= last.end, last.end = Math.max(last.end, toAdd.end).
+	121. Best Time to Buy and Sell Stock: 关键是要maintain一个之前的minPrice, 每次用新的price
+		减去之前的minPrice得到一个profit, 然后更新maxProfit。同时看看minPrice是否需要更新。 
+	21. Merge Two Sorted Lists: 主要考虑l1 == null 或者 l2 == null 的情况
+	204. Count Primes: 这道题主要按照以下思路来考虑: 我们需要去掉所有质数的倍数，也就是说从2开始，我们
+		一开始有一个notPrime的array, 那么一旦我们遇到一个false(也就是prime)，我们先count++统计遇到了多少个质数，然后我们从j = 2,...,n/i，把所有的倍数都去掉。这里的条件是(i *j <n)。那么如何进一步优化呢？我们想到，如果i * i > n, 也就说从i开始，i只能乘啊乘，乘到某个数为止，但是这个数一定是小于i本身的，也就是说这个数之前就已经被考虑过了。所以我们必须控制i * i <= n才行。但是这里要注意是否会overflow, 用i <= n / i更好。
+
+		关于是否会乘到n，就是由j来控制的，只要保证i * j < n即可。这道题可能需要多做几遍。
+
+2018年10月18日22:31:22:
+	141. Linked List Cycle: two pointer 秒 
+	10. Regular Expression Matching: 需要注意的点比较多。首先是当s=""时，p如果是"a*b*c*d*"的模式，只要
+		偶数位带连续星号的都可以匹配。其次还有一个错误的点是如果dp[i][j] 中 p[j - 1] == '*', 那么我们可以不用到这个星号也就是dp[i][j] = dp[i][j - 2]，也可以用到这个星号。如果用到这个星号先看用一次的情况，就是dp[i - 1][j]是否匹配，即把s的末位匹配掉之后是否还继续匹配呢？这样的话还需要额外判断是否s[i-1] == p[j-2]或者p[j-2] == '.'，如果这个条件不成立的话就算前面匹配后面也匹配不了。这是比较容易遗漏或者出错的点。
+
+2018年10月19日21:59:10:
+	206. Reverse Linked List: 今天做的"25. Reverse Nodes in k-Group"用到了这个知识点，秒
+	23. Merge k Sorted Lists: 用一个Priorityqueue保存n个值，每次pop最小的poll下一个。
+		解法2： 也可以用divide and conquor, 比如先合并list的前一半，以及list的后一半，然后不断的递归。
+
+2018年10月20日17:26:19:
+	238. Product of Array Except Self: 主要思路是先remember每个数左边的连乘，再从后往前乘上右边的连乘。
+	344. Reverse String: StringBuilder / S.toCharArray
+	771. Jewels and Stones
+
+2018年10月23日11:53:50:
+	9. Palindrome Number: 	要注意的点比较多，其实只要每次把num从x那边开始生成倒序的数，看最后是否相等或者只差一位(num == x/10)就可以了。
+		1. 注意x末位为0的情况，如果末位为0说明第一位也为0，肯定是false。
+		2. 注意负数的情况，全部false。
+		3. 判断语句的先后，比如先赋值num再判断(num == x || num == x/10),这样对只有一位数字的情况就不符合条件。比如x=5，因为当时num已经变成5而x变成0，上述条件没有一个符合的。所以应该可以先判断是否符合，然后while-loop设置为x>=num。 不过其实也可以改成x = num/10，因为虽然while-loop保证了x > num, 但是在循环结构中x是不断降低而num是不断增加的，所以这个语句就是while-loop即将被跳出的预兆，也是合理的。
+	17. Letter Combinations of a Phone Number: backtracking, 可以用recursion来做。
+		backtracking的话就是每次都加上一个数字然后进入到下一层，直到层数达到要求后即可。
+		如果用Queue来做的话就是每次记录size，先把之前的pop掉（如果第一次的话可以先插入一个空字符串），然后把pop掉的字符串加上需要的char, (可以直接相加)然后push到queue里。
+
+
+2018年10月25日11:49:19:
+	32. Longest Valid Parentheses: dp
+	22. Generate Parentheses: 现在看起来就很简单了，backtracking如果当前还剩下的左括号大于0，
+		那么就加一个左括号。如果当前还剩下的左括号小于当前还剩下的右括号，那么就加一个右括号。注意这两个条件是并列的。像这种paretheses的题目，注意左右括号的数量以及左括号和右括号数量的大小对于解题是非常有用的。
+
+2018年10月26日11:16:12:
+	253. Meeting Rooms II: heap记录进行中的会议, 比较开始时间和结束时间  
+	33. Search in Rotated Sorted Array: 分情况讨论，看规则的在哪一部分，注意只有一个元素的corner case
+	139. Word Break: 
+		backtracking/recursion新思路，和"241. Different Ways to Add Parentheses"可以放在一次考虑，对于很多重复的recursion，我们可以用一个HashMap来保存已经访问过的点，这样可以大大减少工作量。但是有点搞不清楚recursion/dfs/backtracking的时间和空间复杂度。
+
+		这道题也可以用dp来做，但是非常tricky。dp的思想主要是判断第i个数结尾是否可以由word来构成，那么很显然我们需要让i ranges from [1,n] and j ranges from [0, i), 判断s.substring(j, i)是否是word以及dp[j]是否是word就可以了。因为j < i所以一定在之前计算过了。只要保持这个belief就可以了！
+
+2018年10月28日11:29:16:
+	930. Binary Subarrays With Sum: 一道不错的题，关键在于先求出到每个Index i处的和，然后看prefixSum[j] - S是否有解。如果有解的话，看一下有这样的几个解。在我们存储prefixSum[j]的时候，我们都要看是否已经有了prefixSum[j]，如果有的话那么在value上+1，这样我们就可以实时更新有几个这样的解了，到时候算target=prefixSum[j] - S的时候就能很快出结果。
+	142. Linked List Cycle II: 就是注意当slow和fast相遇时满足的数学关系, 相遇时从起点出发然后再次相遇的时候就是整个cycle的起点了。
+
+2018年11月01日09:21:31:
+	31. Next Permutation: 
+		一开始的思路比较简单，从后往前找到第一个下降的就可以了。但是后面的比较tricky：
+		[....., 3, 6, 5, 4, 2, 1]可以看到此时我们找到3是下降的，我们把3和4swap之后得到的还不是最小的，这是因为[...., 3, ...., anything larger, the first larger than 3, anything smaller than 3] 所以如果我们把3和"the first larger than 3"互换，我们得到的还是一个降序数列，那么如何得到最小值呢？只要把这个降序数列reverse一下就好了！
+
+	13. Roman to Integer: 掌握一个规则就是，如果说出现了IV，XC, CM这样的形式，也就是第一个char对应数
+		字小于第二个char对应的数字的情况，我们就减去第一个数字（因为本来就是这样么算的，是Roman的特性），如果是递减的或者相等的，比如II, VI，那么就直接加上它本身的值就可以了。
+	22. Generate Parentheses
+	76. Minimum Window Substring: sliding window
+	88. Merge Sorted Array: 这道题很久不做，思路有点tricky的，就是我已经有了两个数组，大小分别为m和n
+		，那么我就从原始的m+n-1开始逆序从大往小加，这样永远也不会把想要的值覆盖掉。我们甚至在j<0的时候可以直接跳出循环，这是因为前面的i已经排列好了，就是相应的k，所以都不用进行操作。
+	54. Spiral Matrix: 考虑的corner 
+		case比较多，比如如果分成4条bar来操作，什么时候会重复而什么时候不会重复，以及对于starting point的选取。
+	819. Most Common Word: 主要考察正则表达式和count，把所有的数保存在map中，放入之前看set中是否已经
+		有了，然后统计出现的最大次数。
+	283. Move Zeroes: two pointers i & j, 不断移动i，如果nums[i]为0才把这个数放到j中，然后增加j
+	412. Fizz Buzz: 考虑15、3、5的倍数就可以了
+	93. Restore IP Addresses: 之前做的时候没有学过backtracking, 
+		现在用了backtracking来做，并且尽可能节约内存。可以剪枝的地方有: 
+		1. 剩余字符串的长度和当前已经填完的格数 
+		2. 是否是合理的ip (0<=ip<=255)以及没有leading 0 (看转换成字符串和int的位数是否一致)
+	695. Max Area of Island   
+
+2018年11月02日08:57:28:
+	49. Group Anagrams: 
+		是一道好题，判断两个数是不是anagram的方法除了可以统计两个数各个字符出现的次数是否相等之外，还可以直接sort它们，就是用的时间是klogk的。当然还有一种做法就是统计各个字符出现的次数，encode它们到hashmap中，（map中的key是encodedWord, value是List中对应的位置）然后在对应的list中加上去。
+
+		还有一种办法是，直接创建对应list的hashmap: Map<String, List<String>>, 然后通过map.values()返回一个Collection,再调用ArrayList来得到返回值。
+	547. Friend Circles:
+		就是一道简单的DFS，判断有多少个connected components
+	91. Decode Ways:
+		dp, 主要考虑0的情况以及含有leading 0的情况
+	289. Game of Life: 
+		bit-operation, 把之前的状态存在第一位，把后面的状态存在第二位，例如之前是0后面是1，那么就是
+		1 | 0.
+	159. Longest Substring with At Most Two Distinct Characters: 
+		记录window中不同字符的个数，超过2的时候滑动begin。
+	151. Reverse Words in a String:
+		之前是split了一个string之后再倒过来一个个装进去，现在就是识别到一个就装到最后。
+	8. String to Integer (atoi):
+		需要注意的情况： 
+		1. leading whitespaces
+		2. 第一个字符不是+-也不是数字
+		3. 当得到+-后，记录正负，往后移一位，规定一个num从0开始累加，如果碰到非字符型的就跳出
+		4. 注意判断num是否会大于integer.MAX_VALUE,如果大于，根据正负号返回结果
+		5. 如果未发生这种情况，根据符号返回
+	98. Validate Binary Search Tree:
+		这道题主要考察的是BST的性质，比如，左树的所有值必须小于根节点，右树的所有值必须大于根节点。容易做错的地方有只考虑左右孩子和root的关系，而没有考虑整个左子树、右子树和根节点的关系。需要的是设置一个最大值和最小值，在向下传递的过程中不断更新最大值及最小值。
+
+2018年11月04日09:39:46:
+	347. Top K Frequent Elements:
+		两种方法： 
+		1. 把所有的数字的frequency用map统计，构造size为k的heap，根据频率排序，最后输出
+		2. 把所有的数字的frequency用map统计，由于频率必在1-n的范围内，因此我们使用bucket sort
+		也就是说，把对应频率为i的数字存到数组a[i]中，最后从大到小返回
+		其实通常来说取最大的k个数可以采用bucket sort，但是要注意是否对顺序有要求
+	16. 3Sum Closest:
+		需要取到最接近的三个值，这种求sum的题用先排序+夹板逼近法会比较好做。
+		对于每一个nums[i], 都求一个对应的twoTarget, 然后后面用夹板逼近法，每次都求一下diff看一下是否是小于全局的diff.为什么这里两个数的diff可以代替全局的diff呢，因为第一个数已经是被减去的，所以0误差。因此我们直接在里面更新全局的diff就好了。如果发现有一个更小的，那么就同时更新diff以及cloestSum(=twoSum + nums[i])
+
+		后面有一个比较容易出错的就是看twoSum是否大于twoTarget(注意是twoTarget而不是target)，然后用夹板逼近大法！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！另外在diff等于0的时候可以直接返回从而进行优化。
+	173. Binary Search Tree Iterator:
+		用一个stack保存路径和最小的，当最小的pop出去的时候放入右孩子，其实就是in-order遍历
+	380. Insert Delete GetRandom O(1):
+		要实现O(1)time的insert和delete还有getrandom，由于要getrandom，所以必须有arraylist, 如果只考虑insert和delete，那么需要set就可以了，但是无法通过set和list互相访问，因此这里使用map，key=val, value=index。
+
+		所以当我们需要random某个点的时候，我们就直接随机下标，如果添加的话，就在list的最后加上这个元素，在map中更新对应的下标值。在需要删除的时候，我们通过map得到下标值，把这个数在list中和最后一个元素互换，更新最后一个元素在map中的位置，然后在map中删除该点、在list中删除最后一个元素即可。如果这个元素就是最后一个元素，由于我们已经保证了顺序，所以没有问题。
+	50. Pow(x, n):
+		这道题真的有点难.... 需要自底向上方法，如果先计算2^k where 2^k < n，然后再n-2^k往下计算的话，其实有很多步骤是之前已经计算过的。所以现在是要用recursion来缩小范围，也就是这道题目必须倒着来才行，可以写成等价条件myPow(x, n) = myPow(x*x, n/2)，这样当n = 0的时候就可以返回了。要注意的是如果n%2=1，那么写成等价条件就是x*myPow(x*x, n/2),另外要特别注意n为-Integer.MIN_VALUE的情况，可以用1/x*myPow(1/x, -(n+1))来转换成合理的正数。
+	322. Coin Change:
+		dp的思路, 对于每一个钱财dp[i], 我们只需要考虑dp[i - coin]+1是否能更小就可以了，不需要考虑之前所有能构成i的钱币组合。
+
+2018年11月05日09:03:56:
+	79. Word Search:
+		这道题还是很容易出错的。这里搜索的话主要是记忆"onstack"的那些node，而并不是规定一个格子只能访问一次，这是因为每个格子可以有不同的路径来访问它。因此我们需要记录那些在stack上的node，也就是在递归函数的开始设置它为true，递归函数结束后设置它为false，注意中间可能被return隔断开的情况。另外要注意什么时候返回，在上、下、左、右四种情况中，其实只要有一个为true即可返回，不然很容易超时。
+	236. Lowest Common Ancestor of a Binary Tree:
+		第一种方法：recursion + divide and conquor
+		首先root==p或者q或者null就返回，表示”至少有一个点在子树中”。随后分别找左子树和右子树的ancestor, 判断是否找到了两个，如果是，那么返回root（共同的ancestor），如果不是，则返回非空那个。
+
+		第二种方法：bottom-up,
+		写一个bottom-up的方法找到由root通往p和q的路径，然后从root开始看第一个出现分叉的地方，这个地方之前就是commonancestor.
+	46. Permutations:
+		一道最基础的backtracking, 只要记录哪个数字已经被使用了就可以了。因为是permutation需要考虑所有的情况，因此也不需要设置start什么的。
+	127. Word Ladder:
+		把所有的words都保存到一个HashSet中，每次我们要找一个beginWord相邻的word，我们都把它的每一位从a-z遍历，一旦发现hashset中有相应的word，我们就删除hashset中的这个word并添加到list中，最后可以返回一个距离为1的list，这里hashset中删除操作比较重要，这是为了避免重复，因为对于同一层上的word来说，如果两个word有相同的dist为1的孩子，那么谁到谁就无所谓了。
+
+		然后可以用BFS的思想去做，我们先把beginWord加入队列，然后对于队列来说，每次都把每一层的元素pop掉并加入它们的neigbhor（就是刚刚list中的），加入的时候判断是否是endword，并相应的记录层数来获得长度。
+2018年11月06日15:36:05:
+	224. Basic Calculator:
+		在遇到括号之前，我们只需要记录“上一次的符号”，每一次遇到一个number我们都让reuslt+=sign*number, 然后把number清零。
+
+		如果遇到括号了，那么我们现在有的是: sum, sign, 这个时候我们把sum的结果放入stack中，sum清零，sign令为1，然后再进行计算操作。直到我们遇到')'的时候，我们需要把当前的结果乘上sign，并把sum的数值还回去。这里比较tricky的一点就是sign是用1和-1表示的，这样就可以通过乘法来获得其真实的值。
+
+	128. Longest Consecutive Sequence:
+		确实不太容易想得到，把所有的数字放到HashSet中，然后开始看，对一个num来说，如果num-1也在set中，那么就不需要考虑，如果num-1不在而num+1在，那么就一直找直到没有位置，同时更新length，最后只要输出最大的length就可以了。
+
+	124. Binary Tree Maximum Path Sum:
+		bottom-up method
+	25. Reverse Nodes in k-Group:
+		用一个Pointer放在linkedlist前面，始终维护pointer使其指向linkedlist的第一个元素
+
+2018年11月08日10:39:22:
+	300. Longest Increasing Subsequence:
+		用binary search找到对应数字的位置进行替换
+	70. Climbing Stairs:
+		dp[i] = dp[i - 1] + dp[i - 2]
+	535. Encode and Decode TinyURL:
+		用hashmap保存网址-下标
+	
+2018年11月09日09:34:07:
+	215. Kth Largest Element in an Array:
+		heap sort/selection sort (randomize)
+		selection sort一定要注意i和j不能超过范围，否则可能会报错。
+	14. Longest Common Prefix：
+		比较简单，从头开始往后找，但是要注意check pointer是否会大于等于string的长度。
+	67. Add Binary 
+
+2018年11月10日09:44:05:
+	239. Sliding Window Maximum:
+		treemap, 记录下标，超出长度删除下标
+	155. Min Stack:
+		普通的stack，但是同时用一个arrayList来keep“目前为止的最小值”
+		比如 -2 0 -3 1 -4 是stack，那么对应的arrayList应该为:
+			-2 -2 -3 -3 -4, 这样pop掉了之后还是记录了“目前为止的最小值”
+		what if using only one stack? we need to use a new class {node：value, min}
+	72. Edit Distance:
+		if char(i) == char(j): donothing, dp[i][j] = dp[i-1][j-1]
+		else: 
+			consider: 0, ..., i-1, i
+					: 0, ..., j-1, j
+			已知char(i) != char(j), 无非考虑dp[i-1][j-1], dp[i-1][j] 和 dp[i][j-1]
+			dp[i-1][j-1]: 把i换成j， +1
+			dp[i-1][j]: 删除i, +1
+			dp[i][j-1]: 删除j, +1
+	12. Integer to Roman:
+		枚举所有的可能性，从个位数开始对对应的位数累加
+	92. Reverse Linked List II:
+		add 一个dummy node防止m=1，不然找不到头了
+
+		先找到m-1，记录下来， reverse [m,n]中的所有点
+		0,1,..-> m-1 ->  m     <-   m+1,...., n    n+1
+				node node.next               prev  curr
+		node.next.next = curr 
+		node.next = prev
+  
+2018年11月11日11:19:12:
+	114. Flatten Binary Tree to Linked List:
+		recursive / iterative preorder traverse
+	341. Flatten Nested List Iterator:
+		用stack保存当前nestedInteger, 用一个Maintainstack function来recursively直到列表为空或者peek是integer
+	143. Reorder List:
+		需要第一个串最后一个，第二个传串，只要reverse中间的一半然后可以获得最后一个元素，然后“穿针引线”即可。
+	203. Remove Linked List Elements:
+		要注意连续的情况，需要用两个while-loop，用node.next一直跳
+
+2018年11月12日14:57:10:
+	387. First Unique Character in a String
+	19. Remove Nth Node From End of List
+	133. Clone Graph:
+		dfs or bfs, map<oldnode, newnode>
+	204. Count Primes:
+		感觉做的还不是很熟
+		1. start from 2, check whether a number is a prime notPrime == false, count++
+		2. if not prime
+			if i <= n/i (prevent overflow)
+				for (j = i; i * j < n; j++)....
+					set the number to be notPrime = true
+		time complexity: 
+		(n/2+n/3+n/5+...+n/max_prime) = n * (1/2+1/3+....+1/max_prime) = n(loglogn)
+
+2018年11月13日23:21:20:
+	322. Coin Change - 322. Coin Change - 474. Ones and Zeroes - 416. Partition Equal Subset Sum
+
+2018年11月14日09:33:12:
+	84. Largest Rectangle in Histogram:
+		用一个left[i]记录小于这个histogram的第一个column的下标，right[i]同样，可求出这个column span后能得到的最大长方形的面积。
+	
+2018年11月16日12:25:19:
+	189. Rotate Array: 
+		对于这种翻转的题，可以用reverse整个数组+reverse一部分来实现
+	191. Number of 1 Bits: easy
+
+2018年11月17日09:25:23:
+	240. Search a 2D Matrix II  
+		start from the top-right corner
+	349. Intersection of Two Arrays    
+		hashset 检索
+	103. Binary Tree Zigzag Level Order Traversal
+		iterative: 用queue，每层调整顺序
+		recursive: 记录每个node的level，如果超出了list的长度就new一个。
+	102. Binary Tree Level Order Traversa
+		和103一样
+	43. Multiply Strings:
+		考虑 1234
+			 456
+		首先生成的结果必定有最长长度4+3, 第一个string 第i位乘以第二个string 第j位的结果会被加到第i+j和第i+j+1个格子上，加进去的时候注意进位。最后要去除leading 0但是要注意可能最后结果本身就是0的corner case，这道题可能还需要加强！
+	78. Subsets:
+		1. backtracing很好做，对每个点都有两种状态，取或者不取
+		2. 如果iterative地来做，就dp一样，到每个点都会调用之前的状态，可以复习一下
+		例如初始状态是[], 到第一个数就是[], [1], 到第二个数就是[], [1], [2], [1,2]以此类推。
+	153. Find Minimum in Rotated Sorted Array:
+		一个很关键的点是，因为是sorted array，所以如果nums[low] < nums[high可以直接返回。
+		如果不是的话，判断nums[low]和nums[mid]的关系，如果low > mid, 说明中间有断层，我们令High = mid, 不然的的话就是low = mid + 1
+
+2018年11月22日12:43:38:
+	值得重做的题：
+		255. Verify Preorder Sequence in Binary Search Tree
+		254. Factor Combinations
+	49. Group Anagrams:
+		构建Map<String, List<String>>, sort string作为key, 把对应的string放进去。
+	81. Search in Rotated Sorted Array II:
+		超级绕的一道题。这种题的主要思路就是找出有序数列，比如先看nums[low]和nums[mid]的关系，如果nums[low] <= nums[mid]，说明low->mid是有序数列，看看target是否在其中（判断是否大于low小于mid），不是的话再去另一边找。另一种解法同样。
+
+		其实可以用iterative的方法做这道题，有的时候nums[low] == nums[mid] == nums[high]，这个时候只要它相等，那么low++, high--直到它不相等为止就可以了。用Recursion的话就是二边都要查找，比较麻烦。
+
+		以后做这种题都是按照“找有序数列“的思路来做，先找有序数列，然后判断target是否在该有序数列中，如果是则在该数列中搜索，如果不是则在另一边搜索。
+	204. Count Primes:
+		首先要count[2,n)的所有数，对于每一个数而言，如果它是一个素数i，那么我们就删除从它自己本身开始，直到i*j<n的所有数。因此，我们只需要判断2到根号n就可以了。非常需要注意overflow的问题。用 i <= n/i来表示条件，以及i*j<n表示内部条件。
+
+2018年11月23日19:01:55:
+	256. Paint House
+
+2018年11月27日08:30:55:
+	300. Longest Increasing Subsequence
+		* binary search, add to the corresponding position
+	74. Search a 2D Matrix
+		* binary search
+	303. Range Sum Query - Immutable
+	162. Find Peak Element
+		* 需要进行优化，比如说考虑如果nums[mid] > nums[mid + 1], 那么high可能是mid，high改成mid， 如果nums[mid] < nums[mid + 1]，那么low=mid+1因为定点必在右侧。
+		判断条件是low < high，这是因为当low=high的时候只存在一个点，到时候找出一个点就可以了。
+		可能需要再做一遍？
+
+2018年11月28日09:55:50:
+	567. Permutation in String:
+		* 要注意的一个点是必须在count == 0的时候判断end - begin == s1.length()
+		否则的话即使不等于0也可以相等
+	60. Permutation Sequence:
+		* 看k和(n-1)!的关系，得到k/(n-1)!从而决定取第几个数，用一个Linkedlist来实现整个列表的移动。随后只要把k - rank*(n-1)!即可
+	785. Is Graph Bipartite?
+		run DFS rather than BFS
+		这是因为即使图是disconnected的，也可以是bipartite的，所以用dfs
+
+2018年11月29日08:07:56:
+	322. Coin Change
+	518. Coin Change 2
+	171. Excel Sheet Column Number
+		26进制数的计算
+	168. Excel Sheet Column Title
+		注意对应位数的转变，比如'A' - 0, 'Z' - 25, 所以在求模的时候要用(n-1)%26求，在取下一个数的时候要用(n-1)/26求
+	146. LRU Cache
+		Doubly Linked List + HashMap
+		HashMap以key作为key，以node作为value，在put和删除的时候记得更新hashmap
+	23. Merge k Sorted Lists:
+		注意null的情况
+	31. Next Permutation
+		[....., 3, 6, 5, 4, 2, 1] 做第二遍了，我们要找到第一个降序的数字（此处为3），为了使得到的数列尽可能小但是又比原来的大，我们要和【后面第一个strictly > 3】的数字交换，可以倒序处理，交换后后续数组的顺序是不变的，因为左边的所有数还是大，右侧的所有数都是<=。最后reverse一下即可。
+
+
+
+
+
+
+
+
+	

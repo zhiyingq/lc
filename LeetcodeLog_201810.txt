@@ -12,7 +12,7 @@
 	或者另一个思路，首先考虑每一个house, 偷完这个house后只能偷house + 2或者house + 3的房子，没道理直接去house + 4的，这是因为完全可以去house + 2再去house + 4。那么同样的，每一个house都来源于之前的House - 2或者house - 3, 我们只要取其中的最大值再加上nums[i]就可以了。但是这样的话我们就要比较并返回最后两个点中的较大值。-  -
 
 2018年10月02日08:45:55:
-	201. Bitwise AND of Numbers Range, 202. Happy Number, 213. House Robber II, 216. Combination Sum III
+	201. Bitwise AND of Numbers Range, 202. Happy Number, 213. House Robber II, 216. Combination Sum III, 231. Power of Two
 
 	* 201: Math.floor(log2(m)) should be equal to Math.floor(log2(n)). Otherwise the reuslt will definitely be 0. Then the highest digit must be 1. And we substract the power of 2 from m and n and do recursive calculations.
 
@@ -22,19 +22,273 @@
 
 	* 216: 做过的比较多的backtracking, 主要控制剩余的num不能<0, target不能<0,然后只有当num和target同时为0的时候可以加进去。另外注意参数传递进入下一个recursion的时候不要改变参数的值，比如--num这样的式子，不然的话返回后很容易忘记加回来。
 
+	* 231: 只要判断n & (n - 1)是否为0就可以了。另外一种就是对于n的每一位都check是否&1后等于1，然后是否继续右移会等于0，如果继续右移不等于0， 那么肯定是false，如果等于0，那么就是true。 如果&1都不等于1，那么就继续右移，说明还没有走到第一个1 —— 这是因为它必定只有一个1。
+
+2018年10月03日13:35:29:
+	215. Kth Largest Element in an Array
+
+	* 215： bear - "Quick Selection - Largest/Smallest Kth element"
+
+2018年10月04日11:00:32:
+	226. Invert Binary Tree, 221. Maximal Square
+
+	* 226: 比较简单的一道题，只要交换左右孩子然后做recursion就行了。学到了cpp的一个技能：std::swap(TreeNode* pointer1, TreeNode* pointer2);
+
+	* 221: maximum square, 考虑 dp[i][j] = 以(i, j)为正方形右下角的正方形的最大边长。通过画图我们可以得到, dp[i][j]在matrix[i][j]必须是'1'的情况下，能取到的正方形的最大变长，其实是(i-1, j), (i-1, j-1), (i, j-1)中的最小值。但是这个比较难想通，然后为了取初值方便，这里让dp多了一行、一列。
+
+2018年10月05日09:42:37:
+	205. Isomorphic Strings, 220. Contains Duplicate III
+
+	*205:建立一个map产生s[i] -> t[i]的映射，建立一个set记录t[i]，每次看s[i]是否在map中，如果在的话，只要判断t[i]是否和map(s[i])相等即可。如果不在的话，需要判断set中是否已经有t[i]了，如果有的话就返回false，如果没有的话就新建s[i] -> t[i]的映射。
+
+	也可以建立两个array, 每个是256大小，用来存储256个字符串，可以把array初始值全部设为-1.
+	每次移动i的时候，把相应的array1[s[i]] = i 以及array2[t[i]] = i， 这样的话我们就可以跟踪array1[s[i]]和array2[t[i]]是否具有相同的值，这个值就是他们上次出现在s和t中的下标。如果不同，那么说明他们有不一样的映射，这个比较难想。
+	有以下情况：
+		1. 一个有值，一个无值： 某一个已经映射到了其他点, false
+		2. 两个都无值： 初始值相等，建立映射, 继续
+		3. 两个都有值： 相同-> ok； 不同 -> 两个映射不同， false
+
+	*220: #overflow #set #sequence #window
+	需要注意的是，我们可以设置一个"window",也就是说，这个set是有固定长度的，当i >= k (i == k的时候set的size是k)的时候，每次都要erase掉nums[i - k]
+	然后后面有一个问题，如果nums[i] == nums[i - k],那么set.insert(nums[i])必定会覆盖掉nums[i - k]的值，这时候再erase，那么erase的其实就是nums[i]了，这样势必会影响到后面的值。
+
+	那么这种情况是否有可能发生呢？That's impossible! 因为如果nums[i] == nums[i - k],那么说明他们都还在同一个window里。特别地，window的大小是[0, 1, ..., k]，可以容纳k + 1个数。 既然在同一个window里，差又为0，我们已知t肯定>=0，所以差为0的时候必满足条件。因此这时候必返回，所以根本就进行不到erase的操作。
+
+	或者也可以先erase再Insert，但是这样k == 0的情况就很不好处理，需要再前面判断k是否等于0之类的。
+
+	另外这道题要注意overflow和underflow的情况，在很多时候nums[i] + t啥的很容易overflow，所以用long做比较好。
+
+2018年10月08日00:07:30: 
+	4. Median of Two Sorted Arrays
+
+	* 4: 最好直接看解答。主要思想是把两个array分成两部分，如果都是偶数，那么左边等于右边，没问题。如果和是奇数，那么左边要比右边多一个。然后确定i和j的关系，使得i+j = m-i+n-j
+	我们需要控制n>=m使得j为非负。
+	然后呢，我们需要在[0,m]范围内找到一个符合要求的i。首先说明为什么i可以取到0或者m以及对应的含义，当i取到0的时候，说明A数组全部在右侧的大数部分，而当i取到m的时候，说明A数组全部在左侧的小数部分，j是同理的。
+
+	我们需要比较A左边的最大值A[i - 1]，A右边的最小值A[i]，B左边的最大值B[j - 1]，B右边的最小值B[j]之间对应的关系。理想的关系应该是A[i - 1] <= B[j] && B[j - 1] <= A[i]，这样的话左边部分所有数都必定<=右边部分所有数，然后我们只要根据奇偶取leftMax和rightMin就可以计算其平均值。但是蛋疼的是如果A[i - 1] > B[j]怎么办呢？ 其实这种情况暗含了B[j - 1] < A[i]，这个推理非常简答，在这种情况下，我们认为A[i]偏大了，所取得值应该在左侧，这时候让max = i - 1即可。第二种情况是如果B[j - 1] > A[i]怎么办，我们认为A[i]这时候太小了，应该让i可以取到i+1才行，所以让min = i + 1。
+
+	另外还有一些corner case，比如，如果i = 0即整个A数组全部在右侧怎么办，这时候很显然的我们就根据奇偶性可以取到leftMax = B[j - 1]，同样的，还需要考虑j = 0整个B数组全部在右侧，以及i = m整个A数组全部在左侧， j = n整个B数组全部在左侧的情况。因为实际上i = m是可以取到的，我们需要handle这些情况。
+
+2018年10月08日13:33:47:
+	344. Reverse String, 238. Product of Array Except Self, 819. Most Common Word, 771. Jewels and Stones, 681. Next Closest Time
+
+	* 238: 因为不能用divide，所以我们考虑把数组array分成两部分来进行计算。第一部分用一个left来记录每个数左边的乘积，显然array[0]是没有值的，记为1，然后我们从left=1开始，array[i] = array[0] * array[1] * ... * array[i - 1],可以用一个循环来计算所有的”左边乘积“。然后我们用另一个循环来计算右边的乘积，那么array[n - 1]也是没有右边乘积的，我们初始化right = 1, 然后进行同样的一个循环。
+
+	* 819: 主要是掌握String.split("[!?',;. ]+"); 把banned存放在set中，把split后的word存放在hashmap中。
+
+	* 681: 比较难的一道题。其实一共4个digit，一般来说就是考虑4*4*4*4 = 256种情况，这对于java来说不算很长时间。我们把每个数字保存在hashset中，这样就有4个for循环可以拿来用，
+	for (int i : set) { for (int j : set) .....}
+
+	然后我们取到4个数字a、b、c、d，我们看一下是否10a + b >= 24以及10c + d >= 60，因为这些数字都是invalid的。然后我们再看现在的时间比如pq:mn流逝的时间应该是pq*60 + mn; 我们就看一下ab*60 + cd是否大于这个，如果大于这个那么时间差就是直接相减，如果小于这个的话就是24*60 - (他们俩的时间差)。最后我们只要找到最小的时间差就可以返回了。
+
+	这道题主要是没想到怎么把数字存起来然后怎么用4个for-循环。其实这反而应该是最简单的一部分了
+
+2018年10月09日10:15:16:
+	10. Regular Expression Matching, 695. Max Area of Island, 253. Meeting Rooms II
 
 
+	* 10: 字符串匹配通常用dp来做效果比较好。在这里就是初始化一个boolean[][]数组match, match[i][j] means if s.substring(0, i) matches p.substring(0, j). 
+	首先对match进行初始化，match[0][0]就是两个空字符串互相匹配，为true. match第一列就是用一个空字符串的pattern来匹配一个s，第一列必为false。match第一行就是用pattern来匹配一个空字符串s，那么必须有"a*","b*a*",...这样的才能为true。
+
+	最后看match[i][j]什么时候为true
+	1. 首先判断if s[i - 1] == p[j - 1] or p[j - 1] = '.'，在这种情况下match[i][j] = match[i - 1][j - 1]即可。
+	2. 如果第一种情况不成立，需要判断是否p[i - 1] == '*', 如果是的话还是考虑两种情况:
+		1. '*'根本没用上，则match[i][j] = match[i][j - 2]
+		2. '*'用上了，那么就往前推进一格即可。也就是看是否s[i - 1] == p[j - 2] or p[j - 2] == '.', 这样的话说明'*'可以匹配上一个字符，但是之前的不知道，所以即返回match[i][j] = match[i - 1][j]
+		这两种情况只要成立一种就可以了，不然就是false
+	3. 最后的情况就是s[i - 1]和p[j - 1]都是数字的情况，数字一旦不一样那肯定不匹配，返回false。
+
+	* 695: 基本上和200. Number of Islands一样的。只是这次要计算area。感觉对于有返回值的dfs还是不是很熟悉。
+
+	* 253: 主要是一个heap的思想。首先按照start time进行排序，然后按照start time的先后顺序放入heap中。这个heap可以是Interval也可以是Integer，如果是Integer的话只需要保存end的数值即可。每加一个，我们都要看加入的这个interval.start 是否 >= heap.peak()，如果是的话，说明没有冲突，pop()直到 interval.start < heap.peak() 或者Heap为空为止。然后我们记录整个过程中heap.size()的最大值，就是最后所需要的meeting数量。
+
+2018年10月10日09:58:53: 
+	347. Top K Frequent Elements, 547. Friend Circles, 239. Sliding Window Maximum
+
+	* 347: 两种做法，首先不管怎么样都要用一个map来记录每个元素出现的次数。然后可以用一个含有K个元素的min-heap，一开始可能有点难以理解为什么要用minheap。其实是每次插入新值都pop掉最小的那个，剩下来的k个不就是最大了吗~
+	第二种做法是用bucket sort，用一个List[]数组，List[i]表示某个元素出现了i次。这样我们就可以根据map，把frequency出现的数字依次放到List中去，这样的话最常出现的数字一定会在最后。然后我们从后往前遍历直到最后的结果array.size() == k就可以了。
+
+	* 547: 主要是对于matrix的理解。碰到“地图型”matrix可以考虑用island的方法，比如dfs中每个点可以访问上下左右等等；但是matrix还有另外一种表示关系的，我命名为“关系型”matrix，就是本题的matrix。对于这种matrix，看一下是否存在graph的关系，尝试用graph来求解。最近题目做多了很多思路容易混起来。
+
+	* 239: 可以用TreeMap来做，这样可以删除特定点。如果用TreeMap那么比较tricky的一点就是如果碰到两个相同的key,那么value就会被覆盖掉。因此每次删掉一个多余点比如nums[i - k + 1]的时候都要看是否map.get(nums[i - k + 1]) == i - k + 1，如果是的话可以直接删除，如果不是的话就说明已经有其他的值将其覆盖了，不能进行删除！
+	另外还有一种deque的方法，比较不常用，有空再做吧。
+
+2018年10月11日22:54:12:
+	380. Insert Delete GetRandom O(1)
+
+	* 380: 要注意的细节点比较多。首先insert，要注意同时更新map和array；对于remove，要注意需要看是否可以remove，需要把要删除的点和最后一个点swap，当然如果要删除的就是最后一个点，那么就不需要swap，直接删除就好。然后需要更新map，同样地，这个点一定要删除，然后如果swap了的话，要记得把最后一个点的位置更新成现在的位置，然后删除现在的点。
+
+2018年10月12日11:12:32:
+	322. Coin Change,
+
+	* 322:
+		/* 这道题本身如果用back-tracking的方法想就会很难很难，首先因为back-tracking要么是用遍历(几乎不可能)
+        /* 要么就是每次取最大的然后依次往下取，但是这样就不是最优解：比如考虑12：[5,4,1]，5+5+1+1 v.s. 4+4+4显然是后者更优，但是后者的解得不到
+        /* 一旦发现这种问题，我们就需要用到dp，其basic idea就是，既然我们要得到amout,那么我们就设置一个dp[amount + 1]的数组
+        /* 其中dp[i]表示：加到amount = i时所需要的最少的硬币数，那么很显然dp[0] = 0，因为加到0不需要用到任何硬币
+        /* 我们dp从前往后做，对于每一个dp[i]，我们都已经算出了前面的0~i-1，然后接着我们要考虑每一个面值，是否会用到呢？
+        /* 我们可以看看这个面值要不要用，如果当前我们得到的dp[i]已经很完美了，那么很有可能那个面值就没有用到，我们直接保持dp[i]的值就可以了
+        /* 比如我们用1，那么dp[i]可以是dp[i - 1] + 1, 如果我们用10, 那么dp[i]可以是dp[i - 10] + 1，但是要注意coins[j] <= i，否则就会产生负数
+        /* 然后我们只要取到其中的最小值就可以了
 
 
+2018年10月13日11:00:58:
+	338. Counting Bits, 256. Paint House
 
+	* 338: 这道题可以用brute force来做，就是很简单的统计有多少个1。但是用dp更方便，因为其实每个数都是有关联的，之前做dp都是拘泥于dp[i]和dp[i - 1], dp[i - 2]之间的关系，没有想到过dp[i]和dp[i>>1]之间的关系。这道题其实很简单，比如给一个数11011，我们只要考虑1101含1的个数，再加上其末位是否为1就可以了。如果我们从0开始，可以得到1，而1可以得到2和3，以此类推就能得到所有的数字了。
 
+	判断末位是否为1，用i&1比i%2更快
 
+	* 256: 这是一道有多种状态的dp，直接记录min就是抛弃了之前的状态，所以每次记录上次取红色、蓝色、绿色的最小值。这和之前House robber里记录rob or not rob是差不多的思想。
 
+2018年10月15日09:44:27:
+	746. Min Cost Climbing Stairs, 	276. Paint Fence, 	303. Range Sum Query - Immutable, 	279. Perfect Squares		
 
+	* 746: dp对于这种多种状态的，要求记录最小值的题目比较适用。在这道题中可以用array做也可以用两个int(father, grandpa)作为指针。如果用array做的话比较简单，dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i - 1]就可以了。
+	* 276: 特征：多状态，具体需要分情况——dp
+	这道题用了两种方法，第一种：
+	分三类，
+	1、nDiff: 所有的fence，没有相邻两个是一样颜色的
+	2、nSameLast: 最后两个neighbor颜色一样
+	3、nSameMid: 中间两个Neighbor颜色一样
+	然后就根据这样的关系直接推导就可以了。注意题目问的是不能有超过两个Neighbor颜色一样，但是这样的neighbors具体有多少对，就不得而知了。
+	第二种方法，分两类：
+	1、nDiff: 最后两个neighbor不同
+	2、nSame: 最后两个neighbor相同
+	那么nDiff = nDiff * (k - 1) + nSame * (k - 1)即可，这样保证了最后两个是不同的。
+	nSame = nDiff； 这样也保证了不会超过2，但是这个可能稍微难理解一些。
+	* 303: implement an array (length = nums.length + 1) that array[i] caches nums[0] + nums[1] + ... + nums[i - 1]. Then if we want nums[i] + ... + nums[j], we just use array[j + 1] - array[i]
+	* 279: implement an array whose index ranges from 0, 1, 2, ..., n.
+	For every i ranging from 1 to n, we consider
+	1: if i is a square number, that is, (int) (Math.sqrt(i)) * (int)(Math.sqrt(i)) == i? If so, set dp[i] to be 1.
+	2: ELSE, just seraching j, where j_square ranging from 1, 4, 9, ..., i / 2. Then choose the minimum value of dp[j_square] + dp[i - j_square].
 
+2018年10月16日09:55:19:
+	647. Palindromic Substrings, 309. Best Time to Buy and Sell Stock with Cooldown
 
+	* 647: 见 bear - "String - Problems: Counting Palindromic Substrings"
+	* 309: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/discuss/182240/Two-Java-ideas-to-solve-this-problem
 
+2018年10月17日09:56:14:
+	413. Arithmetic Slices, 32. Longest Valid Parentheses	
 
+	* 413: Nothing special, just counting the difference between two neighbor elements can do the mathmatical combination stuff.
+
+	* 032:	
+		/*
+        construct a dp array to denote: what's the longest valid parentheses
+        length ending at this position
+        if s[i] == "(", dp[i] = 0 
+        if s[i] == ")", there are two cases
+           i) s[i - 1] == "(", then dp[i] = dp[i - 2] + 2
+           ii) s[i - 1] == ")", then the string can be split as:
+             "*****))", if we know dp[i - 1], it is possible to make the length longer
+             if s[i - dp[i - 1] - 1] == "(". in this case, dp[i] = dp[i - 1] + 2
+             which means "( ******) )"
+             However, it is possible that s[i - dp[i - 1] - 1] connects the previous string 
+             which means if something like "()(******))" happens, we can connect the previous
+             substring together, thus, dp[i] = dp[i - 1] + 2 + dp[i - dp[i - 1] - 1];
+        在具体implement的时候，可以把dp的长度+1，这样可以有0位，免去一些corner case的讨论
+        */
+
+2018年10月18日14:57:32:
+	263. Ugly Number, 264. Ugly Number II, 214. Shortest Palindrome    
+
+	* 263: 直接很简单就是不断除以2、3、5最后判断是否是1就可以了。
+	* 264: 从1开始，维护一个三个数字分别表示index2, index3和index5，每个数字都有乘2、3、5的机会，所以每次都是在index2处乘2，（说明这个数是第一次乘2），或者在index3处乘3（说明这个数乘过2了现在开始乘3），或者在index5处乘5（说明2、3都乘过现在只剩下乘5）。但是有时候会让2*3，3*2这样的情况发生，这时候就要采用3个并列的if语句（而不是互斥的）来让index进行移动。
+	* 214: recursive, 首先我们知道，如果设置j从n-1开始，i从0开始，如果s[j] == s[i], i++。那么i至多可以加到n，当且仅有s是palindrome的时候才有这样的特性（这TM谁能想得到？），然后我们每次都要cut掉i后面的，因为最大的substring一定包含在(0, i)之间了。当然如果i == n的话我们就直接返回s。这样我们就可以递归了，每次都返回prefix + shortestsubstring + suffix
+
+	有时候会想是不是存在重复加prefix的情况？应该是不会的，因为只有在不能构成palindrome的时候才会加，那么这样加下去的话就是本来应该加的。
+
+2018年10月19日10:55:10:
+	25. Reverse Nodes in k-Group, 482, License Key Formatting, 412: Fizz Buzz, 	159. Longest Substring with At Most Two Distinct Characters       
+
+	* 25: https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/183356/Java-O(n)-solution-with-detailed-explanation
+	* 482: 从后往前做，碰到number就放进去，攒满k个加“-”，最后判断是否前面带”-“就可以了！
+	* 412: Supper easy?
+	* 159: 不难，用sliding window就可以做。
+	建议把substring类型的题目全部做一遍。比如用到palindrome的substring会用到dp，其他longest可能会用到sliding window. 比如 3. Longest Substring Without Repeating Characters, 还有其他带关键字的比如anagram, window, permutation之类的。  
+
+2018年10月20日11:34:58:
+	146. LRU Cache, 928. Minimize Malware Spread II, 926. Flip String to Monotone Increasing, 925. Long Pressed Name
+	
+	* 146: 这道题最关键的是把map中的键值对和linkedlist以node的形式相连，从而能在O(1)时间内访问。但是现有的datastructure基本不支持访问node，因此需要自己把doubly-linked-list重新Implement一遍。
+
+	在本题中，每个新的指令都会让某一个键值对的优先级更高，同时我们肯定要有一个map来保存。关于优先级的考虑，就是Implement一个doubly linked list, 相当于每进行一次操作，我们都能在O（1）时间内访问到这个node并且把它移动到list头上去。
+
+	那么问题就变成如何在O（1）时间访问一个linkedlist中的元素呢？唯一的办法就是保存它的node，我们可以把node作为value保存在hashmap中，这样每次我们get(key)，得到的就是一个真正的在linkedlist里面的node。
+
+	对于linkedlist, 其中可以分成几步操作：1. 把一个新的node加入到头部。 2. 把一个指定的node删除。 3. 把一个指定的node移动到头部（就是分别执行1、2即可）。最后就是当map的capacity到达上限后，每次都删除最后一个node并相应地把map中的元素移除，然后加入新的元素。如果key已经存在，那么更新值+把node移动到最前就可以了。如果capacity没有到达上限，那么直接往map和list里面加就可以了。
+
+	* 928: 一个基于邻接矩阵的dfs
+	* 926: 记录两个值，一个是allZero一个是allOne, 然后根据最后一位的数值进行dp
+	* 927: 先判断首位是否相同，把所有位数相同的都去除然后进行recursion
+
+2018年10月22日11:34:50:
+	42. Trapping Rain Water, 300. Longest Increasing Subsequence 
+
+	* 42: 有以下几个变量， leftMost, rightMost, left, right
+	我们从array的left和right开始，只要height[left] > height[right], 我们就取right的那个点，在这个bin上加上(rightMost - height[right]), 这是因为已知左边的边界大于这个点的情况下，它能加上的water就是它rightMost和它的差。
+
+	那么有一个问题，是否有可能之前的rightMost > height[left]使得水溢出了呢？显然是不可能的。首先这个点本身就是小于heigh[left]的，其次，如果之前有任何点>height[left],那么这个点一定和left比较过，那么显然会有height[left] < height[right*], 这时候会进入left的分之，left++。
+
+	**************重要！！！**************也就是说，如果在某一处我们得到height[left] > height[right], 那么这个Left一定比right及所有right右边的数大。否则他们早就遇到并且已经跳过left了。所以说，在我们得到这个条件的时候，right能加的水就只能看右边的最大值了，如果它自己是当前最大值那就是0，不然就是某一个Positive number。反过来也是一样的道理。**************重要！！！**************
+
+	* 300: O(n^2)的解法是比较容易想的，就是用dp，dp[i] = 之前所有的dp[j] (j < i)中最大的那个+1，然后记录更新最大值就可以了。还有一种binary的解法。晚上肥去做！
+
+	O(nlogn), 考虑数组[10,9,2,5,3,7,101,18], 我们再创建一个同样长度的的新数组，依次放入数字，
+	第一次得到[10],然后我们每次都找后面一个数应该插入的位置，花的时间是O(logn)的。如果所要插入的位置在数组内部，也就是说比当前的最大值小，那么就直接覆盖相应的值。比如插入9之后变成[9],插入2变成[2], 之后变成[2,5], [2,3], [2,3,7],[2,3,7,101],[1,3,18,101]，因为最大的数组长度是不变的，所以最后返回数组的长度即可。
+
+2018年10月23日10:16:23:
+	273. Integer to English Words    
+
+	* 273: 倒着做就行，每次生成3位数字的string再加上一个suffix。要注意的corner case比较多，比如：
+	1. 生成3位数字为0的情况，这时候就不需要加suffix
+	2. 数字之间的空格 (应该是这道题最难搞的地方)
+	3. 除了个位（zero, One， two, ..., nine) 之外, 还有十位(ten, twenty, ...)，还有十几！比如(eleven, twelve, ....)
+
+2018年10月25日10:39:05:	
+	301. Remove Invalid Parentheses, 241. Different Ways to Add Parentheses, 224. Basic Calculator      
+	* 301: 1. 首先看某个string s左边有几个invalid left, 右边有几个Invalid right.
+		invalid right很好判断，就是当当前没有invalid left的时候，只要多一个Invalid right，那么就++。invalid left的话就是不断维护记录left和right的值，看看left被right消除后最后剩下多少个。
+
+		2. 然后我们就可以用StringBuilder进行backtracking，看r和l的值。首先如果r==l==0，那么判断时候valid然后返回。如果r>0，那么先做r，把右括号')'去掉，进入下一循环。注意在每个loop里我们只去掉连续括号中的第一个，因为后面的会在后面的处理，防止重复。如果r==0, l>0,那么同样地我们去掉左括号并防止重复。每次下次的起点，比如说这次删除了i，那么下次的起点就是i，（其实是当前删除数的后一个数，只是往前递进了）
+
+		关于防止重复，有一个idea就是考虑"(()",第一次删除第一个，然后进入第二个变成"()", 如果你不考虑连续的情况的话，那么第二个for-loop里就会这样删除第二个，还是变成"()"。另外设置起点的目的在于，每次我删了一个之后，我只考虑删除后面的了，再也不考虑前面的了（因为前面的已经被考虑过）。最后要注意的就是删除之后要记得把括号还回去。
+	* 241: 一道递归题，不要忘了recursion!分别计算左右两边的string，然后对每个值根据运算符进行运算。值得注意的是如果再计算最长的string的时候里面每一个string都会被计算，因此我们用一个hashmap来保存已经计算过的string来节省运行速度。
+	* 224: 花了巨长时间....应该好好想一想用stack怎么做。
+
+2018年10月26日10:12:36:
+	621: Task Scheduler
+	* 621: 贪心算法，花了很久。https://leetcode.com/submissions/detail/185498386/
+
+2018年10月28日13:57:56:
+	Weekly Contest 108
+
+2018年10月28日13:57:48:
+	287. Find the Duplicate Number, 297. Serialize and Deserialize Binary Tree, 237. Delete Node in a Linked List, 234. Palindrome Linked List, 328. Odd Even Linked List
+	* 287: 用binary的方法比较好，因为数都是从1~n的，每次我们取一个mid，看有多少个数<=mid的，比如说count，如果count>mid,那么说明必定有重复的。那么我们就搜索low - mid就可以了。否则的话就没有重复的，我们搜索mid+1,high。直到最后low == high的时候跳出循环就可以了。
+
+	那么现在考虑是否有可能有count<=mid并且duplicate在mid左侧的情况。比如1,2,2,4,5?
+	首先我们考虑mid, 既然能取到mid，那么mid = (1+high)/2 => high = 2*mid - 1
+	既然最高位至少是2*mid-1,那么数组长度为2*mid,我们考虑数组可以被分为以下几部分:
+	[.....mid, ....2*mid-1] 既然<=mid的数有count个，且count<=mid，也就是说，左侧部分到mid为止的长度：
+	length_left <= mid, 因此我们知道右侧部分的长度 length_right >= mid
+	但是右侧部分是没有重复的，所以右侧部分的长度为: 2*mid - 1 - mid = mid - 1
+	Flase(mid - 1 >= mid) 所以不可能！
+	* 297: 转换成string的时候做bfs就可以了，如果要转成tree也同样地做bfs。
+	* 237: 在不知道previous node的前提下删除node, 唯一可行的办法就是把它改成后面的node并跳过它！
+	* 234: O(1) space的解法应该只能允许修改原来的linkedlist，主要就是取到一半然后对后一半进行reverse，最后从头开始判断是否相等。不然的话其实就很简单用一个Integer List就可以了。
+	* 328: 用双指针odd和even来“穿针引线”，利用好even会比odd先结束的特性来记录odd的最后一个值。
+
+2018年10月29日10:16:49:
+	124. Binary Tree Maximum Path Sum 
+	* 124: 这道题还是比较难的，需要时刻保存^型的路径在global variable里，同时需要记录一条通路（也就是左孩子或者右孩子到根节点，而不能两个孩子都取）。左孩子和右孩子的maxPath应该取0及其本身值中的最大值，因为如果是负数的话就不取。需要有空再做一遍。✅2018年11月06日16:27:28已做
+
+2018年10月31日13:04:17:
+	84. Largest Rectangle in Histogram, 617. Merge Two Binary Trees
+	* 84: 三种做法，1. brute force, 考虑所有可能的pair<i,j>, 其中面积就是<i,j>中的shortest bar * length; 2. divide and conquor, 对于一个直方图来说，要么就是用到最短的那个bar，也就是最短的bar乘以整个直方图的长度，要么就是不用到最短的那个bar，那么就是以bar为界，调用bar左右的进行判断就可以了； 3. 高级方法：spanning bar的思想，每一个bar能产生的最大矩形面积为这个bar往左右span直到遇见第一个高度比它低的bar为止。设置两个array记录左右小于bar的第一个元素，最后通过对应bar的高和左右长度来找最大的矩形。
+	* 617: recursion 秒
 
 
 

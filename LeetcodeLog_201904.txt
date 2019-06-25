@@ -1,0 +1,33 @@
+Consumer API keys
+vQfI2A1wLVhYIJzh0PdCpDE04 (API key)
+
+Ri4I2GFXfPFGO7Fa4CE08NRK0uTeAC7rI8DkNG2gcbc5BGuyZ9 (API secret key)
+
+2019年04月17日23:25:35:
+	764. Largest Plus Sign
+	感觉还是不是很熟练，不断expand到上下最后，取最小。并全局取最大。用dp的思想。
+
+2019年04月18日14:19:10:
+	496. Next Greater Element I:
+	用一个stack来做，如果访问元素大于stack的peek，那么就不断pop直到小于为止，最后再插入元素。
+
+	503. Next Greater Element II:
+	用下标来访问，不需要用map
+
+2019年04月22日21:22:22:
+	668. Kth Smallest Number in Multiplication Table:
+	1. 尝试用heap做，用一个node class来记录当前node的base和value，然后不断更新，但是会有TLE
+	2. binary search 确实很难，特别是如何证明一个我们一定不会获得一个有相同rank但不存在于乘法表中的数。。
+
+	* need review
+
+2019年04月23日14:49:35:
+	875. Koko Eating Bananas
+		可以理解成“验证”型的题目，如果我们需要把一个数代进去验证是否成立，那么很有可能就是用binary search做的
+	969. Pancake Sorting
+		greedy, 每次把最大的元素放到最后就行了
+
+2019年04月24日12:14:56:
+	480. Sliding Window Median
+		自己新建一个class带index和val，用两个treeset, 时间复杂度nlogk
+	

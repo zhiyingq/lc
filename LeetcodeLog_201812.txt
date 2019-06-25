@@ -1,0 +1,239 @@
+2018年12月05日12:10:49:
+	304. Range Sum Query 2D - Immutable
+
+	* 304: 
+		可以对每一行进行累计，到时候只要遍历每一行得到累计的差就可以了。
+		还有一种O（1）时间的就是每个格子记录从0,0到它的长方形的所有值（不包括该格子），也就是其左上角的长方形的所有值，然后我们可以发现每一个要求的长方形的sum可以由4个长方形的组合得到。
+
+2018年12月06日09:43:32:
+	731. My Calendar II
+		/*
+	     * The basic idea is: when we insert, each start time ++, each end time --
+	     * we start from the first time
+	     * Whenever we see a start time, we + the value of the start time
+	     * Whenever we see an time, we + value
+	     * If the value >= 3, there is an overlap of >= 3
+	     * 
+	     * TreeMap.values(): The collection's iterator returns the values in
+	     * ascending order of the corresponding keys.
+	     */
+	732. My Calendar III:
+		the same as 731
+	Prime Factorization:
+		见bear - Prime Factorization 
+		idea: 先筛选所有的2使其成为奇数，再从3开始筛选直到sqrt(n),最后如果n>1的话那么n就是最终的素数，记录期间所有产生的prime factors.
+	355. Design Twitter：
+		OOD的思想
+		首先，每一个user都会有一个userID，有一个hashset保存自己的followee以进行O(1)时间的删除。同时每一个user都会有一个head_tweet,我们不需要用列表来保存，因为后面可以用到merge-k-sorted-list的思想。
+		每一个tweet都有一个自己对应的id，有next，这个next用于检索前一个timestamp该用户发出的tweet，当然还有一个自己的timestamp，timestamp是一个全局变量。
+
+		最后整个twitter有一个map用来记录id<->user之间的对应关系。对于follow和Unfollow操作，我们只需要在对应的user的followee里面进行增删。对于post，我们需要找到对应的user，把他的head_tweet更新为最新的这个tweet（由id和timestamp创建）。对于getNesFeed，我们找到user follow的所有人包括他自己本身，拿出head_tweet, 之后我们根据merge-k-sorted-list的思想，把它们从大到小根据timestamp放在heap上，每次取出最大的那一个，然后把它的继任者加到heap里，这样循环直到heap为空或者到达上限10.
+	68. Text Justification:
+		做到头晕，用stringbuilder更快，注意空格数以及最后一位的情况，其他其实都还好。
+
+2018年12月07日22:59:42:
+	904. Fruit Into Baskets
+		其实就是sliding window at most two distinct chars
+		可以用map做，注意end的更新以及maxlen的计算，建议把end的更新放在第一个if中，maxLen的更新放在最后。
+		也可以用两个计数器做，计数器的使用可以参考Majority Element II，要先考虑用first和second去“筛”这个数，如果筛不到再确认first,second是否为-1，最后才知道哦原来first second都有值了而这个值是第三个数，进入循环之类的。
+2018年12月09日11:46:38:
+	97. Interleaving String:
+		关键是要把dp[i][0] 和dp[0][j] 初始化，之后在考虑dp[i][j]
+2018年12月10日12:44:27:
+	87. Scramble String:
+		recursive考虑
+		1. s1.substring(0, i) <=> s2.substring(0, i), s1.substring(i) <=> s2.substring(i)
+		2. s1.substring(0, i) <=> s2.substring(s2.length() - i)
+		   s1.substring(i) <=> s2.substring(0, s2.length() - i)
+		一开始容易写错携程s1.sbustring(0, i) <=> s2.substring(i), 这样就不对了，应该是有一个错位的swap的思想
+
+2018年12月11日15:43:14:	
+	642. Design Search Autocomplete System
+		1. 每一个node保存times和sentence，每次获取前缀返回node，根据times和sentence排序
+		2. 注意getAllPossibleSentences(TrieNode start, char x, StringBuilder prefix)
+		中start可能为null的情况，如果它为null或者它的next为null则返回
+		3. 新加入的node如果已经存在要记得更新
+		4. current和prefix的更新
+	692. Top K Frequent Words:
+		1. 用trie做熟练了一下
+		2. 用map做也可以，今天发现pq的comparator甚至可以调用map....
+		就是map里key是word， value是times，我pq的comparator可以根据map.get(key)来进行比较
+	314. Binary Tree Vertical Order Traversal:
+		陷阱题，由于DFS的特性，我们要求在上层的level必须在左侧，在下层level的node必须在右侧，dfs无法实现这一功能，因此要用BFS + hashmap记录level最后根据level由小到大返回list。
+		
+2018年12月14日15:22:24:	
+	660. Remove 9:
+		change the number to 9-based
+		if asked remove 7, change 7->8 and 8->9, others keep the same
+	655. Print Binary Tree:
+		这道题比较tricky的地方在于要知道最底层的长度是 (1<<maxHeight) - 1, 然后初始化一个string[][], 之后在对应的地方用recursion添加元素即可。
+		长度计算: 2^0 + 2^1 + ... + 2^height
+2018年12月15日18:55:58:	
+	286. Walls and Gates
+		很好的一道题，主要考察BFS后不需要重复看到已经有的值，那是因为已经一定被其他gate衍生出来的更新过了，所以如果value是MAX_VALUE就不需要更新了
+	299. Bulls and Cows:
+		hash table, use positive to record number[s] and use negative to record number[g]
+	295. Find Median from Data Stream:
+		use two heaps
+		1. put into the max_heap, take the peek of max_heap and put it into the min_heap to keep the order
+		2. if min_heap > max_heap, put the peek of min_heap to max_heap
+		尽量在max_heap和min_heap的基础上进行操作，就是让max_heap选择最大的放到min_heap中，min_heap选择最小的放入max_heap中，以保持稳定。
+	271. Encode and Decode Strings:
+		length: xxxxxxxx
+		这样decode的时候即使string里有length:这样的形式，也会被跳过！这就是escape的好处
+	277. Find the Celebrity：
+		basic idea: 每次调用knows(i, j)我们都可以去掉一个可能性，如果结果为true，那么i不可能为candidate，如果结果为false，那么j不可能为candidate，所以我们每次都去掉那个不可能为candidate的，留下那个可能为candidate的，寻找下一个。
+		也就是说从candidate = 0开始，看knows(0, 1) ? if true, candidate = 1, else, candidate = 0, 然后进入2， 以此类推，每次都能去除掉一个可能性，共进行n-1次，最后剩下一个可能为candidate的人。
+		然后我们check是否所有人认识他以及他不认识所有人即可。
+2018年12月16日10:57:01:
+	270. Closest Binary Search Tree Value
+		要利用BST的性质, 找到想要继续search的node在哪里，如果target<node.val,那么就往左边搜索，不然就往右边搜索。如果下面的孩子为null，那么直接返回root即可。
+	272. Closest Binary Search Tree Value II
+		idea1: heap
+		shortage: never use the characteristic of BST
+		idea2: linkedlist + in-order traversal
+		link: 
+		https://leetcode.com/problems/closest-binary-search-tree-value-ii/discuss/205972/JAVA-O(n)-SUPER-EASY-solution.-only-one-linkedlist-no-stacks
+		advantage: consider the good property of BST and in-order traversal from smallest to largest
+		"
+		This is an in-order traversal of the BST. We add the values from lowest to highest to the list. Once we find that the absolute difference is smaller when the list's size equals k, we poll the smallest value from the list and add the current node's value to the list. However, if we find that the abs difference is getting larger, we don't need to consider any larger nodes bececause the future values will only get larger.
+		"
+	278. First Bad Version
+		binary search, 但需要注意的一点是如果简单的二分法，很容易得出错的结论。
+		看此行代码：
+		if (isBadVersion(mid)) { 
+            return binaryFind(low, mid); 
+        }
+        如果这里修改成mid - 1, 那么很有可能Mid - 1就不是bad version，这和find peak的思想有点类似，因为我们要找first bad version, 所以不能漏掉mid就是那个f-b-v的可能性。所以不能mid - 1! 就像find peak一样，如果发现nums[i] > nums[i + 1]，那么nums[i]也有可能是peak！
+        最后要注意iteration 比recursion好的地方就在于空间复杂度更好一些。
+    280. Wiggle Sort:
+    	a >= b <= c, if b > c, we will swap b and c
+    	the sequence will be kept because b > c, thus a >= c <= b
+    	a <= b >= c, if b < c, we will swap b and c as well
+    	the sequence will also be kept because b < c, thus a <= c >= b
+    281. Zigzag Iterator:
+    	用iterator的概念，每次把各个iterator放到一个queue里，模仿queue的过程，每次用完一个iterator就把它poll出来然后放到最后。如果iterator为空那么就不再加入。判断整个是否hasNext()的依据就是看queue是否为空。
+
+2018年12月17日11:17:53:
+	285. Inorder Successor in BST:
+		比较有难度的一道题，其基本思想是：
+		1. 如果root.val <= p.val, suceessor只能出现在右侧
+		2. 如果root.val > p.val, successor可能出现在左侧，也可能没有，那么就是root
+		可以用recursive的方法做也可以用iterative的方法做
+
+2018年12月25日18:38:46:
+	nextPalindrome:
+		1. 判断是否已经是palindrome, 如果已经是，那么+1
+		2. 判断reverse后左边部分和右边部分大小，如果R_左边部分>=右边，直接转换成Left+mid+Reverse_Left即可。
+		3. 如果R_左边<右边，分情况，如果是奇数，那么mid+1后变成Left+mid+Reverse_Left
+		其中，可能会有mid=9的情况，比如193 => 203, 但是这时候本质上前面会进一位，所以最后变成202也是比原来的大。另外一种需要考虑的情况就是991这样的情况，就是+1后整体会进一位 => 1001，但是其实是不会的因为9>1，所以前面已经handle住了。
+		4. 如果是偶数，我们已经知道R_左半部分<R_右，所以必定有一个数位是digits[i] < digits[j],这时候只要使i + 1即可，然后再reverse,最后不会有9的情况因为不可能。
+
+2018年12月26日16:59:00:
+	393. UTF-8 Validation
+		几种情况，直接计算leading one bit有多少个，如果是0，直接下一个，如果是2、3、4，就看后面的1、2、3个是不是只有一个leading one, 一旦有不符合的直接返回false。
+	185. Department Top Three Salaries:
+		join的使用！！及其他情况的分析
+
+2018年12月27日22:02:52:
+	41. First Missing Positive:
+		bucket sort的使用, 要用while loop, 条件是:
+		num[i] > 0 && num[i] <= nums.length && num[i] != num[num[i] - 1]
+		因为每次进入一次while-loop就会有一个元素被排到相应的位置上，最多有n个这样的元素，所以time complexity是O(n)
+	180. Consecutive Numbers:
+		用三张表直接来做表明关系式
+
+2018年12月28日15:42:47:
+	158. Read N Characters Given Read4 II - Call multiple times:
+		1. 使用一个private buffer来存没有用掉的数据 (max_size = 4)
+		2. 每次读取的时候先读自己buffer里的数据, 再从read4里读数据
+		3. 读出来多余的数据让道自己的private buffer里
+	829. Consecutive Numbers Sum:
+		x + x+1 + x+2 + ... + x+k = N => x = (2N/(k+1) - k) / 2
+		对于int k = 0; k * k + 2 * k <= 2 * N; k++ 中遍历每一个k
+	336. Palindrome Pairs:
+		left | right
+		如果isPalindrome(left) && map.get(right) exists and != i, then there is a palindrome rev_right | left | right
+		and this is the same for right part
+	183. Customers Who Never Order
+	627. Swap Salary
+	196. Delete Duplicate Emails:
+		注意判断id不能用<>，因为两个都会被删除
+	197. Rising Temperature:
+		DateDiff
+	619. Biggest Single Number:
+		count -> group by
+	596. Classes More Than 5 Students
+
+2018年12月29日14:35:09:
+	
+2018年12月30日11:39:47:
+	426. Convert Binary Search Tree to Sorted Doubly Linked List
+		把first node和root搞混了
+	564. Find the Closest Palindrome:
+		copy left -> right
+		检查原来的char[]和后来的char[], 如果我们要得到更大的，那么如果对应位置上后面的char更大，那么我们就完成任务。
+		如果对应位置上后面的char更小，那么我们就从中间开始(nums.length - 1)/2为中间，增大一个就好。如果为0的话需要进一位。
+		最后我们再一次copy left -> right就行。
+
+		考虑小于的情况也是一样的，只是需要考虑第一位为0的情况，这时候会少掉一位。
+	394. Decode String:
+		recursive: 找到"[]", 对中间的元素进行recursive
+		iterative: 碰到"["就把当前number和当前string放入stack中，碰到"]"就pop出来
+	811. Subdomain Visit Count
+
+2018年12月31日20:35:18:
+	71. Simplify Path:
+		stack来做，因为可能含有多种"//", 所以split("/+"), 其次由于"."就只是停留在当前目录中，所以不起作用。需要考虑的就只是".."和其他非空、非"."的情况，如果是"..",需要看一下当前stack是否为空，如果非空那么就需要pop()掉一个，如果为空的话就没有动作。如果是正常的路径就直接加进来。
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

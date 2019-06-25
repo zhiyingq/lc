@@ -1,0 +1,87 @@
+2019年01月05日21:21:54:
+	718. Maximum Length of Repeated Subarray:
+		如果当前值A[i-1]==B[j-1], 那么dp[i][j]就等于dp[i-1][j-1]+1
+		可以简化到只使用一位数组来做
+	759. Employee Free Time:
+		1. 排序法
+		得到startTime和endTime，然后一个一个来
+		2. linkedlist法
+		linkedlist根据starting time进行排序，首先我们pop掉第一个作为prev，然后每次看linkedlist的head.start > prev.end, 如果是的话就插入新的interval (prev.end, head.start)，然后我们肯是否head.end > prev.end? 如果是的话我们就更新prev,如果不是的话就保留prev不动，这是比较trivial的一点。
+2019年01月08日11:46:30:
+	44. Wildcard Matching
+		可以用2-d array或者1-d array来做
+		如果用2-d array，遇到*就分成两种情况：用或者不用，用的话就是s相应地-1，不用的话就是p相应-1
+		1-d array要注意dp.length() == 0的情况，这个可以在一开始就讨论
+
+2019年01月15日10:54:20:
+	844. Backspace String Compare:
+		1. trivial - using stringbuilder / stack
+		2. TODO: scan the array backward, O(n) time and O(1) space
+
+2019年01月16日10:58:25:
+	636. Exclusive Time of Functions:
+		分段函数求和的思想，定义一个prev是之前timestamp的值，不管是end还是start
+		如果插入的话，如果之前有值，那么之前的那个Peek()就相当于经过了这段时间
+		然后我们把id插入，并更新prev
+		如果之前没有值就很好处理
+
+		如果是end的话，就timestamp - prev + 1并且把前一个pop出来
+		prev要更新为timestamp+1因为end和start的计算方式不一样
+
+2019年01月24日10:32:59:
+	722. Remove Comments:
+		设置一个commentMode，在commentMode下只要检测是否有*/就可以了
+		在非commentMode下需要检测/*和//的情况
+		最后比如a/*comment1
+		comment2*/b
+		得到的结果是ab, 即是没有换行符的。所以要注意stringbuilder的添加条件
+	683. K Empty Slots：
+		1. 学习了新的数据结构: treeSet，看插入后左边和右边的值，碰到第一个满足的就跳出
+		2. 尝试把position转换成天数，然后再做：——今天下午或者晚上做
+			原数组的下标是day，数组的值是位置
+			现在把数组转换成为下标是位置，数组的值是天数，因为我们知道在两个位置之间必须有k个empty slot
+			所以这k+2个slot必是连续的，假设最左是left, 最右的下标是right，那么在left到right之间的k个元素需要满足的条件是，每一个元素必须均大于days[left]和days[right]，否则就无法构成、当指针走到right的时候或者不满足条件的时候，我们需要更新left和right的值，但是left和right之间(exclusive)必须含有k个元素。
+	924. Minimize Malware Spread
+		Union-Find
+
+
+2019年01月31日10:46:55:
+	675. Cut Off Trees for Golf Event:
+		一道priorityQueue + BFS结合的题，主要思想是通过pq得到下一个要砍掉的tree的高度，然后从起点开始作BFS，
+		直到找到某个对应点其值就是这个高度位置。然后更新startX和startY，并记录步数。
+
+		需要注意的点：
+		如果不调用另外的function，BFS需要新加一个boolean "found", 同时注意跳出循环的条件，步数的记录要正确
+		对于valid的点的处理，要记录已经访问过的点(visited), 同时要保证点的数值>0, 另外在一开始设置起点的时候记得要把它设置为visited[startX][startY] = true，不然感觉不太好，虽然对最后的结果不会造成什么影响。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

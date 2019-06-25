@@ -1,0 +1,438 @@
+2018年12月05日11:19:55:
+	647. Palindromic Substrings
+		count how many palindromic substrings in the string
+		palindrome string: 首先必有一个中心点，或者两个，因此我们遍历string的从0到str.length - 1的每一个位置，每个点都有可能是以(i, i)或者(i, i+1)为中心点，然后我们只要向外expand就可以了。要注意的是如果以中心点为“准则”的话，每一次expand都是独一无二的。
+
+2018年12月06日09:15:29:
+	729. My Calendar I
+		treemap, 注意null的情况
+	254. Factor Combinations:
+		需要注意的地方:
+        1. 用backtracking，不走回头路，即考虑了该factor之后不再考虑比它小的，保证解的唯一性
+        2. 设置条件从[2, n] (inclusive)， 当n==1的时候，我们要确定，已有的因数不止它本身，也就是factorList.size() >= 2才可以，如果仅仅>=1那么就说明因数只是1和它自己本身而已   
+
+        例如， 12:
+        2 - 2 - 3
+        2 - 6
+        3 - 4
+    204. Count Primes 
+    139. Word Break:
+    	之前一直搞不懂的是为什么要cache，为什么要memory
+    	其实这是一个recursion的思路，或者说backtracking,之前想的都是返回true的情况，那么当然一条路走到底了。但是万一是false呢？如果我走到某条路发现咦，从这里开始是false，最后返回到j处也是false，那么我下一次就要走j+1了(j=i+1, j < length, j++)，但是j+1也有可能经过之前走过的那条路，那么这时候cache的作用就提现出来了。
+
+    	这其实就是recursion with memory的作用，因为我们不一定能一下子得到解，可能会走很多错的路，所以最重要的是记录“false”的值，而不是记录true的值。因为一旦返回true我们就一true到底了，所以归根结底，我们可能根本就不需要记录true的值，而只需要记录false的值，从而提前结束某些可能会错的路！
+	
+2018年12月07日10:01:34:
+	140. Word Break II
+		需要memory之前已经访问过的substring，可能对于某一个点来说，有多条路径可以通向它。因此可以把它对应的位置信息加到hashmap中。其思想和word break1比较类似
+	43. Multiply Strings:
+		把s.charAt(i), t.charAt(j)的乘积保存在product[i+j+1]中，最后把carry加上去，去掉leading 0， 然后最后判断是否length为0，如果为0那么返回0，不是0的话返回string（）。
+	2. Add Two Numbers
+	3. Longest Substring Without Repeating Characters
+		需要非常注意走到头的情况，因为在外面设置了一个while-loop，所以需要关注什么时候要保存maxLen
+
+2018年12月09日21:23:25:
+	64. Minimum Path Sum
+		dp
+	96. Unique Binary Search Trees:
+		真的忘了，用dp来做。
+		假设G[n]代表由n个数组成的BSTs的数量，F(i, n)代表以i为root的BSTs的数量
+		那么就有G(n) = F(1, n) + F(2, n) + ... + F(n, n)
+		其中，F(i, n)可以考虑为由G(i - 1)和G(n - i)组成，左边很好理解，右边的话是虽然那几个数大于i，但是可以近似的认为他们的组合方式和G(n - i)是一样的。
+	95. Unique Binary Search Trees II:
+		recursive with memorization 
+		也可以iterative从1开始，记录0时候的特殊情况
+		关键在于用map记录递归的情况，一开始放在内部，感觉有点不对，果然很不对。。。
+		有空95\96可能需要在复习一遍
+
+2018年12月11日10:50:06:
+	212. Word Search II
+		Trie + dfs
+		注意dfs的条件，不管怎么样先进到下一个node，board[i][j] valid or not先不管
+		另外就是不是说end了就结束了，end了可以继续往下走因为会有分支
+		还有一个就是关于trie数据结构的存储方法，如果一个word被发现后直接把end改成false可以省去hashset，
+	208. Implement Trie (Prefix Tree):
+		这次尝试用iterative的方法做，其实也很简单
+	104. Maximum Depth of Binary Tree:
+		iterative: BFS, recursive
+	226. Invert Binary Tree:
+		iterative: use Queue, 每次pop出来的node都交换左右孩子，如果非空加入队列中
+		recursive: easy
+	617. Merge Two Binary Trees:
+		recursive
+	173. Binary Search Tree Iterator
+	100. Same Tree:
+		iterative: queue里放两个node，可以是null，每次pop出来判断值
+		recursive: easy
+
+2018年12月14日15:39:56:	
+	304. Range Sum Query 2D - Immutable
+		review - 记录每个点左上角的矩形的和，相应地减去值
+	48. Rotate Image:
+		注意i的位置
+	42. Trapping Rain Water：
+		记录leftMost和rightMost，取最小值如果大于height[i],加上water
+	105. Construct Binary Tree from Preorder and Inorder Traversal
+
+2018年12月16日21:28:35:
+	18. 4Sum
+		注意duplicate
+	33. Search in Rotated Sorted Array
+		判断nums[low/high/mid]是否是想要的target，对于后面的case会好处理很多
+	81. Search in Rotated Sorted Array II
+		注意判断有序数列的条件
+
+		 while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (nums[low] == target || nums[mid] == target || nums[high] == target) return true;
+            if (nums[low] == nums[high]) { low++; high--; }   
+            else if (nums[low] <= nums[mid]) { 
+                // 有序数列可能在左侧，也有可能在右侧，但是如果再左侧可以判断的出来
+                // 因为左侧要么一样，要么是有序数列
+                // 因此先看左侧，再看右侧
+                if (target > nums[low] && target < nums[mid]) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            } else {
+                // nums[low] > nums[mid]
+                // 有序数列必定在右侧
+                if (target > nums[mid] && target < nums[high]) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }
+    153. Find Minimum in Rotated Sorted Array
+    	对于这种判断nums[low], nums[mid]和nums[high]的一定要特别小心
+    	这道题里要把mid和high进行比较，因为mid和low进行比较的话有可能mid和low是同一个。
+    	把mid和high进行比较更放心，因为mid和high必然会不同
+
+2018年12月17日12:15:17:
+	47. Permutations II
+		减少duplicate的方法 - 排序。同时两个数如果相等的话需要注意不能重复访问，就直接看前面的那个数是否已经被用过即可。
+
+
+2018年12月22日10:06:54:
+	1. Two Sum
+	2. Add Two Numbers
+	3. Longest Substring Without Repeating Characters
+	5. Longest Palindromic Substring
+		记录最长length，通过i来找到最长的length
+	200. Number of Islands
+	146. LRU Cache
+	138. Copy List with Random Pointer
+	20. Valid Parentheses
+		要注意stack empty的情况
+	273. Integer to English Words
+		要考虑hundred, decimal, digit的空格情况
+		比如Hundred>0才加上Hundred，因此考虑decimal的时候需要看是否hundred>0来加空格
+		decimal要考虑为1和不为1
+		digit要考虑decimal!=1&&digit>0的情况，这时候只要decimal和Hundred有一个大于0，那么就要加空格。
+		最后要考虑suffix加空格的事情，只要是threeDigit.length()>0的，那么就有需要加空格，否则如果是0的话suffix都不要加。就是10000000的情况
+	42. Trapping Rain Water:
+		雨量 = Math.max(Math.min(leftMost, rightMost) - height[i], 0)
+		brute force: 访问每个点，两次循环找到leftMost和rightMost O(n2)
+		optimal: 一次遍历O(n)
+	904. Fruit Into Baskets:
+		use one hashmap, or two indicators
+		注意要先接住fruit1和fruit2而不是先看Fruit1,fruit2是否是-1，因为这样有可能导致fruit1设置好了之后fruit2也被设置了值，从而使得fruit1==fruit2
+	56. Merge Intervals:
+		sort + 根据start和end进行合并
+	15. 3Sum:
+		注意duplicate的处理，对于3-sum: nums[i] == nums[i - 1]
+		对于2-sum: nums[start] == nums[start - 1], nums[end] == nums[end - 1]
+	141. Linked List Cycle
+	53. Maximum Subarray:
+		easy dp, 可以用一维数组也可以降低维度使用常数
+		DP需要注意的: corner case!
+	175. Combine Two Tables
+		left join
+
+2018年12月23日22:48:36:
+	301. Remove Invalid Parentheses:
+		1. 防止重复，输入的是stringbuilder sb, 如果一个数已经删掉，那么后面的显然不会重复。会重复的只是说如果这个数在的时候我们会continue。
+	21. Merge Two Sorted Lists
+	121. Best Time to Buy and Sell Stock:
+		dp
+	206. Reverse Linked List
+	7. Reverse Integer:
+		如果在规定只能用int的情况下，需要提前对结果进行预测
+		我们一直num = num * 10 + mod, 则我们需要预判num < MAX_VALUE / 10 || num == MAX_VALUE / 10 && mod > 7，这种情况的发生
+	177. Nth Highest Salary:
+		distinct的作用是去除相同的值
+	595. Big Countries
+	181. Employees Earning More Than Their Managers:
+		试着用subquery和join一起写，这里可以根据E1.ManagerId = E2.Id来join
+		self-join直接用name,就会报错，因为是ambiguous
+
+2018年12月24日09:27:20:
+	238. Product of Array Except Self:
+		1. generate productLeft, productRight, and calculate product[i]=productLeft[i] * productRight[i] O(3n)
+		2. use single variable left & right, left = current product from left -> i
+		, right = current product from nums.length - 1 -> i O(2n)
+	23. Merge k Sorted Lists:
+		heap
+	929. Unique Email Addresses:
+		split the local and domain, revise the local, combine it with the domain and add the new string back to a hashset
+	11. Container With Most Water:
+		1. brute force
+		2. low & high
+	253. Meeting Rooms II:
+		1. sort by start time
+		2. compare start time with end time
+	10. Regular Expression Matching:
+		几个重点:
+		1. 是用p来match s, 不要搞错
+		2. 当p match s的时候，首先如果字符相等或者p[j]=='.',不用说就是dp[i - 1][j - 1]
+		而如果p[j]=='*', 可以选择用或者不用
+		不用的话就是p[i][j - 2],用的话就要判断是否p[j-1]==s[i] || p[j-1]=='.', 然后p[i][j] |= p[i - 1][j]
+	33. Search in Rotated Sorted Array:
+		寻找有序数列
+	297. Serialize and Deserialize Binary Tree:
+		1. deserialize: use bfs, split by comma 
+		[1,2,3,null,null,4,5,null,null,null,null]
+		2. 重现deserialize的过程，先把第一个node放到queue里去，然后while !queue.isEmpty()的时候，把第一个node pop出来，用一个index记录位置，如果这个node不是null的话，就把后面两个孩子添加入队列并设置为左右孩子。如果是null的话直接pop就行。
+	17. Letter Combinations of a Phone Number:
+		backtracking
+	269. Alien Dictionary
+		1. generate graph according to the "neighbor" words
+		2. topological sorting accoridng to indegree
+	681. Next Closest Time:
+		1. save all the digits to a set/list
+		2. traverse all the possibilities, different calculation when > and <=
+		3. string.format("%02d:%02d", a, b);
+	9. Palindrome Number:
+		1. 可以全部revert, 这样直接判断是否相等
+		2. revert一半，但要注意
+			1. 如果是10, 100, 1000...这样的情况
+			2. 控制x >= reverse, 每次x/=10, reverse = reverse * 10 + x%10, 需要先判断看x和reverse是否相等或者或者x/10 == reverse，不能后判断因为有可能直接x < reverse就判断不到了，注意顺序
+	76. Minimum Window Substring:
+		注意minimum sliding window是在count==0中计算长度的，maximum的话则是在外面，以及用map的话要使用map.containsKey()条件，最后要注意是否有解。
+	344. Reverse String
+	54. Spiral Matrix:
+		1. 注意offset的次数
+		2. 注意row和col不要重复
+
+2018年12月25日09:50:03:
+	31. Next Permutation
+	771. Jewels and Stones
+	22. Generate Parentheses：
+		backtracking, keep left and right
+	322. Coin Change:
+		1. 2-d dp array
+		2. shorten to 1-d dp array
+	13. Roman to Integer:
+		basic rule: 如果前一位小于后一位，减去前一位，else，加上
+	518. Coin Change 2:
+		reduce to 1-d dp array according to the logic of 2-d array
+	139. Word Break:
+		recursion with memorization
+	98. Validate Binary Search Tree:
+		1. recursion
+		take care of the corner case: Integer.MAX_VALUE, Integer.MIN_VALUE
+		如果一开始root就是这个值，那么就会返回false，改用long
+		2. iteration
+		注意顺序，BST的话就是inorder traversal是严格按照从小到大的次序
+		按照in-order每次记录prev看是否是从小到达即可
+		每次in-order都保持这样的原则：有左孩子就把所有左孩子加进去，pop peek，如果有右孩子就把当前node转换成右孩子，进入下一循环，不然就一直pop。。
+	88. Merge Sorted Array:
+		小数组从头往前，大数组也从头往前，注意只要n放完就成了，不需要考虑m的值。但在放m的时候需要保证m > 0否则会报错。
+	159. Longest Substring with At Most Two Distinct Characters
+		sliding window, max长度在最后处理,min长度在中间处理
+	173. Binary Search Tree Iterator
+	236. Lowest Common Ancestor of a Binary Tree
+	695. Max Area of Island
+	178. Rank Scores:
+		学会用join和subquery
+
+2018年12月26日15:23:38:
+	49. Group Anagrams
+	399. Evaluate Division:
+		1. directed graph + dfs
+		2. union-find
+	393. UTF-8 Validation
+	289. Game of Life
+		bit-calculation
+	91. Decode Ways:
+		注意需要考虑的情况:
+		如果i_th的digit为0，那么dp[i] = 0, 不然就等于dp[i - 1]
+		然后再看，是否可以i_th和i-1_th能够成[10, 26]区间中的值，这样的话dp[i] += dp[i - 2]
+	547. Friend Circles:
+		只要对i ranging from [0, n)作dfs search就行
+	8. String to Integer (atoi):
+		复习关于overflow的提前预判:
+		(num > Integer.MAX_VALUE / 10 || (num == Integer.MAX_VALUE && mod > 7))
+		两种情况满足一种即是overflow
+		其他的就是先去掉leading space，再找第一个符号判断正负，再对后面的数字进行操作
+
+2018年12月27日10:08:30:
+	380. Insert Delete GetRandom O(1)
+		hashmap + arraylist
+	621. Task Scheduler:
+		可以看有多少empty slots, n * (maxTimes - 1), 然后每次都减减减直到为0或者元素减完为止
+		也可以直接用数学公式计算: 
+		Math.max(tasks.length, (n + 1) * (maxTimes - 1) + countMaxTies);
+								|最后一位之前占用的数目|		 |最后一位占用的数目|
+	25. Reverse Nodes in k-Group:
+		利用pointer的属性, 每次把pointer连接到new Head上的时候再switch pointer
+	46. Permutations
+	560. Subarray Sum Equals K:
+		two-sum的性质，最终可以优化到只需要一个for-loop以及一个sum变量
+	85. Maximal Rectangle:
+		convert the rectangle to a histogram
+		1. find the first index on the left that is LESS THAN i
+		2. find the first index on the right that is LESS THAN i
+		3. calculate the area based on the height of i
+		想象最终每一个最大的rectangle，都会撑满一个histogram, 那么我们就以这个hist为中心，向左向右span，time complexity: O(n)，因为考虑最坏的情况：某一个数要找左边的最小，如果右边的比它大，那就找下一个，可能它会找n次，那么这个就要求前面的每个数都是O（1）的因为左边的都比自己小所以瞬间找到，所以其实每个hist都只能被最多访问两次。
+	221. Maximal Square:
+		关于dp, 如果涉及到i-1,j-1可以设置一个temp,先记录dp[j]的值，而每次用prev的值，最后把prev=temp,就其实一位数组是可以实现的
+	151. Reverse Words in a String:
+		在进行删除操作的时候一定要小心长度
+	79. Word Search
+		dfs
+	295. Find Median from Data Stream:
+		two-heaps, 先放入后放出可以保持两个heap的大小关系
+	224. Basic Calculator:
+		先记录+-, 记录一个result和一个curr, 遇到()把result放入stack中，同时也记录符号。另外保证一个左括号push对应一个右括号pop，使得最后stack为空
+	124. Binary Tree Maximum Path Sum:
+		可以非常巧妙地设置一个Math.max(leftPath, 0)和Math.max(rightPath, 0)来保证左右分支>=0, 然后每次返回的话是返回单一路线最大值，即child-parent,而global max则是记录包含这些的所有情况的最大值。
+
+2018年12月28日10:10:58:
+	50. Pow(x, n):
+		recursively: 注意n可能overflow的情况
+		iteratively: 需要独立出来一个extra来最后补乘，其他的都是用2乘
+	127. Word Ladder：
+		解法1: BFS
+		解法2: double-ended BFS, 用两个hashset来做，每一次bfs都把新的数存到一个temp set中，且到下一轮次进行更换。同时每个元素不是只能用一次，而是在expanded之后才不能使用，和一次性的BFS有一些不同。
+	283. Move Zeroes:
+		actual index V.S. incrementing index
+	215. Kth Largest Element in an Array
+		1. min-heap: find largest
+		2. quick-select
+	16. 3Sum Closest
+	157. Read N Characters Given Read4:
+		read/put content into the buffer
+	67. Add Binary:
+		在使用&2的时候一定要注意加上>>1
+	239. Sliding Window Maximum：
+		1.
+		使用<value, index> pair
+		当map中元素个数<k时，不需要进行操作。当>=k时，首先我们要获取一个最大值，另外我们要pop掉index为i-k+1的值，其值由nums[i-k+1]获得。但是这个有可能不存在，因为会被后面的值覆盖掉，这个时候就不删除。
+		2.
+		deque, 先把超出index的部分pop掉，然后把所有小于当前value的pop掉
+		也就是说，deque里只能是递减的而不能有任何元素大于后面的元素，这样每次pop出去的才是最大值
+	72. Edit Distance:
+		如果对应位置处字符相同，dp[i][j] = dp[i - 1][j - 1]
+		如果不同，考虑dp[i - 1][j]的匹配加上删除i, dp[i][j-1]的匹配加上删除j，或者dp[i-1][j-1]加上一个替换操作。
+	176. Second Highest Salary
+	347. Top K Frequent Elements:
+		1. hashmap, sort according to the map's value
+		2. bucket sort, considering that the frequency will be in 1-n
+	155. Min Stack:
+		1. 2-stack
+		2. 记录min的变化值，一旦当前的min发生改变(x <= min)，则先把旧的min放上去
+		...|oldmin|x
+		然后更新min=x, 等下次要pop的时候如果发现当前x==min,那么需要pop第两次来“返还”old_min
+
+2018年12月29日15:23:04:
+	595. Big Countries
+	613. Shortest Distance in a Line
+	627. Swap Salary:
+		if(condition, true_result, false_result)
+		case [variable]
+			when condition1 then result1
+			when condition2 then result2
+			else result3
+		end
+	584. Find Customer Referee
+	586. Customer Placing the Largest Number of Orders
+		选出最大的: group by customer_
+	620. Not Boring Movies
+	570. Managers with at Least 5 Direct Reports
+	603. Consecutive Available Seats
+	577. Employee Bonus
+	607. Sales Person
+	612. Shortest Distance in a Plane
+		ROUND(x, 2), POW(X, 2), SQRT(X)
+	182. Duplicate Emails
+	175. Combine Two Tables
+	43. Multiply Strings:
+		use "+="
+	103. Binary Tree Zigzag Level Order Traversal
+	528. Random Pick with Weight:
+		记录accumulate的值+binary search
+		或者用treemap, 但是treemap如果记录integer的话处理会复杂一些
+	176. Second Highest Salary
+	181. Employees Earning More Than Their Managers
+	183. Customers Who Never Orders
+	619. Biggest Single Number
+	596. Classes More Than 5 Students
+	178. Rank Scores:
+		如果不用group by, 前面的select (count *)只能返回一个结果
+	197. Rising Temperature
+	180. Consecutive Numbers
+
+2018年12月30日14:29:55:
+	227. Basic Calculator II
+		由于*和/运算的存在，所以当出现+的时候,4+3*5+6这样的情况，我们需要考虑到前面的符号可能是*/的情况。所以当我们遇到一个符号的时候，我们需要看之前的符号是什么、如果之前的符号是*/,那么我们就需要前前个数，把当前数和stack.pop()进行乘除运算。而如果之前的数是+-号，那么我就把相应的数放到stack里。比如+5*3,遇到这个乘号的时候，之前是加号，我们需要把这个5放到stack里。因此，我们永远focus on previous sign.
+	133. Clone Graph:
+		BFS / DFS
+		每个node只能被访问一次，
+	642. Design Search Autocomplete System
+
+2018年12月31日18:06:20:
+	29. Divide Two Integers
+		每次减去最大的那个2的n次方，直到和longDivisor一样大为止
+	341. Flatten Nested List Iterator
+		iterative & recursive
+	232. Implement Queue using Stacks
+		amortized O(1), 永远push到stack1, pop在stack2，stack2不够了由stack1"倒进来"
+	225. Implement Stack using Queues
+		push O(n), pop, peek, empty O(1)
+		每次加进来的时候都把之前的元素加到队尾
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
